@@ -1,0 +1,1 @@
+godcode camera is a camera which can take photo with qrcode and sticker.
