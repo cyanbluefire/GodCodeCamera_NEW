@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.common.util.DistanceUtil;
@@ -80,8 +81,8 @@ public class CameraActivity extends CameraBaseActivity {
 
     @InjectView(R.id.masking)
     CameraGrid cameraGrid;          //相机
-    @InjectView(R.id.photo_area)
-    LinearLayout photoArea;
+//    @InjectView(R.id.photo_area)   //以往照片
+//    LinearLayout photoArea;
     @InjectView(R.id.panel_take_photo)
     View takePhotoPanel;
     @InjectView(R.id.takepicture)
@@ -99,7 +100,16 @@ public class CameraActivity extends CameraBaseActivity {
     @InjectView(R.id.surfaceView)
     SurfaceView surfaceView;
 
+    /*--cyan*/
+    @InjectView(R.id.panel_after_take_photo)
+    LinearLayout  panel_after_take_photo;
+    @InjectView(R.id.btn_take_photo_again)
+    TextView btn_take_photo_again;
+    @InjectView(R.id.btn_sure_to_use)
+    TextView btn_sure_to_use;
 
+    private Camera mCamera;
+    byte[] photoData;    //拍照完成后的照片数据
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +131,7 @@ public class CameraActivity extends CameraBaseActivity {
         //设置相机界面,照片列表,以及拍照布局的高度(保证相机预览为正方形)--cyan
         ViewGroup.LayoutParams layout = cameraGrid.getLayoutParams();
         layout.height = App.getApp().getScreenWidth();
-        layout = photoArea.getLayoutParams();
+//        layout = photoArea.getLayoutParams();
         layout.height = DistanceUtil.getCameraPhotoAreaHeight();
         layout = takePhotoPanel.getLayoutParams();
         layout.height = App.getApp().getScreenHeight()
@@ -153,12 +163,12 @@ public class CameraActivity extends CameraBaseActivity {
         photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
         photo.setTag(photoItem.getImageUri());
 
-        if (photoArea.getChildCount() >= photoNumber) {
-            photoArea.removeViewAt(photoArea.getChildCount() - 1);
-            photoArea.addView(photo, 0, params);
-        } else {
-            photoArea.addView(photo, 0, params);
-        }
+//        if (photoArea.getChildCount() >= photoNumber) {
+//            photoArea.removeViewAt(photoArea.getChildCount() - 1);
+//            photoArea.addView(photo, 0, params);
+//        } else {
+//            photoArea.addView(photo, 0, params);
+//        }
         photo.setOnClickListener(v -> {
             if (v instanceof ImageView && v.getTag() instanceof String) {
                 CameraManager.getInst().processPhotoItem(CameraActivity.this,
@@ -354,12 +364,39 @@ public class CameraActivity extends CameraBaseActivity {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            bundle = new Bundle();
-            bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换--cyan
-            new SavePicTask(data).execute();
-            camera.startPreview(); // 拍完照后，重新开始预览
+            takePhotoPanel.setVisibility(View.GONE);
+            panel_after_take_photo.setVisibility(View.VISIBLE);
+            mCamera = camera;
+            photoData = data;
+
+            btn_take_photo_again.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG,"重新拍照");
+                    panel_after_take_photo.setVisibility(View.GONE);
+                    takePhotoPanel.setVisibility(View.VISIBLE);
+                    mCamera.startPreview();
+                }
+            });
+            btn_sure_to_use.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bundle = new Bundle();
+                    bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换--cyan
+                    new SavePicTask(data).execute();
+                    camera.startPreview(); // 拍完照后，重新开始预览
+                }
+            });
+
+
+//            bundle = new Bundle();
+//            bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换--cyan
+//            new SavePicTask(data).execute();
+//            camera.startPreview(); // 拍完照后，重新开始预览
+
         }
     }
+
 
     private class SavePicTask extends AsyncTask<Void, Void, String> {
         private byte[] data;
@@ -389,6 +426,7 @@ public class CameraActivity extends CameraBaseActivity {
             super.onPostExecute(result);
 
             if (StringUtils.isNotEmpty(result)) {
+                //拍照保存完成 result是路径   --cyan
                 dismissProgressDialog();
                     CameraManager.getInst().processPhotoItem(CameraActivity.this,
                             new PhotoItem(result, System.currentTimeMillis()));

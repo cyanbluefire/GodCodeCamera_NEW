@@ -20,17 +20,19 @@
         <activity
             android:name="com.uboss.godcodecamera.app.ui.MainActivity"
             android:label="@string/app_name">
+
+        </activity>
+
+        <activity
+            android:name="com.uboss.godcodecamera.app.camera.ui.CameraActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name="com.uboss.godcodecamera.app.camera.ui.CameraActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity
             android:name="com.uboss.godcodecamera.app.camera.ui.CropPhotoActivity"
             android:screenOrientation="portrait"

@@ -98,6 +98,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG,"onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_process);
         ButterKnife.inject(this);
@@ -107,6 +108,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         initStickerToolBar();
 
         //显示之前选中的图片 --cyan
+        //getData()为uri格式
         ImageUtils.asyncLoadImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {
             @Override
             public void callback(Bitmap result) {
