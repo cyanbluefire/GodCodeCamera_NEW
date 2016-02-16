@@ -403,9 +403,7 @@ public class CameraActivity extends CameraBaseActivity {
 
         protected void onPreExecute() {
             showProgressDialog("处理中");
-        }
-
-        ;
+        };
 
         SavePicTask(byte[] data) {
             this.data = data;
@@ -426,10 +424,12 @@ public class CameraActivity extends CameraBaseActivity {
             super.onPostExecute(result);
 
             if (StringUtils.isNotEmpty(result)) {
+                Log.i(TAG,"保存好图片 路径:"+result);
                 //拍照保存完成 result是路径   --cyan
                 dismissProgressDialog();
-                    CameraManager.getInst().processPhotoItem(CameraActivity.this,
-                            new PhotoItem(result, System.currentTimeMillis()));
+
+//                    CameraManager.getInst().processPhotoItem(CameraActivity.this,
+//                            new PhotoItem(result, System.currentTimeMillis()));
             } else {
                 toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
             }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.common.util.ImageUtils;
 import com.uboss.godcodecamera.AppConstants;
@@ -22,6 +23,7 @@ import java.util.Stack;
  */
 public class CameraManager {
 
+    private static final String TAG = "CameraManager";
     private static CameraManager mInstance;
     private Stack<Activity> cameras = new Stack<Activity>();
 
@@ -46,10 +48,12 @@ public class CameraManager {
         Uri uri = photo.getImageUri().startsWith("file:") ? Uri.parse(photo
                 .getImageUri()) : Uri.parse("file://" + photo.getImageUri());
         if (ImageUtils.isSquare(photo.getImageUri())) {
+            Log.i(TAG,"不需要裁切");
             Intent newIntent = new Intent(activity, PhotoProcessActivity.class);
             newIntent.setData(uri);
             activity.startActivity(newIntent);
         } else {
+            Log.i(TAG,"需要裁切");
             Intent i = new Intent(activity, CropPhotoActivity.class);
             i.setData(uri);
             //TODO稍后添加
