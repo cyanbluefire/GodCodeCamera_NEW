@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginRight="@dimen/model_margin"
+    android:layout_marginLeft="@dimen/model_margin">
+    <TextView
+        android:id="@+id/tv_model_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/image_text_order"
+        android:layout_marginBottom="@dimen/text_img_margin"
+        android:layout_marginTop="@dimen/text_img_margin"/>
+    <ImageView
+        android:id="@+id/img_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/camera"/>
+    <TextView
+        android:id="@+id/tv_model_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_first"
+        android:layout_marginBottom="@dimen/text_img_margin"
+        android:layout_marginTop="@dimen/text_img_margin"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

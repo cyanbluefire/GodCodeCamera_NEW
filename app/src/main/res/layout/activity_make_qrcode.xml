@@ -54,7 +54,7 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_below="@id/ll_qrcode">
         <ImageView
             android:id="@+id/img_location"
@@ -78,16 +78,16 @@
         android:layout_alignParentBottom="true"
         android:text="@string/create_qrcode"/>
     <LinearLayout
-        android:id="@+id/toolbar_area"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:id="@+id/model_area"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:orientation="vertical"
         android:layout_above="@id/btn_create_qrcode">
 
         <it.sephiroth.android.library.widget.HListView
-            android:id="@+id/list_tools"
+            android:id="@+id/list_models"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:background="@color/common_background"
             android:gravity="center_vertical"
             android:overScrollMode="always"

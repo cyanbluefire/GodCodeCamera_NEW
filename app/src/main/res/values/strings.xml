@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">StickerCamera</string>
+    <string name="app_name">GodeCodeCamera</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -7,4 +7,6 @@
     <string name="sure_to_use">确认使用</string>
     <string name="create_qrcode">生成二维码</string>
     <string name="input_hint">请在此输入内容</string>
+    <string name="image_text_order">图文顺序</string>
+    <string name="text_first">先文后图</string>
 </resources>
