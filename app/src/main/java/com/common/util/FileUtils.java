@@ -2,6 +2,7 @@ package com.common.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.os.Environment;
 
 import com.uboss.godcodecamera.App;
@@ -11,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,7 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class FileUtils {
-
+    public static String SDPATH = Environment.getExternalStorageDirectory()
+            + "/Uboss/";
     private static String    BASE_PATH;
     private static String    STICKER_BASE_PATH;
 
@@ -36,7 +39,41 @@ public class FileUtils {
         }
         return mInstance;
     }
+    public static void saveBitmap(Bitmap bm, String picName) {
+        try {
+            if (!isFileExist("")) {
+                File tempf = createSDDir("");
+            }
+            File f = new File(SDPATH, picName + ".JPEG");
+//			Log.i(TAG,"filePath::"+f.getAbsolutePath());
+            if (f.exists()) {
+                f.delete();
+            }
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static boolean isFileExist(String fileName) {
+        File file = new File(SDPATH + fileName);
+        file.isFile();
+        return file.exists();
+    }
+    public static File createSDDir(String dirName) throws IOException {
+        File dir = new File(SDPATH + dirName);
+        if (Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) {
 
+            System.out.println("createSDDir:" + dir.getAbsolutePath());
+            System.out.println("createSDDir:" + dir.mkdir());
+        }
+        return dir;
+    }
     public File getExtFile(String path) {
         return new File(BASE_PATH + path);
     }

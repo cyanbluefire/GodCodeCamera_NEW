@@ -37,7 +37,7 @@
                     android:gravity="start"
                     android:scrollbars="vertical"/>
                 <com.uboss.godcodecamera.app.view.MyGridView
-                    android:id="@+id/noScrollgridview"
+                    android:id="@+id/qrcode_photos"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:horizontalSpacing="3dp"

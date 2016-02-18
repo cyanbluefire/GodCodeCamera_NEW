@@ -1,6 +1,7 @@
 package com.uboss.godcodecamera;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.DisplayMetrics;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
@@ -20,6 +21,7 @@ public class App extends Application {
 
     protected static App       mInstance;
     private DisplayMetrics     displayMetrics = null;
+    private static Context mContext;
 
     public App(){
         mInstance = this;
@@ -34,12 +36,16 @@ public class App extends Application {
             return (App) mInstance;
         }
     }
+    public static Context getContext(){
+        return mContext;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         initImageLoader();
         mInstance = this;
+        mContext = this.getApplicationContext();
     }
 
 
