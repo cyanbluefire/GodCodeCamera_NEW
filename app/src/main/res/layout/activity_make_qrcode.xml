@@ -18,58 +18,63 @@
         android:layout_below="@id/titlebar"
         android:gravity="center"
         android:text="@string/create_qrcode"/>
-    
-    <LinearLayout
-        android:id="@+id/ll_qrcode"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@id/tv_create_qrcode"
-        android:orientation="vertical">
-        <EditText
-            android:id="@+id/et_qrcode_content_up"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:hint="@string/input_hint"
-            android:gravity="start"
-            android:scrollbars="vertical"/>
-        <com.uboss.godcodecamera.app.view.MyGridView
-            android:id="@+id/noScrollgridview"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:horizontalSpacing="3dp"
-            android:numColumns="4"
-            android:scrollbars="none"
-            android:verticalSpacing="5dp" >
-        </com.uboss.godcodecamera.app.view.MyGridView>
-        <EditText
-            android:id="@+id/et_qrcode_content_down"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:hint="@string/input_hint"
-            android:gravity="start"
-            android:scrollbars="vertical"
-            android:visibility="gone"/>
 
-    </LinearLayout>
-    
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@id/ll_qrcode">
-        <ImageView
-            android:id="@+id/img_location"
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_create_qrcode"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/camera"/>
-        <TextView
-            android:id="@+id/tv_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="当前低点"
-            android:layout_toRightOf="@id/img_location"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"/>
-    </RelativeLayout>
+            android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/et_qrcode_content_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:hint="@string/input_hint"
+                    android:gravity="start"
+                    android:scrollbars="vertical"/>
+                <com.uboss.godcodecamera.app.view.MyGridView
+                    android:id="@+id/noScrollgridview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:horizontalSpacing="3dp"
+                    android:numColumns="4"
+                    android:scrollbars="none"
+                    android:verticalSpacing="5dp" >
+                </com.uboss.godcodecamera.app.view.MyGridView>
+                <EditText
+                    android:id="@+id/et_qrcode_content_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:hint="@string/input_hint"
+                    android:gravity="start"
+                    android:scrollbars="vertical"
+                    android:visibility="gone"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+                <ImageView
+                    android:id="@+id/img_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/camera"/>
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当前低点"
+                    android:layout_toRightOf="@id/img_location"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
     
     <Button
         android:id="@+id/btn_create_qrcode"
@@ -80,9 +85,10 @@
     <LinearLayout
         android:id="@+id/model_area"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:orientation="vertical"
-        android:layout_above="@id/btn_create_qrcode">
+        android:layout_above="@id/btn_create_qrcode"
+        android:layout_marginBottom="@dimen/text_img_margin">
 
         <it.sephiroth.android.library.widget.HListView
             android:id="@+id/list_models"
