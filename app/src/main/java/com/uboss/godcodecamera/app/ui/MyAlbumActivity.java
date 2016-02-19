@@ -20,6 +20,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
+import com.common.util.FileUtils;
+import com.common.util.ImageUtils;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.app.MyUtil.AlbumHelper;
 import com.uboss.godcodecamera.app.MyUtil.Bimp;
@@ -28,7 +30,12 @@ import com.uboss.godcodecamera.app.MyUtil.ImageItem;
 import com.uboss.godcodecamera.app.MyUtil.PublicWay;
 import com.uboss.godcodecamera.app.MyUtil.Res;
 import com.uboss.godcodecamera.app.adapter.AlbumGridViewAdapter;
+import com.uboss.godcodecamera.app.camera.CameraManager;
+import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
+import com.uboss.godcodecamera.app.model.PhotoItem;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +73,7 @@ public class MyAlbumActivity extends Activity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Res.init(this);
 		setContentView(Res.getLayoutID("plugin_camera_album"));
 		PublicWay.activityList.add(this);
 		mContext = this;
@@ -112,11 +120,26 @@ public class MyAlbumActivity extends Activity {
 	private class AlbumSendListener implements OnClickListener {
 		public void onClick(View v) {
 			overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
-			intent.setClass(mContext, MakeQrcodeActivity.class);
-//			if(isMainPic){
+			if(isMainPic){
 //				intent.putExtra("isMainPic",isMainPic);
-//			}
-			startActivity(intent);
+				Bitmap bm = Bimp.tempSelectBitmap.get(0).getBitmap();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//				baos.toByteArray();
+//				new CameraActivity.SavePicTask(baos.toByteArray(),MyAlbumActivity.this);
+
+				try {
+					String imagePath = CameraActivity.saveToSDCard(baos.toByteArray());
+					CameraManager.getInst().processPhotoItem(MyAlbumActivity.this,
+							new PhotoItem(imagePath, System.currentTimeMillis()),"hahaha");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else {
+				intent.setClass(mContext, MakeQrcodeActivity.class);
+				startActivity(intent);
+
+			}
 			finish();
 		}
 

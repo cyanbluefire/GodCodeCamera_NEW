@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -100,7 +101,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Res.init(this);
+//        Res.init(this);
         bimap = BitmapFactory.decodeResource(
                 getResources(),
                 R.mipmap.add_pic);
@@ -109,6 +110,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_make_qrcode);
         ButterKnife.inject(this);
 
+        //关闭自动弹出键盘
+        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         init();
     }
 

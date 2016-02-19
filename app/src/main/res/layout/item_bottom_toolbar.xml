@@ -13,8 +13,8 @@
         android:layout_marginTop="@dimen/text_img_margin"/>
     <ImageView
         android:id="@+id/img_model"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@mipmap/camera"/>
     <TextView
         android:id="@+id/tv_model_instruction"

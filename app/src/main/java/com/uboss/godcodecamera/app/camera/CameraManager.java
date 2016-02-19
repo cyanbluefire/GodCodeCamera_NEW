@@ -8,10 +8,12 @@ import android.util.Log;
 
 import com.common.util.ImageUtils;
 import com.uboss.godcodecamera.AppConstants;
+import com.uboss.godcodecamera.app.MyUtil.LocalDataUtil;
 import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
 import com.uboss.godcodecamera.app.camera.ui.CropPhotoActivity;
 import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
 import com.uboss.godcodecamera.app.model.PhotoItem;
+import com.uboss.godcodecamera.app.ui.MakeQrcodeActivity;
 
 import java.util.Stack;
 
@@ -44,13 +46,16 @@ public class CameraManager {
     }
 
     //判断图片是否需要裁剪
-    public void processPhotoItem(Activity activity, PhotoItem photo) {
+    public void processPhotoItem(Activity activity, PhotoItem photo,String dataName) {
         Uri uri = photo.getImageUri().startsWith("file:") ? Uri.parse(photo
                 .getImageUri()) : Uri.parse("file://" + photo.getImageUri());
         if (ImageUtils.isSquare(photo.getImageUri())) {
             Log.i(TAG,"不需要裁切");
-            Intent newIntent = new Intent(activity, PhotoProcessActivity.class);
-            newIntent.setData(uri);
+            LocalDataUtil.SaveSharedPre("mainPic",dataName,"main_pictures");
+            Intent newIntent = new Intent(activity, MakeQrcodeActivity.class);
+
+//            Intent newIntent = new Intent(activity, PhotoProcessActivity.class);
+//            newIntent.setData(uri);
             activity.startActivity(newIntent);
         } else {
             Log.i(TAG,"需要裁切");

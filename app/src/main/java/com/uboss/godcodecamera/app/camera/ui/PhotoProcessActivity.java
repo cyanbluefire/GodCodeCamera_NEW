@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.customview.MyImageViewDrawableOverlay;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.AppConstants;
+import com.uboss.godcodecamera.app.MyUtil.LocalDataUtil;
 import com.uboss.godcodecamera.app.camera.CameraBaseActivity;
 import com.uboss.godcodecamera.app.camera.CameraManager;
 import com.uboss.godcodecamera.app.camera.EffectService;
@@ -109,13 +111,21 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
         //显示之前选中的图片 --cyan
         //getData()为uri格式
-        ImageUtils.asyncLoadImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {
+        String imagePath = LocalDataUtil.ReadSharePre("main_pictures","mainPic");
+        ImageUtils.asyncLoadImage(this, Uri.parse(imagePath), new ImageUtils.LoadImageCallback() {
             @Override
             public void callback(Bitmap result) {
                 currentBitmap = result;
                 mGPUImageView.setImage(currentBitmap);
             }
         });
+//        ImageUtils.asyncLoadImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {
+//            @Override
+//            public void callback(Bitmap result) {
+//                currentBitmap = result;
+//                mGPUImageView.setImage(currentBitmap);
+//            }
+//        });
 
         //用于滤镜预览的小图 --cyan
         ImageUtils.asyncLoadSmallImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {

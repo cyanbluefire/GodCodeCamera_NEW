@@ -1,6 +1,7 @@
 package com.uboss.godcodecamera.app.camera.ui;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +44,7 @@ import com.uboss.godcodecamera.app.camera.CameraBaseActivity;
 import com.uboss.godcodecamera.app.camera.CameraManager;
 import com.uboss.godcodecamera.app.camera.util.CameraHelper;
 import com.uboss.godcodecamera.app.model.PhotoItem;
+import com.uboss.godcodecamera.app.ui.MyAlbumActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -75,8 +77,8 @@ public class CameraActivity extends CameraBaseActivity {
     static final int ZOOM = 2;            // 模式：缩放
     private int mode;                      //1是聚焦 2是放大
     private float dist;
-    private int PHOTO_SIZE = 2000;      //高宽一致，取较小的一个
-    private int mCurrentCameraId = 0;  //1是前置 0是后置
+    public static int PHOTO_SIZE = 2000;      //高宽一致，取较小的一个
+    public static int mCurrentCameraId = 0;  //1是前置 0是后置
     private Handler handler = new Handler();
 
     @InjectView(R.id.masking)
@@ -208,7 +210,11 @@ public class CameraActivity extends CameraBaseActivity {
             changeBtn.setOnClickListener(v -> switchCamera());
         }
         //跳转相册
-        galleryBtn.setOnClickListener(v -> startActivity(new Intent(CameraActivity.this, AlbumActivity.class)));
+//        galleryBtn.setOnClickListener(v -> startActivity(new Intent(CameraActivity.this, AlbumActivity.class)));
+        Intent intent = new Intent(CameraActivity.this, MyAlbumActivity.class);
+        intent.putExtra("isMainPic", true);//true表示选一张图
+        galleryBtn.setOnClickListener(v -> startActivity(intent));
+
         //返回按钮
         backBtn.setOnClickListener(v -> finish());
         surfaceView.setOnTouchListener((v, event) -> {
@@ -398,8 +404,9 @@ public class CameraActivity extends CameraBaseActivity {
     }
 
 
-    private class SavePicTask extends AsyncTask<Void, Void, String> {
+    public class SavePicTask extends AsyncTask<Void, Void, String> {
         private byte[] data;
+        private Context context;
 
         protected void onPreExecute() {
             showProgressDialog("处理中");
@@ -408,6 +415,12 @@ public class CameraActivity extends CameraBaseActivity {
         SavePicTask(byte[] data) {
             this.data = data;
         }
+        SavePicTask(byte[] data,Context context)
+        {
+            this(data);
+            this.context = context;
+        }
+
 
         @Override
         protected String doInBackground(Void... params) {
@@ -428,8 +441,8 @@ public class CameraActivity extends CameraBaseActivity {
                 //拍照保存完成 result是路径   --cyan
                 dismissProgressDialog();
 
-//                    CameraManager.getInst().processPhotoItem(CameraActivity.this,
-//                            new PhotoItem(result, System.currentTimeMillis()));
+                    CameraManager.getInst().processPhotoItem(CameraActivity.this,
+                            new PhotoItem(result, System.currentTimeMillis()),"hahaha");
             } else {
                 toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
             }
@@ -742,7 +755,7 @@ public class CameraActivity extends CameraBaseActivity {
      * @param data
      * @throws IOException
      */
-    public String saveToSDCard(byte[] data) throws IOException {
+    public static String saveToSDCard(byte[] data) throws IOException {
         Bitmap croppedImage;
 
         //获得图片大小
@@ -771,7 +784,7 @@ public class CameraActivity extends CameraBaseActivity {
     }
 
     //处理图片--cyan，裁剪得到图片的一部分
-    private Bitmap decodeRegionCrop(byte[] data, Rect rect) {
+    private static Bitmap decodeRegionCrop(byte[] data, Rect rect) {
 
         InputStream is = null;
         System.gc();

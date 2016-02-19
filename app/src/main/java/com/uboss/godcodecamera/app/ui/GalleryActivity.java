@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.app.MyUtil.Bimp;
 import com.uboss.godcodecamera.app.MyUtil.PublicWay;
 import com.uboss.godcodecamera.app.MyUtil.Res;
@@ -62,7 +63,8 @@ public class GalleryActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(Res.getLayoutID("plugin_camera_gallery"));// 切屏到主界面
+//		setContentView(Res.getLayoutID("plugin_camera_gallery"));// 切屏到主界面
+		setContentView(R.layout.plugin_camera_gallery);
 		PublicWay.activityList.add(this);
 		mContext = this;
 		back_bt = (Button) findViewById(Res.getWidgetID("gallery_back"));

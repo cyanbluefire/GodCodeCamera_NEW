@@ -98,4 +98,5 @@
     <dimen name="title_left">10dip</dimen>
     <dimen name="text_img_margin">10dip</dimen>
     <dimen name="model_margin">10dip</dimen>
+    <dimen name="ui_10_dip">10dip</dimen>
 </resources>
