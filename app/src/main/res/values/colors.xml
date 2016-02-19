@@ -35,4 +35,7 @@
 
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="light_grey">#ffbebebe</color>
+    <color name="albumback">#E1E0DE</color>
+    <color name="none_color">#00000000</color>
+
 </resources>

@@ -9,4 +9,11 @@
     <string name="input_hint">请在此输入内容</string>
     <string name="image_text_order">图文顺序</string>
     <string name="text_first">先文后图</string>
+    <string name="album">相册</string>
+    <string name="camera_cancel">退出相册</string>
+    <string name="preview">预览</string>
+    <string name="no_photo">没有照片</string>
+    <string name="finish">完成</string>
+    <string name="photo">照片</string>
+    <string name="unfinished">未完成</string>
 </resources>
