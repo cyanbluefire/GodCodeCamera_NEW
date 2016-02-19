@@ -171,12 +171,12 @@ public class CameraActivity extends CameraBaseActivity {
 //        } else {
 //            photoArea.addView(photo, 0, params);
 //        }
-        photo.setOnClickListener(v -> {
-            if (v instanceof ImageView && v.getTag() instanceof String) {
-                CameraManager.getInst().processPhotoItem(CameraActivity.this,
-                        new PhotoItem((String) v.getTag(), System.currentTimeMillis()));
-            }
-        });
+//        photo.setOnClickListener(v -> {
+//            if (v instanceof ImageView && v.getTag() instanceof String) {
+//                CameraManager.getInst().processPhotoItem(CameraActivity.this,
+//                        new PhotoItem((String) v.getTag(), System.currentTimeMillis()),);
+//            }
+//        });
     }
 
     private void initEvent() {
@@ -285,7 +285,7 @@ public class CameraActivity extends CameraBaseActivity {
             CameraManager.getInst().processPhotoItem(
                     CameraActivity.this,
                     new PhotoItem(result.getData().getPath(), System
-                            .currentTimeMillis()));
+                            .currentTimeMillis()),"hahaha");
         } else if (requestCode == AppConstants.REQUEST_CROP && resultCode == RESULT_OK) {
             Intent newIntent = new Intent(this, PhotoProcessActivity.class);    //--cyan
             newIntent.setData(result.getData());
