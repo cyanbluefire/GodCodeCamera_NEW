@@ -289,16 +289,6 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     }
 
     private void setModelData(){
-//        Resources res = MakeQrcodeActivity.this.getResources();
-//
-//        addonList.add(BitmapFactory.decodeResource(res,R.drawable.sticker1));
-//        addonList.add(BitmapFactory.decodeResource(res,R.drawable.sticker1));
-//        addonList.add(BitmapFactory.decodeResource(res,R.drawable.sticker1));
-//        addonList.add(BitmapFactory.decodeResource(res,R.drawable.sticker1));
-//        addonList.add(BitmapFactory.decodeResource(res,R.drawable.sticker1));
-//        addonList.add(BitmapFactory.decodeResource(res,R.drawable.sticker1));
-//        addonList.add(BitmapFactory.decodeResource(res,R.drawable.sticker1));
-//        addonList.add(BitmapFactory.decodeResource(res,R.drawable.sticker1));
 
 
         //标题
