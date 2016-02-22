@@ -46,12 +46,12 @@ public class CameraManager {
     }
 
     //判断图片是否需要裁剪
-    public void processPhotoItem(Activity activity, PhotoItem photo,String dataName) {
+    public void processPhotoItem(Activity activity, PhotoItem photo) {
         Uri uri = photo.getImageUri().startsWith("file:") ? Uri.parse(photo
                 .getImageUri()) : Uri.parse("file://" + photo.getImageUri());
         if (ImageUtils.isSquare(photo.getImageUri())) {
             Log.i(TAG,"不需要裁切");
-            LocalDataUtil.SaveSharedPre("mainPic",dataName,"main_pictures");
+//            LocalDataUtil.SaveSharedPre("mainPic",dataName,"main_pictures");
             Intent newIntent = new Intent(activity, MakeQrcodeActivity.class);
 
 //            Intent newIntent = new Intent(activity, PhotoProcessActivity.class);

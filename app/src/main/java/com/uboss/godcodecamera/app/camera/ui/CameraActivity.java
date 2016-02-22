@@ -112,6 +112,9 @@ public class CameraActivity extends CameraBaseActivity {
 
     private Camera mCamera;
     byte[] photoData;    //拍照完成后的照片数据
+    public static String Main_Photo_Name = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +123,13 @@ public class CameraActivity extends CameraBaseActivity {
         ButterKnife.inject(this);
         initView();
         initEvent();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        panel_after_take_photo.setVisibility(View.GONE);
+        takePhotoPanel.setVisibility(View.VISIBLE);
     }
 
     private void initView() {
@@ -285,7 +295,7 @@ public class CameraActivity extends CameraBaseActivity {
             CameraManager.getInst().processPhotoItem(
                     CameraActivity.this,
                     new PhotoItem(result.getData().getPath(), System
-                            .currentTimeMillis()),"hahaha");
+                            .currentTimeMillis()));
         } else if (requestCode == AppConstants.REQUEST_CROP && resultCode == RESULT_OK) {
             Intent newIntent = new Intent(this, PhotoProcessActivity.class);    //--cyan
             newIntent.setData(result.getData());
@@ -440,9 +450,10 @@ public class CameraActivity extends CameraBaseActivity {
                 Log.i(TAG,"保存好图片 路径:"+result);
                 //拍照保存完成 result是路径   --cyan
                 dismissProgressDialog();
-
+                Main_Photo_Name = result;
                     CameraManager.getInst().processPhotoItem(CameraActivity.this,
-                            new PhotoItem(result, System.currentTimeMillis()),"hahaha");
+                            new PhotoItem(result, System.currentTimeMillis()));
+//                finish();
             } else {
                 toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
             }

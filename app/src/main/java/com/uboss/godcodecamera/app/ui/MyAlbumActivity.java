@@ -130,8 +130,10 @@ public class MyAlbumActivity extends Activity {
 
 				try {
 					String imagePath = CameraActivity.saveToSDCard(baos.toByteArray());
+					CameraActivity.Main_Photo_Name = imagePath;
 					CameraManager.getInst().processPhotoItem(MyAlbumActivity.this,
-							new PhotoItem(imagePath, System.currentTimeMillis()),"hahaha");
+							new PhotoItem(imagePath, System.currentTimeMillis()));
+					Bimp.tempSelectBitmap.clear();	//--cyan 清除主图在多图数组中的数据
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

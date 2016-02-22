@@ -111,7 +111,9 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
         //显示之前选中的图片 --cyan
         //getData()为uri格式
-        String imagePath = LocalDataUtil.ReadSharePre("main_pictures","mainPic");
+//        String imagePath = LocalDataUtil.ReadSharePre("main_pictures","mainPic");
+        String imagePath = CameraActivity.Main_Photo_Name;
+
         ImageUtils.asyncLoadImage(this, Uri.parse(imagePath), new ImageUtils.LoadImageCallback() {
             @Override
             public void callback(Bitmap result) {

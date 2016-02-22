@@ -29,4 +29,6 @@ public class AppConstants {
     public static final int REQUEST_PICK = 9162;
     public static final int RESULT_ERROR = 404;
 
+    /*****--cyan********/
+    public static final String Main_Pic_File_Name = "hahaha";
 }

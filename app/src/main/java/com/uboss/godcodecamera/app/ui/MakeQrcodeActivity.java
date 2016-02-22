@@ -113,6 +113,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         //关闭自动弹出键盘
         getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         init();
+        Log.e(TAG,"CameraActivity.Main_Photo_Name::"+CameraActivity.Main_Photo_Name);
     }
 
     private void init() {
