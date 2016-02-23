@@ -66,7 +66,7 @@
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="当前低点"
+                    android:text="当前地点"
                     android:layout_toRightOf="@id/img_location"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="10dp"/>

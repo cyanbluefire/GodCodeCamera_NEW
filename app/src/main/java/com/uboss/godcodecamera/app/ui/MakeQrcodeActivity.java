@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -58,7 +59,10 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     SimpleAdapter model_adapter;
     public static MorePicAdapter adapter;
     private PopupWindow pop = null;
+    private PopupWindow pop_preview_photo;
     private LinearLayout ll_popup;
+    private RelativeLayout rl_popup_preview;
+    private ImageView img_preview;
     public static Bitmap bimap;
     private View parentView;
 
@@ -97,6 +101,10 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     EditText et_qrcode_content_down;
     @InjectView(R.id.qrcode_photos)
     MyGridView qrcode_photos;
+    @InjectView(R.id.img_title_right)
+    ImageView img_title_right;
+    @InjectView(R.id.img_title_left)
+    ImageView img_title_left;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,30 +126,10 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 
     private void init() {
         setModelData();
-        pop = new PopupWindow(MakeQrcodeActivity.this);
+        initPopupAddPhoto();
+        initPopupPreview();
 
-        View view = getLayoutInflater().inflate(R.layout.item_popupwindows, null);
 
-        ll_popup = (LinearLayout) view.findViewById(R.id.ll_popup);
-
-        pop.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        pop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        pop.setBackgroundDrawable(new BitmapDrawable());
-        pop.setFocusable(true);
-        pop.setOutsideTouchable(true);
-        pop.setContentView(view);
-
-        RelativeLayout parent = (RelativeLayout) view.findViewById(R.id.parent);
-        Button bt1 = (Button) view
-                .findViewById(R.id.item_popupwindows_camera);
-        Button bt2 = (Button) view
-                .findViewById(R.id.item_popupwindows_Photo);
-        Button bt3 = (Button) view
-                .findViewById(R.id.item_popupwindows_cancel);
-        parent.setOnClickListener(clickListener);
-        bt1.setOnClickListener(clickListener);
-        bt2.setOnClickListener(clickListener);
-        bt3.setOnClickListener(clickListener);
 
         model_adapter= new SimpleAdapter(MakeQrcodeActivity.this,getToolList(),R.layout.item_bottom_toolbar,
                 new String[]{"title","img","instruction"},
@@ -171,7 +159,11 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                         et_qrcode_content_down.setVisibility(View.VISIBLE);
                         model_adapter.notifyDataSetChanged();
                         break;
+                    case 2:
+                        break;
                     default:
+                        img_preview.setImageResource(addonList.get(position-2));
+                        popPreview();
                         break;
 
                 }
@@ -205,8 +197,56 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 //                }
             }
         });
+        //预览
+        img_title_right.setOnClickListener(clickListener);
+    }
+
+    private void initPopupPreview() {
+        pop_preview_photo = new PopupWindow(MakeQrcodeActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.item_popup_preview,null);
+        pop_preview_photo.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        pop_preview_photo.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop_preview_photo.setBackgroundDrawable(new BitmapDrawable());
+        pop_preview_photo.setFocusable(true);
+        pop_preview_photo.setOutsideTouchable(true);
+        pop_preview_photo.setContentView(view);
+
+        rl_popup_preview = (RelativeLayout)view.findViewById(R.id.rl_popup_preview);
+        img_preview = (ImageView)view.findViewById(R.id.img_preview);
+        ImageView btn_cancle_preview = (ImageView)view.findViewById(R.id.btn_cancle_preview);
+        btn_cancle_preview.setOnClickListener(clickListener);
+
 
     }
+
+    private void initPopupAddPhoto() {
+        pop = new PopupWindow(MakeQrcodeActivity.this);
+
+        View view = getLayoutInflater().inflate(R.layout.item_popupwindows, null);
+
+        ll_popup = (LinearLayout) view.findViewById(R.id.ll_popup);
+
+        pop.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        pop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.setBackgroundDrawable(new BitmapDrawable());
+        pop.setFocusable(true);
+        pop.setOutsideTouchable(true);
+        pop.setContentView(view);
+
+        RelativeLayout parent = (RelativeLayout) view.findViewById(R.id.parent);
+        Button bt1 = (Button) view
+                .findViewById(R.id.item_popupwindows_camera);
+        Button bt2 = (Button) view
+                .findViewById(R.id.item_popupwindows_Photo);
+        Button bt3 = (Button) view
+                .findViewById(R.id.item_popupwindows_cancel);
+        parent.setOnClickListener(clickListener);
+        bt1.setOnClickListener(clickListener);
+        bt2.setOnClickListener(clickListener);
+        bt3.setOnClickListener(clickListener);
+
+    }
+
     /**
      * 添加图片弹框
      */
@@ -214,6 +254,14 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         Log.i(TAG, "popShow()");
         ll_popup.startAnimation(AnimationUtils.loadAnimation(MakeQrcodeActivity.this, R.anim.activity_translate_in));
         pop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
+    }
+    /**
+     * 模板预览弹框
+     */
+    private void popPreview(){
+        Log.i(TAG, "popPreview()");
+        rl_popup_preview.startAnimation(AnimationUtils.loadAnimation(MakeQrcodeActivity.this, R.anim.activity_translate_in));
+        pop_preview_photo.showAtLocation(parentView, Gravity.TOP, 0, 0);
     }
     /**
      * 点击事件监听
@@ -256,11 +304,24 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                     break;
 
                 }
+                case R.id.img_title_right:
+                    previewModel();
+                    break;
+                case R.id.btn_cancle_preview:
+                    pop_preview_photo.dismiss();
+                    break;
                 default:
                     break;
             }
         }
     };
+    /**
+     * 预览
+     */
+    private void previewModel() {
+        Log.i(TAG,"previewModel()");
+    }
+
     /**
      * 拍照
      */
