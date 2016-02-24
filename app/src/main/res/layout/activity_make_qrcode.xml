@@ -82,23 +82,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="@string/create_qrcode"/>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/model_area"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:orientation="vertical"
+        android:layout_height="120dp"
         android:layout_above="@id/btn_create_qrcode"
-        android:layout_marginBottom="@dimen/text_img_margin">
+        android:background="@color/deep_gray"
+        android:gravity="center_vertical">
 
         <it.sephiroth.android.library.widget.HListView
             android:id="@+id/list_models"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/common_background"
-            android:gravity="center_vertical"
+            android:layout_height="match_parent"
             android:overScrollMode="always"
-            app:hlv_dividerWidth="@dimen/margin_15px"/>
+            app:hlv_dividerWidth="8dp"
+            android:paddingLeft="8dp"
+            android:background="@color/deep_gray"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

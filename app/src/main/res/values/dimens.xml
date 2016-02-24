@@ -97,6 +97,7 @@
     <dimen name="wp_sample_corner">6dp</dimen>
     <dimen name="title_left">10dip</dimen>
     <dimen name="text_img_margin">10dip</dimen>
-    <dimen name="model_margin">10dip</dimen>
+    <dimen name="model_margin">4dip</dimen>
     <dimen name="ui_10_dip">10dip</dimen>
+    <dimen name="model_margin_top">20dp</dimen>
 </resources>

@@ -65,25 +65,32 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private ImageView img_preview;
     public static Bitmap bimap;
     private View parentView;
-
+    private static boolean hasqrcode = false;
 
 
     static{
         Log.i(TAG,"addonList static");
-        addonList.add(R.drawable.sticker1);
-        addonList.add(R.drawable.sticker2);
-        addonList.add(R.drawable.sticker3);
-        addonList.add(R.drawable.sticker4);
-        addonList.add(R.drawable.sticker5);
-        addonList.add(R.drawable.sticker6);
-        addonList.add(R.drawable.sticker7);
-        addonList.add(R.drawable.sticker8);
+        addonList.add(R.mipmap.picture_icon1);
+        addonList.add(R.mipmap.picture_icon2);
+        addonList.add(R.mipmap.circle);
+        if(hasqrcode)
+            addonList.add(R.mipmap.sticker1);
+
+        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.sticker1);
+
     }
+
     static {
         Log.i(TAG,"arr_model_instruction static");
         arr_model_instruction.add("先文后图");
         arr_model_instruction.add("先图后文");
         arr_model_instruction.add("");
+        if(hasqrcode)
+            arr_model_instruction.add("");
         arr_model_instruction.add("默认模板");
         arr_model_instruction.add("1");
         arr_model_instruction.add("2");
@@ -355,11 +362,12 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 
     private void setModelData(){
 
-
         //标题
         arr_model_title.add("图文顺序");
         arr_model_title.add("");
-        arr_model_title.add("上次内容");
+        arr_model_title.add("");
+        if(hasqrcode)
+            arr_model_title.add("上次内容");
         arr_model_title.add("内容模板");
         Log.i(TAG,"addonList.size()=="+addonList.size());
         while (arr_model_title.size()<addonList.size()){
