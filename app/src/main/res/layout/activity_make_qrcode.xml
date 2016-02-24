@@ -17,33 +17,37 @@
         android:layout_height="40dp"
         android:layout_below="@id/titlebar"
         android:gravity="center"
-        android:text="@string/create_qrcode"/>
+        android:text="@string/create_qrcode"
+        android:background="@color/light_gray"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/tv_create_qrcode"
-        >
+        android:layout_margin="@dimen/ui_10_dip"
+        android:background="@color/light_gray">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white">
 
                 <EditText
                     android:id="@+id/et_qrcode_content_up"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="145dp"
                     android:hint="@string/input_hint"
                     android:gravity="start"
-                    android:scrollbars="vertical"/>
+                    android:scrollbars="vertical" />
+
                 <com.uboss.godcodecamera.app.view.MyGridView
                     android:id="@+id/qrcode_photos"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:horizontalSpacing="3dp"
                     android:numColumns="4"
                     android:scrollbars="none"
-                    android:verticalSpacing="5dp" >
+                    android:verticalSpacing="5dp">
                 </com.uboss.godcodecamera.app.view.MyGridView>
                 <EditText
                     android:id="@+id/et_qrcode_content_down"
@@ -56,12 +60,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp">
+                android:layout_height="30dp"
+                android:layout_margin="15dp">
                 <ImageView
                     android:id="@+id/img_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/camera"/>
+                    android:src="@mipmap/position_icon"/>
                 <TextView
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
@@ -85,7 +90,7 @@
     <RelativeLayout
         android:id="@+id/model_area"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="115dp"
         android:layout_above="@id/btn_create_qrcode"
         android:background="@color/deep_gray"
         android:gravity="center_vertical">

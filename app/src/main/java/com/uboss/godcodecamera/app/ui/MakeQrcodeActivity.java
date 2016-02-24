@@ -109,7 +109,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     @InjectView(R.id.qrcode_photos)
     MyGridView qrcode_photos;
     @InjectView(R.id.img_title_right)
-    ImageView img_title_right;
+    Button btn_title_right;
     @InjectView(R.id.img_title_left)
     ImageView img_title_left;
 
@@ -119,7 +119,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 //        Res.init(this);
         bimap = BitmapFactory.decodeResource(
                 getResources(),
-                R.mipmap.add_pic);
+                R.mipmap.plus_icon);
         PublicWay.activityList.add(this);
         parentView = getLayoutInflater().inflate(R.layout.activity_make_qrcode, null);
         setContentView(R.layout.activity_make_qrcode);
@@ -205,7 +205,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             }
         });
         //预览
-        img_title_right.setOnClickListener(clickListener);
+        btn_title_right.setOnClickListener(clickListener);
     }
 
     private void initPopupPreview() {

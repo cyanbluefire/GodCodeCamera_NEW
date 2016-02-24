@@ -78,7 +78,7 @@ public class MorePicAdapter extends BaseAdapter {
 
         if (position ==Bimp.tempSelectBitmap.size()) {
             holder.image.setImageBitmap(BitmapFactory.decodeResource(
-                    App.getContext().getResources(), R.mipmap.add_pic));
+                    App.getContext().getResources(), R.mipmap.plus_icon));
             if (position == 9) {
                 holder.image.setVisibility(View.GONE);
             }
