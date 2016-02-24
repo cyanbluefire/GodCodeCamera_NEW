@@ -33,6 +33,7 @@ import com.uboss.godcodecamera.app.MyUtil.Bimp;
 import com.uboss.godcodecamera.app.MyUtil.ImageItem;
 import com.uboss.godcodecamera.app.MyUtil.PublicWay;
 import com.uboss.godcodecamera.app.MyUtil.Res;
+import com.uboss.godcodecamera.app.ShopLocationActivity;
 import com.uboss.godcodecamera.app.adapter.MorePicAdapter;
 import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
 import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
@@ -51,6 +52,7 @@ import it.sephiroth.android.library.widget.HListView;
 public class MakeQrcodeActivity extends AppCompatActivity {
     private static final String TAG = "MakeQrcodeActivity";
     private static final int ADD_MORE_PIC = 0x000001;//添加图片弹框时区分是主图还是配图
+    private static final int SHOP_LOCATION = 0x000002;//百度地图定位周边商家
 
     ArrayList<String> arr_model_title = new ArrayList<String>();
     static ArrayList<String> arr_model_instruction = new ArrayList<String>();
@@ -112,6 +114,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     Button btn_title_right;
     @InjectView(R.id.img_title_left)
     ImageView img_title_left;
+    @InjectView(R.id.rl_location)
+    RelativeLayout rl_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +139,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         setModelData();
         initPopupAddPhoto();
         initPopupPreview();
-
+        rl_location.setOnClickListener(clickListener);
 
 
         model_adapter= new SimpleAdapter(MakeQrcodeActivity.this,getToolList(),R.layout.item_bottom_toolbar,
@@ -317,6 +321,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                 case R.id.btn_cancle_preview:
                     pop_preview_photo.dismiss();
                     break;
+                case R.id.rl_location:
+                    Intent intent = new Intent(MakeQrcodeActivity.this, ShopLocationActivity.class);
+                    startActivityForResult(intent,SHOP_LOCATION);
                 default:
                     break;
             }
@@ -396,6 +403,10 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                 }
                 break;
             }
+            case SHOP_LOCATION:
+                String shop_name = data.getStringExtra("shop_name");
+                Log.i(TAG,"shop_name=="+shop_name);
+                break;
             default:
                 break;
         }
