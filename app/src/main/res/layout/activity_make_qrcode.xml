@@ -25,39 +25,42 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tv_create_qrcode"
         android:layout_margin="@dimen/ui_10_dip"
-        android:background="@color/light_gray">
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/white">
 
-                <EditText
-                    android:id="@+id/et_qrcode_content_up"
-                    android:layout_width="match_parent"
-                    android:layout_height="145dp"
-                    android:hint="@string/input_hint"
-                    android:gravity="start"
-                    android:scrollbars="vertical" />
+            <EditText
+                android:id="@+id/et_qrcode_content_up"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:hint="@string/input_hint"
+                android:gravity="start"
+                android:scrollbars="vertical" />
 
-                <com.uboss.godcodecamera.app.view.MyGridView
-                    android:id="@+id/qrcode_photos"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:horizontalSpacing="3dp"
-                    android:numColumns="4"
-                    android:scrollbars="none"
-                    android:verticalSpacing="5dp">
-                </com.uboss.godcodecamera.app.view.MyGridView>
-                <EditText
-                    android:id="@+id/et_qrcode_content_down"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:hint="@string/input_hint"
-                    android:gravity="start"
-                    android:scrollbars="vertical"
-                    android:visibility="gone"/>
-
+            <com.uboss.godcodecamera.app.view.MyGridView
+                android:id="@+id/qrcode_photos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:horizontalSpacing="3dp"
+                android:numColumns="4"
+                android:scrollbars="none"
+                android:verticalSpacing="5dp">
+            </com.uboss.godcodecamera.app.view.MyGridView>
+            <EditText
+                android:id="@+id/et_qrcode_content_down"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:hint="@string/input_hint"
+                android:gravity="start"
+                android:scrollbars="vertical"
+                android:visibility="gone"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/light_gray"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -76,11 +79,15 @@
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="10dp"/>
             </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/light_gray"/>
         </LinearLayout>
 
     </ScrollView>
 
-    
+
     <Button
         android:id="@+id/btn_create_qrcode"
         android:layout_width="match_parent"
