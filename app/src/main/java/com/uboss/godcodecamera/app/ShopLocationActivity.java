@@ -44,48 +44,27 @@ import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.BDNotifyListener;//假如用到位置提醒功能，需要import该类
+import com.baidu.location.Poi;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import android.widget.AdapterView.OnItemClickListener;
-
-//public class ShopLocationActivity extends AppCompatActivity {
-//
-//    private PoiSearch mPoiSearch = null;
-//    private SuggestionSearch mSuggestionSearch = null;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_shop_location);
-//        PublicWay.activityList.add(this);
-//        ButterKnife.inject(this);
-//        init();
-//    }
-//
-//    private void init() {
-//        mPoiSearch = PoiSearch.newInstance();
-//        mPoiSearch.setOnGetPoiSearchResultListener(poiListener);
-//        mPoiSearch.searchNearby(new PoiNearbySearchOption().)
-//    }
-//    OnGetPoiSearchResultListener poiListener = new OnGetPoiSearchResultListener(){
-//        public void onGetPoiResult(PoiResult result){
-//            //获取POI检索结果
-//        }
-//        public void onGetPoiDetailResult(PoiDetailResult result){
-//            //获取Place详情页检索结果
-//        }
-//    };
-//}
+import android.widget.Toast;
 
 public class ShopLocationActivity extends AppCompatActivity{
 
     //	private QueryDB queryDB = new QueryDB();
 //	DbOfMyRoute dbOfMyRoute;
     private AutoCompleteTextView autoTxt;
-    protected static final String TAG = "selectLocation";
+    protected static final String TAG = "ShopLocationActivity";
     ArrayList<String> arrayList_autoStrs = new ArrayList<String>();
     String location = "";
     private SuggestionSearch mSuggestionSearch = null;
@@ -99,6 +78,13 @@ public class ShopLocationActivity extends AppCompatActivity{
     private List<String> history_location_list;
     private Button btn_search;
     private PoiSearch mPoiSearch = null;
+    public LocationClient mLocationClient = null;
+    public BDLocationListener myListener = new MyLocationListenner();
+    public String city = "";
+    public double location_latitude;
+    public double location_longitude;
+    private ArrayList<String> poilist = new ArrayList<String>();
+    private ArrayList<HashMap<String,Object>> poiInfo = new ArrayList<HashMap<String,Object>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,34 +95,42 @@ public class ShopLocationActivity extends AppCompatActivity{
         setContentView(R.layout.activity_shop_location);
 
         init();
-		/*
-		 * 推荐地点
-		 */
-        OnGetSuggestionResultListener listener = new OnGetSuggestionResultListener() {
 
-            @Override
-            public void onGetSuggestionResult(SuggestionResult res) {
-                // TODO Auto-generated method stub
-                if (res == null || res.getAllSuggestions() == null) {
-                    return;
-                }
-                list_aoutoCom.clear();
-                for (SuggestionResult.SuggestionInfo info : res.getAllSuggestions()) {
-                    if (info.key != null){
-                        Map<String, Object> map = new HashMap<String, Object>();
-                        map.put("prompt", info.key);
-                        list_aoutoCom.add(map);
-                    }
-                }
-                adapter_recLocation.notifyDataSetChanged();
+
+    }
+    /*
+ * 推荐地点
+ */
+    OnGetSuggestionResultListener listener = new OnGetSuggestionResultListener() {
+
+        @Override
+        public void onGetSuggestionResult(SuggestionResult res) {
+            // TODO Auto-generated method stub
+            if (res == null || res.getAllSuggestions() == null) {
+                return;
             }
-        };
-        mSuggestionSearch = SuggestionSearch.newInstance();
-        mSuggestionSearch.setOnGetSuggestionResultListener(listener);
+            list_aoutoCom.clear();
+            poiInfo.clear();
+            for (SuggestionResult.SuggestionInfo info : res.getAllSuggestions()) {
+                Log.i(TAG,"key=="+info.key+" uid=="+info.uid+" describe=="+info.describeContents());
+                if (info.key != null){
 
-		/*
-		 *
-		 */
+                    setListData(info.uid,info.key);
+                }
+            }
+            Log.e(TAG,"suggest::"+poiInfo.toString());
+            adapter_recLocation.notifyDataSetChanged();
+        }
+    };
+
+    /*
+     *
+     */
+    public void init(){
+        Log.e(TAG,"init()");
+        btn_search = (Button)findViewById(R.id.btn_search);
+        btn_search.setOnClickListener(clickListener);
+
         autoTxt = (AutoCompleteTextView)findViewById(R.id.input_location);
         list_aoutoCom = new ArrayList<Map<String,Object>>();
         adapter_recLocation = new SimpleAdapter(this, list_aoutoCom, R.layout.item_set_location, new String[]{"prompt"}, new int[]{R.id.tv_prompt});
@@ -145,22 +139,71 @@ public class ShopLocationActivity extends AppCompatActivity{
         autoTxt.addTextChangedListener(watcher);
         lv_recLocation.setOnItemClickListener(itemlistener);
 
-    }
-    /*
-     *
-     */
-    public void init(){
-        btn_search = (Button)findViewById(R.id.btn_search);
-
-        btn_search.setOnClickListener(clickListener);
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(poiListener);
+
+        mSuggestionSearch = SuggestionSearch.newInstance();
+        mSuggestionSearch.setOnGetSuggestionResultListener(listener);
+
+        mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
+        mLocationClient.registerLocationListener( myListener );    //注册监听函数
+//        Log.e(TAG,"before()");
+        initLocation();
+        mLocationClient.start();
+//        Log.e(TAG,"after()");
+
+    }
+    private void initLocation(){
+//        Log.e(TAG,"initLocation()");
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+//        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
+//        int span=1000;
+        option.setScanSpan(0);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+
+        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
+        option.setOpenGps(true);//可选，默认false,设置是否使用gps
+        option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
+//        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+        option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到 --cyan**
+        option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+//        option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
+//        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
+        mLocationClient.setLocOption(option);
     }
         OnGetPoiSearchResultListener poiListener = new OnGetPoiSearchResultListener(){
         public void onGetPoiResult(PoiResult result){
+            Log.e(TAG,"onGetPoiResult");
             //获取POI检索结果
             Log.i(TAG,"resut.getAllAddr::"+result.getAllAddr()+"  result.getAllPoi()::"+result.getAllPoi());
+            if (result == null
+                    || result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
+                Toast.makeText(ShopLocationActivity.this, "未找到结果", Toast.LENGTH_LONG)
+                        .show();
+                Log.e(TAG,"未找到结果");
+
+                return;
+            }
+            if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+                Log.e(TAG,"no error");
+                return;
+            }
+            if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
+                Log.e(TAG,"AMBIGUOUS_KEYWORD");
+
+                // 当输入关键字在本市没有找到，但在其他城市找到时，返回包含该关键字信息的城市列表
+                String strInfo = "在";
+                for (CityInfo cityInfo : result.getSuggestCityList()) {
+                    strInfo += cityInfo.city;
+                    strInfo += ",";
+                }
+                strInfo += "找到结果";
+                Toast.makeText(ShopLocationActivity.this, strInfo, Toast.LENGTH_LONG)
+                        .show();
+            }
+
         }
+
         public void onGetPoiDetailResult(PoiDetailResult result){
             //获取Place详情页检索结果
         }
@@ -173,8 +216,12 @@ public class ShopLocationActivity extends AppCompatActivity{
             switch(arg0.getId()){
                 case R.id.btn_search:
                     String input=autoTxt.getText().toString();
-                    Log.i(TAG,"input=="+input);
-                    mPoiSearch.searchNearby(new PoiNearbySearchOption().keyword(input).location(new LatLng()));
+                    Log.i(TAG,"input=="+input+" location_latitude=="+location_latitude+" location_longitude=="+location_longitude);
+                    PoiNearbySearchOption option = new PoiNearbySearchOption();
+                    option.keyword(input).location(new LatLng(location_longitude,location_longitude));
+                    mPoiSearch.searchNearby(option);
+//                    mPoiSearch.searchInCity(new PoiCitySearchOption().city(city).keyword(input));
+
 //                    Intent intent = new Intent();
 //                    intent.putExtra("type", "search_location");
 //                    intent.putExtra("search_location", location);
@@ -187,7 +234,6 @@ public class ShopLocationActivity extends AppCompatActivity{
         }
     };
     /*
-     * ����ص��б����
      */
     public OnItemClickListener itemlistener =  new OnItemClickListener(){
         @Override
@@ -204,7 +250,7 @@ public class ShopLocationActivity extends AppCompatActivity{
 
     };
     /*
-     * �Զ�������
+     *
      */
     private TextWatcher watcher = new TextWatcher() {
 
@@ -229,8 +275,9 @@ public class ShopLocationActivity extends AppCompatActivity{
             location = arg0.toString();
             Log.v(TAG, "afterTextChanged "+location);
             mSuggestionSearch.requestSuggestion((new SuggestionSearchOption())
-                    .city("深圳")
-                    .keyword(location));
+                    .city(city)
+                    .keyword(location))
+                    ;
 
         }
     };
@@ -244,9 +291,25 @@ public class ShopLocationActivity extends AppCompatActivity{
         @Override
         public void onReceiveLocation(BDLocation location) {
             // map view 销毁后不在处理新接收的位置
+            Log.i(TAG,"onReceiveLocation()");
             if (location == null ) {
                 return;
             }
+            mLocationClient.stop();
+            Log.e(TAG,"Location ID=="+location.getLocType());
+            city = location.getCity();
+            location_latitude = location.getLatitude();
+            location_longitude = location.getLongitude();
+            list_aoutoCom.clear();
+            for(Poi poi:location.getPoiList()){
+                setListData(poi.getId(),poi.getName());
+
+            }
+            Log.i(TAG,"city=="+city+" latitude=="+location_latitude+" longitude=="+location_longitude);
+            Log.i(TAG,"location poiInfo::"+poiInfo.toString());
+            Log.i(TAG,"list_aoutoCom::"+list_aoutoCom.toString());
+            adapter_recLocation.notifyDataSetChanged();
+
 //            MyLocationData locData = new MyLocationData.Builder()
 //                    .accuracy(location.getRadius())
 //                    // 此处设置开发者获取到的方向信息，顺时针0-360
@@ -257,7 +320,19 @@ public class ShopLocationActivity extends AppCompatActivity{
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
+
         }
+    }
+
+    private void setListData(String id,String name){
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("id",id);
+        map.put("name",name);
+        poiInfo.add(map);
+
+        HashMap<String,Object> map_autoCom = new HashMap<String,Object>();
+        map_autoCom.put("prompt",name);
+        list_aoutoCom.add(map_autoCom);
     }
 
 
@@ -278,6 +353,7 @@ public class ShopLocationActivity extends AppCompatActivity{
         super.onDestroy();
         mSuggestionSearch.destroy();
         mPoiSearch.destroy();
+        mLocationClient.stop();
     }
 
     private void hideInputMethod(View view) {
