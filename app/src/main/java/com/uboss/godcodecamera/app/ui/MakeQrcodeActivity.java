@@ -1,14 +1,11 @@
 package com.uboss.godcodecamera.app.ui;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.common.util.FileUtils;
@@ -32,18 +30,12 @@ import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.app.MyUtil.Bimp;
 import com.uboss.godcodecamera.app.MyUtil.ImageItem;
 import com.uboss.godcodecamera.app.MyUtil.PublicWay;
-import com.uboss.godcodecamera.app.MyUtil.Res;
-import com.uboss.godcodecamera.app.ShopLocationActivity;
 import com.uboss.godcodecamera.app.adapter.MorePicAdapter;
 import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
-import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
-import com.uboss.godcodecamera.app.camera.util.EffectUtil;
-import com.uboss.godcodecamera.app.model.Addon;
 import com.uboss.godcodecamera.app.view.MyGridView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -116,6 +108,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     ImageView img_title_left;
     @InjectView(R.id.rl_location)
     RelativeLayout rl_location;
+    @InjectView(R.id.tv_location)
+    TextView tv_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -324,6 +318,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                 case R.id.rl_location:
                     Intent intent = new Intent(MakeQrcodeActivity.this, ShopLocationActivity.class);
                     startActivityForResult(intent,SHOP_LOCATION);
+                    break;
                 default:
                     break;
             }
@@ -384,6 +379,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG,"onActivityResult");
         switch (requestCode) {
             case ADD_MORE_PIC:{
                 Log.i(TAG,"ADD_MORE_PIC");
@@ -404,8 +400,11 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                 break;
             }
             case SHOP_LOCATION:
+                Log.e(TAG,"SHOP_LOCATION");
                 String shop_name = data.getStringExtra("shop_name");
-                Log.i(TAG,"shop_name=="+shop_name);
+                String uid = data.getStringExtra("uid");
+                Log.i(TAG,"shop_name=="+shop_name+" uid=="+uid);
+                tv_location.setText(shop_name);
                 break;
             default:
                 break;

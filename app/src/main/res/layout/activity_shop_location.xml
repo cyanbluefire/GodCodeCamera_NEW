@@ -21,7 +21,7 @@
 	    	android:layout_width="match_parent"
 	       	android:layout_height="wrap_content"
 	       	android:background="#ffffcc"
-	        android:layout_weight="3"	       	
+	        android:layout_weight="3"
 	       	android:text="搜索"/>
 
         </LinearLayout>
