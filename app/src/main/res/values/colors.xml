@@ -40,4 +40,6 @@
     <color name="half_transparent">#e0000000</color>
     <color name="deep_gray">#636362</color>
     <color name="light_gray">#f8f8f6</color>
+    <color name="light_black">#2b2b2b</color>
+    <color name="light_gray2">#9f9f9f</color>
 </resources>

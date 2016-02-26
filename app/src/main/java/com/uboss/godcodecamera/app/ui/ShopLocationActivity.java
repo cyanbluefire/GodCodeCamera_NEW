@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -119,9 +120,20 @@ public class ShopLocationActivity extends AppCompatActivity{
      */
     public void init(){
         Log.e(TAG,"init()");
-        btn_search = (Button)findViewById(R.id.btn_search);
-        btn_search.setOnClickListener(clickListener);
-
+//        btn_search = (Button)findViewById(R.id.btn_search);
+//        btn_search.setOnClickListener(clickListener);
+        Button img_title_right = (Button)findViewById(R.id.img_title_right);
+        img_title_right.setVisibility(View.GONE);
+        ImageView btn_title_left = (ImageView)findViewById(R.id.img_title_left);
+        btn_title_left.setImageResource(R.mipmap.back);
+        btn_title_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                onBackPressed();
+                startActivity(new Intent(ShopLocationActivity.this,MakeQrcodeActivity.class));
+                finish();
+            }
+        });
         autoTxt = (AutoCompleteTextView)findViewById(R.id.input_location);
         list_aoutoCom = new ArrayList<Map<String,Object>>();
         adapter_recLocation = new SimpleAdapter(this, list_aoutoCom, R.layout.item_set_location,
@@ -325,28 +337,28 @@ public class ShopLocationActivity extends AppCompatActivity{
 
     };
 
-    public View.OnClickListener clickListener = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View arg0) {
-            // TODO Auto-generated method stub
-            switch(arg0.getId()){
-                case R.id.btn_search:
-                    String input=autoTxt.getText().toString();
-
-//                    mPoiSearch.searchInCity(new PoiCitySearchOption().city(city).keyword(input));
-
-//                    Intent intent = new Intent();
-//                    intent.putExtra("type", "search_location");
-//                    intent.putExtra("search_location", location);
-//                    setResult(RESULT_OK,intent);
-//                    finish();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
+//    public View.OnClickListener clickListener = new View.OnClickListener() {
+//
+//        @Override
+//        public void onClick(View arg0) {
+//            // TODO Auto-generated method stub
+//            switch(arg0.getId()){
+//                case R.id.btn_search:
+//                    String input=autoTxt.getText().toString();
+//
+////                    mPoiSearch.searchInCity(new PoiCitySearchOption().city(city).keyword(input));
+//
+////                    Intent intent = new Intent();
+////                    intent.putExtra("type", "search_location");
+////                    intent.putExtra("search_location", location);
+////                    setResult(RESULT_OK,intent);
+////                    finish();
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    };
 
 
 

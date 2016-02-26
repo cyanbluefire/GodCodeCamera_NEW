@@ -3,28 +3,54 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-    
-    <LinearLayout 
+
+	<include
+		android:id="@+id/titlebar"
+		layout="@layout/titlebar_main"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/title_height"/>
+	<TextView
+		android:id="@+id/tv_create_qrcode"
+		android:layout_width="match_parent"
+		android:layout_height="40dp"
+		android:layout_below="@id/titlebar"
+		android:gravity="center"
+		android:text="@string/current_location"
+		android:textColor="@color/white"
+		android:background="@color/light_black"/>
+    <RelativeLayout
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:orientation="horizontal">
+    	android:background="@color/light_black"
+		android:gravity="center">
         
 			<AutoCompleteTextView 
 	        android:id="@+id/input_location"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:hint="输入地点"
-	        android:completionThreshold="1"/>
-	        <Button 
-	   	    android:id="@+id/btn_search"
-	    	android:layout_width="match_parent"
-	       	android:layout_height="wrap_content"
-	       	android:background="#ffffcc"
-	        android:layout_weight="3"
-	       	android:text="搜索"/>
+	        android:completionThreshold="1"
+			android:background="@mipmap/search_bar"
+			android:padding="10dp"
+			android:layout_marginBottom="10dp"/>
+	        <!--<Button -->
+	   	    <!--android:id="@+id/btn_search"-->
+	    	<!--android:layout_width="match_parent"-->
+	       	<!--android:layout_height="wrap_content"-->
+	       	<!--android:background="#ffffcc"-->
+	        <!--android:layout_weight="3"-->
+	       	<!--android:text="搜索"/>-->
+			<ImageView
+				android:id="@+id/btn_search"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@mipmap/search"
+				android:layout_alignRight="@id/input_location"
+				android:layout_centerVertical="true"
+				android:layout_marginRight="10dp"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
      
     <ListView 

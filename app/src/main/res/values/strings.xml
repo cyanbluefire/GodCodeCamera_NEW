@@ -17,4 +17,5 @@
     <string name="photo">照片</string>
     <string name="unfinished">未完成</string>
     <string name="only_choose_num">最多只能选择9张图片哦</string>
+    <string name="current_location">-当前位置-</string>
 </resources>

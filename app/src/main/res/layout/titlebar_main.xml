@@ -14,7 +14,8 @@
         android:src="@mipmap/camera"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/title_left"/>
+        android:layout_marginLeft="@dimen/title_left"
+        android:clickable="true"/>
 
     <ImageView
         android:id="@+id/img_title"

@@ -10,7 +10,7 @@
         android:id="@+id/titlebar"
         layout="@layout/titlebar_main"
         android:layout_width="match_parent"
-        android:layout_height="48dip"/>
+        android:layout_height="@dimen/title_height"/>
     <TextView
         android:id="@+id/tv_create_qrcode"
         android:layout_width="match_parent"
