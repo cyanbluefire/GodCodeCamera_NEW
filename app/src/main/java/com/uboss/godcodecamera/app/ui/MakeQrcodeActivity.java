@@ -59,7 +59,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private ImageView img_preview;
     public static Bitmap bimap;
     private View parentView;
-    private static boolean hasqrcode = true;
+    private static boolean hasqrcode = false;
 
 
     static{
@@ -71,7 +71,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             addonList.add(R.mipmap.qrcode);
             addonList.add(R.mipmap.circle);
         }
-
+        addonList.add(R.mipmap.default_model);
         addonList.add(R.mipmap.sticker1);
         addonList.add(R.mipmap.sticker1);
         addonList.add(R.mipmap.sticker1);
@@ -94,6 +94,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         arr_model_instruction.add("2");
         arr_model_instruction.add("3");
         arr_model_instruction.add("4");
+        arr_model_instruction.add("4");
+
     }
     //工具区
     @InjectView(R.id.list_models)

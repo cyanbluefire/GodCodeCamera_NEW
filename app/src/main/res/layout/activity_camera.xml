@@ -19,7 +19,7 @@
     <LinearLayout
         android:id="@+id/panel_after_take_photo"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/btn_bottom"
         android:layout_alignParentBottom="true"
         android:background="@color/transparent"
         android:gravity="center_vertical"
@@ -30,20 +30,26 @@
         <TextView
             android:id="@+id/btn_take_photo_again"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/take_photo_again"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:gravity="center"
             android:clickable="true"
-            android:background="@color/white"/>
+            android:background="@color/black"/>
         <TextView
             android:id="@+id/btn_sure_to_use"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/sure_to_use"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:gravity="center"
-            android:background="@color/gray"
+            android:background="@color/yellow"
             android:clickable="true"
             />
         </LinearLayout>
@@ -62,17 +68,17 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/btn_take_photo" />
+                android:background="@mipmap/photo_icon" />
 
             <ImageView
                 android:id="@+id/next"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:padding="5dp"
-                android:src="@drawable/camera_library" />
+                android:src="@mipmap/album_icon" />
 
             <!--<ImageView-->
                 <!--android:id="@+id/next"-->
@@ -85,13 +91,13 @@
                 <!--android:src="@drawable/camera_library" />-->
             <ImageView
                 android:id="@+id/change"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="5dp"
-                android:src="@drawable/camera_flip"/>
+                android:src="@mipmap/toggle_icon"/>
         </RelativeLayout>
 
 
@@ -137,16 +143,16 @@
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/camera_flash_off"/>
+                android:src="@mipmap/godcode"/>
             <ImageView
                 android:id="@+id/back"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="5dp"
-                android:src="@drawable/camera_back" />
+                android:src="@mipmap/center_icon" />
             <!--<ImageView-->
                 <!--android:id="@+id/change"-->
                 <!--android:layout_width="wrap_content"-->
