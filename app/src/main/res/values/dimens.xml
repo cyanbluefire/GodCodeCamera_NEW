@@ -102,4 +102,5 @@
     <dimen name="model_margin_top">20dp</dimen>
 
     <dimen name="title_height">48dp</dimen>
+    <dimen name="btn_bottom">53dp</dimen>
 </resources>

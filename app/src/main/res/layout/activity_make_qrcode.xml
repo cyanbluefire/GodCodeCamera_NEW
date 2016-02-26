@@ -93,9 +93,13 @@
     <Button
         android:id="@+id/btn_create_qrcode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/btn_bottom"
         android:layout_alignParentBottom="true"
-        android:text="@string/create_qrcode"/>
+        android:text="@string/create_qrcode"
+        android:background="@color/yellow"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
     <RelativeLayout
         android:id="@+id/model_area"
         android:layout_width="match_parent"

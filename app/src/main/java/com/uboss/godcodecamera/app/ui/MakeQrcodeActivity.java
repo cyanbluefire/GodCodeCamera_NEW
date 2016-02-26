@@ -59,7 +59,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private ImageView img_preview;
     public static Bitmap bimap;
     private View parentView;
-    private static boolean hasqrcode = false;
+    private static boolean hasqrcode = true;
 
 
     static{
@@ -67,8 +67,10 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         addonList.add(R.mipmap.picture_icon1);
         addonList.add(R.mipmap.picture_icon2);
         addonList.add(R.mipmap.circle);
-        if(hasqrcode)
-            addonList.add(R.mipmap.sticker1);
+        if(hasqrcode){
+            addonList.add(R.mipmap.qrcode);
+            addonList.add(R.mipmap.circle);
+        }
 
         addonList.add(R.mipmap.sticker1);
         addonList.add(R.mipmap.sticker1);
@@ -83,8 +85,10 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         arr_model_instruction.add("先文后图");
         arr_model_instruction.add("先图后文");
         arr_model_instruction.add("");
-        if(hasqrcode)
+        if(hasqrcode){
             arr_model_instruction.add("");
+            arr_model_instruction.add("");
+        }
         arr_model_instruction.add("默认模板");
         arr_model_instruction.add("1");
         arr_model_instruction.add("2");
@@ -150,7 +154,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                 switch (position){
                     case 0:
                         //先文后图
-                        changeModel(0,R.drawable.ic_launcher);
+                        changeModel(0,R.mipmap.picture_icon1_focused);
                         changeModel(1,addonList.get(1));
                         et_qrcode_content_down.setVisibility(View.GONE);
                         et_qrcode_content_up.setVisibility(View.VISIBLE);
@@ -158,19 +162,41 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                         break;
                     case 1:
                         //先图后文
-                        changeModel(1,R.drawable.ic_launcher);
+                        changeModel(1,R.mipmap.picture_icon2_focused);
                         changeModel(0,addonList.get(0));
                         et_qrcode_content_up.setVisibility(View.GONE);
                         et_qrcode_content_down.setVisibility(View.VISIBLE);
                         model_adapter.notifyDataSetChanged();
                         break;
-                    case 2:
-                        break;
+//                    case 2:case 3:
+//                        break;
                     default:
-                        img_preview.setImageResource(addonList.get(position-2));
-                        popPreview();
+//                        img_preview.setImageResource(addonList.get(position));
+//
+//                        if(hasqrcode)
+//                            img_preview.setImageResource(addonList.get(position));
+//                        else
+//                            img_preview.setImageResource(addonList.get(position));
+//                        popPreview();
                         break;
 
+                }
+                if(hasqrcode){
+                    if(position>2){
+                        if(position == 3){
+                            Toast.makeText(MakeQrcodeActivity.this,"上次内容!",Toast.LENGTH_SHORT).show();
+
+                        }
+                        if(position >4){
+                            img_preview.setImageResource(addonList.get(position));
+                            popPreview();
+                        }
+                    }
+                }else {
+                    if(position >2){
+                        img_preview.setImageResource(addonList.get(position));
+                        popPreview();
+                    }
                 }
 //                labelSelector.hide();       //之前选择的贴纸隐藏
 //                Addon sticker = EffectUtil.addonList.get(arg2);
@@ -220,6 +246,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         img_preview = (ImageView)view.findViewById(R.id.img_preview);
         ImageView btn_cancle_preview = (ImageView)view.findViewById(R.id.btn_cancle_preview);
         btn_cancle_preview.setOnClickListener(clickListener);
+        Button btn_use_modle = (Button)view.findViewById(R.id.btn_use_modle);
+        btn_use_modle.setOnClickListener(clickListener);
 
 
     }
@@ -268,6 +296,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         rl_popup_preview.startAnimation(AnimationUtils.loadAnimation(MakeQrcodeActivity.this, R.anim.activity_translate_in));
         pop_preview_photo.showAtLocation(parentView, Gravity.TOP, 0, 0);
     }
+
     /**
      * 点击事件监听
      */
@@ -319,6 +348,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                     Intent intent = new Intent(MakeQrcodeActivity.this, ShopLocationActivity.class);
                     startActivityForResult(intent,SHOP_LOCATION);
                     break;
+                case R.id.btn_use_modle:
+                    Toast.makeText(MakeQrcodeActivity.this,"使用模板",Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     break;
             }
@@ -351,6 +383,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     }
 
     private ArrayList<HashMap<String, Object>> getToolList() {
+
         for(int i=0;i<addonList.size();i++){
             HashMap<String, Object> hashMap = new HashMap<String, Object>();
             hashMap.put("title",arr_model_title.get(i));
@@ -368,8 +401,10 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         arr_model_title.add("图文顺序");
         arr_model_title.add("");
         arr_model_title.add("");
-        if(hasqrcode)
+        if(hasqrcode){
             arr_model_title.add("上次内容");
+            arr_model_title.add("");
+        }
         arr_model_title.add("内容模板");
         Log.i(TAG,"addonList.size()=="+addonList.size());
         while (arr_model_title.size()<addonList.size()){

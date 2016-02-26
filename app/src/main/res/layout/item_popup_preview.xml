@@ -14,7 +14,18 @@
         android:id="@+id/btn_cancle_preview"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@mipmap/camera"
-        android:layout_toRightOf="@id/img_preview"/>
+        android:src="@mipmap/close_button"
+        android:layout_toRightOf="@id/img_preview"
+        android:layout_alignTop="@id/img_preview"/>
+    <Button
+        android:id="@+id/btn_use_modle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_bottom"
+        android:layout_alignParentBottom="true"
+        android:text="@string/use_model"
+        android:background="@color/yellow"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 
 </RelativeLayout>
