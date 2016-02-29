@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,17 +73,22 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     @InjectView(R.id.drawing_view_container)
     ViewGroup drawArea;
     //底部按钮
-    @InjectView(R.id.sticker_btn)
-    TextView stickerBtn;    //贴纸按钮
-    @InjectView(R.id.filter_btn)
-    TextView filterBtn;    //滤镜按钮
-    @InjectView(R.id.text_btn)
-    TextView labelBtn;      //标签按钮
+//    @InjectView(R.id.sticker_btn)
+//    TextView stickerBtn;    //贴纸按钮
+//    @InjectView(R.id.filter_btn)
+//    TextView filterBtn;    //滤镜按钮
+//    @InjectView(R.id.text_btn)
+//    TextView labelBtn;      //标签按钮
     //工具区
     @InjectView(R.id.list_tools)
     HListView bottomToolBar;    //--cyan 包括贴纸，滤镜，标签选择 HListView 是一个横向的listview类，包括在gradle中
     @InjectView(R.id.toolbar_area)
     ViewGroup toolArea;
+    @InjectView(R.id.img_title_right)
+    Button img_title_right;
+    @InjectView(R.id.img_title_left)
+    ImageView img_title_left;
+
 
 
     private MyImageViewDrawableOverlay mImageView;
@@ -184,42 +191,47 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
         toolArea.addView(commonLabelArea);
         commonLabelArea.setVisibility(View.GONE);
+
+        //--cyan
+        img_title_left.setImageResource(R.mipmap.back);
+        img_title_right.setText("完成");
+
     }
 
     /**
      * 底部 贴纸，滤镜，标签点击事件 --cyan
      */
     private void initEvent() {
-        stickerBtn.setOnClickListener(v ->{
-            if (!setCurrentBtn(stickerBtn)) {
-                return;
-            }
-            bottomToolBar.setVisibility(View.VISIBLE);
-            labelSelector.hide();
-            emptyLabelView.setVisibility(View.GONE);
-            commonLabelArea.setVisibility(View.GONE);
-            initStickerToolBar();
-        });
+//        stickerBtn.setOnClickListener(v ->{
+//            if (!setCurrentBtn(stickerBtn)) {
+//                return;
+//            }
+//            bottomToolBar.setVisibility(View.VISIBLE);
+//            labelSelector.hide();
+//            emptyLabelView.setVisibility(View.GONE);
+//            commonLabelArea.setVisibility(View.GONE);
+//            initStickerToolBar();
+//        });
 
-        filterBtn.setOnClickListener(v -> {
-            if (!setCurrentBtn(filterBtn)) {
-                return;
-            }
-            bottomToolBar.setVisibility(View.VISIBLE);
-            labelSelector.hide();
-            emptyLabelView.setVisibility(View.INVISIBLE);
-            commonLabelArea.setVisibility(View.GONE);
-            initFilterToolBar();
-        });
-        labelBtn.setOnClickListener(v -> {
-            if (!setCurrentBtn(labelBtn)) {
-                return;
-            }
-            bottomToolBar.setVisibility(View.GONE);
-            labelSelector.showToTop();
-            commonLabelArea.setVisibility(View.VISIBLE);
-
-        });
+//        filterBtn.setOnClickListener(v -> {
+//            if (!setCurrentBtn(filterBtn)) {
+//                return;
+//            }
+//            bottomToolBar.setVisibility(View.VISIBLE);
+//            labelSelector.hide();
+//            emptyLabelView.setVisibility(View.INVISIBLE);
+//            commonLabelArea.setVisibility(View.GONE);
+//            initFilterToolBar();
+//        });
+//        labelBtn.setOnClickListener(v -> {
+//            if (!setCurrentBtn(labelBtn)) {
+//                return;
+//            }
+//            bottomToolBar.setVisibility(View.GONE);
+//            labelSelector.showToTop();
+//            commonLabelArea.setVisibility(View.VISIBLE);
+//
+//        });
         labelSelector.setTxtClicked(v -> {
             EditTextActivity.openTextEdit(PhotoProcessActivity.this,"",8, AppConstants.ACTION_EDIT_LABEL);
         });
@@ -244,8 +256,14 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         });
 
 
-        titleBar.setRightBtnOnclickListener(v -> {
-            savePicture();
+//        titleBar.setRightBtnOnclickListener(v -> {
+//            savePicture();
+//        });
+        img_title_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                savePicture();
+            }
         });
     }
 
@@ -306,14 +324,15 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             //将照片信息保存至sharedPreference
             //保存标签信息
             //--cyan* ************去掉标签内容
-            List<TagItem> tagInfoList = new ArrayList<TagItem>();
-            for (LabelView label : labels) {
-                tagInfoList.add(label.getTagInfo());
-            }
+//            List<TagItem> tagInfoList = new ArrayList<TagItem>();
+//            for (LabelView label : labels) {
+//                tagInfoList.add(label.getTagInfo());
+//            }
 
             //将图片信息通过EventBus发送到MainActivity
-            FeedItem feedItem = new FeedItem(tagInfoList,fileName);
-            EventBus.getDefault().post(feedItem);
+//            FeedItem feedItem = new FeedItem(tagInfoList,fileName);
+//            EventBus.getDefault().post(feedItem);
+            Log.i(TAG,"filename=="+fileName);
             CameraManager.getInst().close();
         }
     }
@@ -403,7 +422,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                         });
             }
         });
-        setCurrentBtn(stickerBtn);
+//        setCurrentBtn(stickerBtn);
     }
 
 
