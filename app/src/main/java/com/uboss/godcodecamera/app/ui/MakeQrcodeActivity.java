@@ -32,6 +32,7 @@ import com.uboss.godcodecamera.app.MyUtil.ImageItem;
 import com.uboss.godcodecamera.app.MyUtil.PublicWay;
 import com.uboss.godcodecamera.app.adapter.MorePicAdapter;
 import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
+import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
 import com.uboss.godcodecamera.app.view.MyGridView;
 
 import java.util.ArrayList;
@@ -116,6 +117,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     RelativeLayout rl_location;
     @InjectView(R.id.tv_location)
     TextView tv_location;
+    @InjectView(R.id.btn_create_qrcode)
+    Button btn_create_qrcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +143,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         initPopupAddPhoto();
         initPopupPreview();
         rl_location.setOnClickListener(clickListener);
-
+        btn_create_qrcode.setOnClickListener(clickListener);
 
         model_adapter= new SimpleAdapter(MakeQrcodeActivity.this,getToolList(),R.layout.item_bottom_toolbar,
                 new String[]{"title","img","instruction"},
@@ -352,6 +355,11 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                     break;
                 case R.id.btn_use_modle:
                     Toast.makeText(MakeQrcodeActivity.this,"使用模板",Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.btn_create_qrcode:
+                    Toast.makeText(MakeQrcodeActivity.this,"生成二维码",Toast.LENGTH_SHORT).show();
+
+                    startActivity(new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class));
                     break;
                 default:
                     break;

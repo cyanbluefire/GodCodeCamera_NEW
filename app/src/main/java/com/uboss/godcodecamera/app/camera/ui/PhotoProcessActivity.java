@@ -42,6 +42,7 @@ import com.uboss.godcodecamera.app.model.FeedItem;
 import com.uboss.godcodecamera.app.model.TagItem;
 import com.uboss.godcodecamera.app.ui.EditTextActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,6 +82,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     HListView bottomToolBar;    //--cyan 包括贴纸，滤镜，标签选择 HListView 是一个横向的listview类，包括在gradle中
     @InjectView(R.id.toolbar_area)
     ViewGroup toolArea;
+
+
     private MyImageViewDrawableOverlay mImageView;
     private LabelSelector labelSelector;    //贴纸 --cyan
 
@@ -113,8 +116,14 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         //getData()为uri格式
 //        String imagePath = LocalDataUtil.ReadSharePre("main_pictures","mainPic");
         String imagePath = CameraActivity.Main_Photo_Name;
+        Log.i(TAG,"imagePath=="+imagePath);
+        StringBuilder sb = new StringBuilder("file://");
+        sb.append(imagePath);
+//        Uri uri = Uri.fromFile(new File(imagePath));
+//        Log.i(TAG," LocalDataUtil.pathToUri::"+LocalDataUtil.pathToUri(imagePath).getPath());
 
-        ImageUtils.asyncLoadImage(this, Uri.parse(imagePath), new ImageUtils.LoadImageCallback() {
+
+        ImageUtils.asyncLoadImage(this, Uri.parse(sb.toString()), new ImageUtils.LoadImageCallback() {
             @Override
             public void callback(Bitmap result) {
                 currentBitmap = result;

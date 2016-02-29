@@ -791,6 +791,7 @@ public class CameraActivity extends CameraBaseActivity {
         String imagePath = ImageUtils.saveToFile(FileUtils.getInst().getSystemPhotoPath(), true,
                 croppedImage);
         croppedImage.recycle();
+        Log.i(TAG,"imagepath=="+imagePath);
         return imagePath;
     }
 
