@@ -113,6 +113,7 @@ public class CameraActivity extends CameraBaseActivity {
     private Camera mCamera;
     byte[] photoData;    //拍照完成后的照片数据
     public static String Main_Photo_Name = "";
+    public static boolean Main_Photo_from_album = false;
 
 
     @Override
@@ -771,6 +772,7 @@ public class CameraActivity extends CameraBaseActivity {
 
         //获得图片大小
         BitmapFactory.Options options = new BitmapFactory.Options();
+        //不会真的返回一个Bitmap给你，它仅仅会把它的宽，高取回来给你，这样就不会占用太多的内存，也就不会那么频繁的发生OOM了。
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeByteArray(data, 0, data.length, options);
 
@@ -778,13 +780,17 @@ public class CameraActivity extends CameraBaseActivity {
         int height = options.outHeight > options.outWidth ? options.outHeight : options.outWidth;
         options.inJustDecodeBounds = false;
         Rect r;
-        if (mCurrentCameraId == 1) {
+        //-cyan**
+        if (mCurrentCameraId == 1) {    //前置
             r = new Rect(height - PHOTO_SIZE, 0, height, PHOTO_SIZE);
-        } else {
+//            r = new Rect(height - PHOTO_SIZE,0, PHOTO_SIZE, height);
+
+        } else {    //后置
             r = new Rect(0, 0, PHOTO_SIZE, PHOTO_SIZE);
         }
         try {
             croppedImage = decodeRegionCrop(data, r);
+//            croppedImage = BitmapFactory.decodeByteArray(data,0,data.length);//不裁剪
         } catch (Exception e) {
             return null;
         }
@@ -806,6 +812,7 @@ public class CameraActivity extends CameraBaseActivity {
             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(is, false);
 
             try {
+                //选取图片的一部分
                 croppedImage = decoder.decodeRegion(rect, new BitmapFactory.Options());//获得rect区域图片
             } catch (IllegalArgumentException e) {
             }
@@ -814,8 +821,12 @@ public class CameraActivity extends CameraBaseActivity {
         } finally {
             IOUtil.closeStream(is);
         }
+        //Rotate旋转变换
         Matrix m = new Matrix();                        //Matrix是一个3 x 3的矩阵,pre、set和post三种操作方式
-        m.setRotate(90, PHOTO_SIZE / 2, PHOTO_SIZE / 2);//set用于设置Matrix中的值，pre先乘(矩阵右乘),post后乘(矩阵左乘)
+        if(!CameraActivity.Main_Photo_from_album) //拍照得来的图片，需要旋转
+            m.setRotate(90, PHOTO_SIZE / 2, PHOTO_SIZE / 2);//set用于设置Matrix中的值，pre先乘(矩阵右乘),post后乘(矩阵左乘)
+
+
         if (mCurrentCameraId == 1) {
             m.postScale(1, -1);
         }

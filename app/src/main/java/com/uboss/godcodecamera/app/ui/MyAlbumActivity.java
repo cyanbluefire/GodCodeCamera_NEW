@@ -129,6 +129,7 @@ public class MyAlbumActivity extends Activity {
 //				new CameraActivity.SavePicTask(baos.toByteArray(),MyAlbumActivity.this);
 
 				try {
+					CameraActivity.Main_Photo_from_album = true;	//从相册选择的图片，不需要旋转
 					String imagePath = CameraActivity.saveToSDCard(baos.toByteArray());
 					CameraActivity.Main_Photo_Name = imagePath;
 					CameraManager.getInst().processPhotoItem(MyAlbumActivity.this,

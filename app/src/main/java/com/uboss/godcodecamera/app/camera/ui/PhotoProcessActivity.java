@@ -232,13 +232,14 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 //            commonLabelArea.setVisibility(View.VISIBLE);
 //
 //        });
-        labelSelector.setTxtClicked(v -> {
-            EditTextActivity.openTextEdit(PhotoProcessActivity.this,"",8, AppConstants.ACTION_EDIT_LABEL);
-        });
-        labelSelector.setAddrClicked(v -> {
-            EditTextActivity.openTextEdit(PhotoProcessActivity.this,"",8, AppConstants.ACTION_EDIT_LABEL_POI);
-
-        });
+        //点击图片添加标签
+//        labelSelector.setTxtClicked(v -> {
+//            EditTextActivity.openTextEdit(PhotoProcessActivity.this,"",8, AppConstants.ACTION_EDIT_LABEL);
+//        });
+//        labelSelector.setAddrClicked(v -> {
+//            EditTextActivity.openTextEdit(PhotoProcessActivity.this,"",8, AppConstants.ACTION_EDIT_LABEL_POI);
+//
+//        });
         mImageView.setOnDrawableEventListener(wpEditListener);
         mImageView.setSingleTapListener(()->{
                 emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
@@ -248,12 +249,12 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 labelSelector.showToTop();
                 drawArea.postInvalidate();
         });
-        labelSelector.setOnClickListener(v -> {
-            labelSelector.hide();
-            emptyLabelView.updateLocation((int) labelSelector.getmLastTouchX(),
-                    (int) labelSelector.getmLastTouchY());
-            emptyLabelView.setVisibility(View.VISIBLE);
-        });
+//        labelSelector.setOnClickListener(v -> {
+//            labelSelector.hide();
+//            emptyLabelView.updateLocation((int) labelSelector.getmLastTouchX(),
+//                    (int) labelSelector.getmLastTouchY());
+//            emptyLabelView.setVisibility(View.VISIBLE);
+//        });
 
 
 //        titleBar.setRightBtnOnclickListener(v -> {
