@@ -61,7 +61,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     public static Bitmap bimap;
     private View parentView;
     private static boolean hasqrcode = false;
-
+    private boolean is_up_edittext = true;
 
     static{
         Log.i(TAG,"addonList static");
@@ -163,6 +163,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                         changeModel(1,addonList.get(1));
                         et_qrcode_content_down.setVisibility(View.GONE);
                         et_qrcode_content_up.setVisibility(View.VISIBLE);
+                        is_up_edittext = true;
                         model_adapter.notifyDataSetChanged();
                         break;
                     case 1:
@@ -171,6 +172,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                         changeModel(0,addonList.get(0));
                         et_qrcode_content_up.setVisibility(View.GONE);
                         et_qrcode_content_down.setVisibility(View.VISIBLE);
+                        is_up_edittext = false;
                         model_adapter.notifyDataSetChanged();
                         break;
 //                    case 2:case 3:
@@ -358,8 +360,15 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                     break;
                 case R.id.btn_create_qrcode:
                     Toast.makeText(MakeQrcodeActivity.this,"生成二维码",Toast.LENGTH_SHORT).show();
-
-                    startActivity(new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class));
+                    Intent intent_process =  new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class);
+                    //文字描述
+                    if (is_up_edittext)
+                        intent_process.putExtra("content",et_qrcode_content_up.getText().toString());
+                    else
+                        intent_process.putExtra("content",et_qrcode_content_down.getText().toString());
+                    //包含图片张数
+                    intent_process.putExtra("count",Bimp.tempSelectBitmap.size());
+                    startActivity(intent_process);
                     break;
                 default:
                     break;
