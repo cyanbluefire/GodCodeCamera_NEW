@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff"
+    android:background="@color/deep_gray"
     android:orientation="vertical" >
 
     <include
@@ -12,45 +12,76 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"/>
 
+    <RelativeLayout
+        android:id="@+id/drawing_view_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/titlebar">
+
+        <jp.co.cyberagent.android.gpuimage.GPUImageView
+            android:id="@+id/gpuimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/main_area"
+        android:id="@+id/toolbar_area"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:layout_weight="1"
-        android:orientation="vertical" >
+        android:layout_height="115dp"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
 
-        <RelativeLayout
-            android:id="@+id/drawing_view_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <jp.co.cyberagent.android.gpuimage.GPUImageView
-                android:id="@+id/gpuimage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/toolbar_area"
-            android:layout_width="fill_parent"
+        <it.sephiroth.android.library.widget.HListView
+            android:id="@+id/list_tools"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical" >
-
-            <it.sephiroth.android.library.widget.HListView
-                android:id="@+id/list_tools"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/common_background"
-                android:gravity="center_vertical"
-                android:overScrollMode="always"
-                app:hlv_dividerWidth="@dimen/margin_15px"/>
-
-        </LinearLayout>
+            android:background="@color/deep_gray"
+            android:gravity="center_vertical"
+            android:overScrollMode="always"
+            app:hlv_dividerWidth="@dimen/margin_15px"/>
 
     </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:id="@+id/main_area"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_below="@id/titlebar">-->
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/drawing_view_container"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical" >-->
+
+            <!--<jp.co.cyberagent.android.gpuimage.GPUImageView-->
+                <!--android:id="@+id/gpuimage"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center" />-->
+        <!--</RelativeLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/toolbar_area"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="115dp"-->
+            <!--android:orientation="vertical" >-->
+
+            <!--<it.sephiroth.android.library.widget.HListView-->
+                <!--android:id="@+id/list_tools"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:background="@color/deep_gray"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:overScrollMode="always"-->
+                <!--app:hlv_dividerWidth="@dimen/margin_15px"/>-->
+
+        <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -44,6 +44,8 @@ public class EffectUtil {
         addonList.add(new Addon(R.drawable.sticker6));
         addonList.add(new Addon(R.drawable.sticker7));
         addonList.add(new Addon(R.drawable.sticker8));
+        addonList.add(new Addon(R.drawable.sticker8));
+
     }
 
     public static void clear() {

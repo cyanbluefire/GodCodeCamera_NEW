@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ import com.uboss.godcodecamera.app.ui.EditTextActivity;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -108,6 +110,43 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //标签区域
     private View commonLabelArea;
 
+    //--cyan
+    SimpleAdapter model_adapter;
+    ArrayList<String> arr_model_title = new ArrayList<String>();
+    static ArrayList<Integer> addonList = new ArrayList<Integer>();
+    static ArrayList<String> arr_model_instruction = new ArrayList<String>();
+    ArrayList<HashMap<String,Object>> models = new ArrayList<>();
+
+    static{
+        Log.i(TAG,"addonList static");
+        addonList.add(R.mipmap.picture_icon1);
+        addonList.add(R.mipmap.picture_icon2);
+        addonList.add(R.mipmap.circle);
+
+        addonList.add(R.mipmap.default_model);
+        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.sticker1);
+
+    }
+    static {
+        Log.i(TAG,"arr_model_instruction static");
+        arr_model_instruction.add("先文后图");
+        arr_model_instruction.add("先图后文");
+        arr_model_instruction.add("");
+
+        arr_model_instruction.add("默认模板");
+        arr_model_instruction.add("1");
+        arr_model_instruction.add("2");
+        arr_model_instruction.add("3");
+        arr_model_instruction.add("4");
+        arr_model_instruction.add("5");
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG,"onCreate()");
@@ -115,6 +154,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         setContentView(R.layout.activity_image_process);
         ButterKnife.inject(this);
         EffectUtil.clear();
+        setModelData();
         initView();
         initEvent();
         initStickerToolBar();
@@ -241,14 +281,15 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 //
 //        });
         mImageView.setOnDrawableEventListener(wpEditListener);
-        mImageView.setSingleTapListener(()->{
-                emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
-                        (int) mImageView.getmLastMotionScrollY());
-                emptyLabelView.setVisibility(View.VISIBLE);
-
-                labelSelector.showToTop();
-                drawArea.postInvalidate();
-        });
+//        mImageView.setSingleTapListener(()->{
+//            //显示添加标签
+//                emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
+//                        (int) mImageView.getmLastMotionScrollY());
+//                emptyLabelView.setVisibility(View.VISIBLE);
+//
+//                labelSelector.showToTop();
+//                drawArea.postInvalidate();
+//        });
 //        labelSelector.setOnClickListener(v -> {
 //            labelSelector.hide();
 //            emptyLabelView.updateLocation((int) labelSelector.getmLastTouchX(),
@@ -406,14 +447,39 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //初始化贴纸 --cyan
     private void initStickerToolBar(){
         Log.w(TAG,"initStickerToolBar()");
-        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this, EffectUtil.addonList));//EffectUtil.addonList 默认贴纸列表
-        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
+//        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this, EffectUtil.addonList));//EffectUtil.addonList 默认贴纸列表
+//        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
+//                                    View arg1, int arg2, long arg3) {
+//                labelSelector.hide();       //之前选择的贴纸隐藏
+//                Addon sticker = EffectUtil.addonList.get(arg2);
+//                EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
+//                        new EffectUtil.StickerCallback() {
+//                            @Override
+//                            public void onRemoveSticker(Addon sticker) {
+//                                labelSelector.hide();
+//                            }
+//                        });
+//            }
+//        });
+//        setCurrentBtn(stickerBtn);
+
+
+        //--cyan start
+        model_adapter= new SimpleAdapter(PhotoProcessActivity.this,getToolList(),R.layout.item_bottom_toolbar,
+                new String[]{"title","img","instruction"},
+                new int[]{R.id.tv_model_title,R.id.img_model,R.id.tv_model_instruction});
+        bottomToolBar.setAdapter(model_adapter);
+        bottomToolBar.setOnItemClickListener( new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
-                                    View arg1, int arg2, long arg3) {
+                                    View arg1, int position, long arg3) {
+                Toast.makeText(PhotoProcessActivity.this,position+"",Toast.LENGTH_SHORT).show();
                 labelSelector.hide();       //之前选择的贴纸隐藏
-                Addon sticker = EffectUtil.addonList.get(arg2);
+                Addon sticker = EffectUtil.addonList.get(position);//贴纸200*200
                 EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
                         new EffectUtil.StickerCallback() {
                             @Override
@@ -421,12 +487,51 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                                 labelSelector.hide();
                             }
                         });
+                switch (position){
+                    case 0:
+
+                        model_adapter.notifyDataSetChanged();
+                        break;
+                    case 1:
+
+                        model_adapter.notifyDataSetChanged();
+                        break;
+
+                    default:
+
+                        break;
+
+                }
+
+
             }
         });
-//        setCurrentBtn(stickerBtn);
+
+        //--cyan end
     }
 
+    private ArrayList<HashMap<String, Object>> getToolList() {
 
+        for(int i=0;i<addonList.size();i++){
+            HashMap<String, Object> hashMap = new HashMap<String, Object>();
+            hashMap.put("title",arr_model_title.get(i));
+            hashMap.put("img",addonList.get(i));
+            hashMap.put("instruction",arr_model_instruction.get(i));
+            models.add(hashMap);
+        }
+
+        return models;
+    }
+
+    private void setModelData(){
+        //标题
+        arr_model_title.add("图文顺序");
+        while (arr_model_title.size()<addonList.size()){
+            arr_model_title.add("");
+        }
+//        Log.e(TAG,"title=="+arr_model_title.size()+" addonList=="+addonList.size()+" instru=="+arr_model_instruction.size());
+
+    }
     //初始化滤镜 --cyan
     private void initFilterToolBar(){
         final List<FilterEffect> filters = EffectService.getInst().getLocalFilters();//--cyan* 初始化滤镜
