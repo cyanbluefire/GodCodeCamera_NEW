@@ -51,7 +51,7 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"></service>
+            android:process=":remote" />
 
         <activity
             android:name=".app.ui.MainActivity"
@@ -85,7 +85,7 @@
         <activity
             android:name=".app.ui.MakeQrcodeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".app.ui.GalleryActivity"
             android:screenOrientation="portrait"
@@ -102,10 +102,9 @@
             android:name=".app.ui.ShowAllPhoto"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".app.ui.ShopLocationActivity"></activity>
-        <activity android:name=".app.ui.TestActivity">
-
-        </activity>
+        <activity android:name=".app.ui.ShopLocationActivity" />
+        <activity android:name=".app.ui.TestActivity"></activity>
+        <activity android:name=".app.ui.MyGodCodeActivity"></activity>
     </application>
 
 </manifest>

@@ -31,4 +31,8 @@ public class AppConstants {
 
     /*****--cyan********/
     public static final String Main_Pic_File_Name = "hahaha";
+    public static final String SP_File_MyGodCode = "my_god_code";
+    public static final String DB_MyGodCode = "my_god_code.db";
+    public static int DB_MyGodCode_Version = 1;
+
 }

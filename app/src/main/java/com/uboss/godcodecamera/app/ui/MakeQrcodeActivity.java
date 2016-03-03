@@ -62,6 +62,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private View parentView;
     private static boolean hasqrcode = false;
     private boolean is_up_edittext = true;
+    private String url = "";
 
     static{
         Log.i(TAG,"addonList static");
@@ -368,6 +369,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                         intent_process.putExtra("content",et_qrcode_content_down.getText().toString());
                     //包含图片张数
                     intent_process.putExtra("count",Bimp.tempSelectBitmap.size());
+                    //二维码内容地址
+                    intent_process.putExtra("url",url);
                     startActivity(intent_process);
                     break;
                 default:

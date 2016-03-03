@@ -2,6 +2,7 @@ package com.uboss.godcodecamera.app.camera.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
@@ -31,21 +32,18 @@ import com.customview.MyImageViewDrawableOverlay;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.AppConstants;
-import com.uboss.godcodecamera.app.MyUtil.LocalDataUtil;
+import com.uboss.godcodecamera.app.Database.DatabaseHelper;
 import com.uboss.godcodecamera.app.camera.CameraBaseActivity;
 import com.uboss.godcodecamera.app.camera.CameraManager;
 import com.uboss.godcodecamera.app.camera.EffectService;
 import com.uboss.godcodecamera.app.camera.adapter.FilterAdapter;
-import com.uboss.godcodecamera.app.camera.adapter.StickerToolAdapter;
 import com.uboss.godcodecamera.app.camera.effect.FilterEffect;
 import com.uboss.godcodecamera.app.camera.util.EffectUtil;
 import com.uboss.godcodecamera.app.camera.util.GPUImageFilterTools;
 import com.uboss.godcodecamera.app.model.Addon;
-import com.uboss.godcodecamera.app.model.FeedItem;
 import com.uboss.godcodecamera.app.model.TagItem;
-import com.uboss.godcodecamera.app.ui.EditTextActivity;
+import com.uboss.godcodecamera.base.GodeCode;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,7 +51,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 import it.sephiroth.android.library.widget.HListView;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
@@ -116,6 +113,9 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     static ArrayList<Integer> addonList = new ArrayList<Integer>();
     static ArrayList<String> arr_model_instruction = new ArrayList<String>();
     ArrayList<HashMap<String,Object>> models = new ArrayList<>();
+    private String content = ""; //二维码内容文字
+    private int count = 0;  //二维码内容图片数量
+    private String url = "";    //二维码内容地址
 
     static{
         Log.i(TAG,"addonList static");
@@ -159,6 +159,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         initEvent();
         initStickerToolBar();
 
+        //获取二维码内容
+        getQrCode();
         //显示之前选中的图片 --cyan
         //getData()为uri格式
 //        String imagePath = LocalDataUtil.ReadSharePre("main_pictures","mainPic");
@@ -194,6 +196,14 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         });
 
     }
+
+    private void getQrCode() {
+        Intent intent = getIntent();
+        content = intent.getStringExtra("content");
+        count = intent.getIntExtra("count",0);
+        url = intent.getStringExtra("url");
+    }
+
     private void initView() {
         //添加贴纸水印的画布,绘图区域 --cyan
         View overlay = LayoutInflater.from(PhotoProcessActivity.this).inflate(
@@ -362,6 +372,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             if (StringUtils.isEmpty(fileName)) {
                 return;
             }
+            saveQrData(fileName);
 
             //将照片信息保存至sharedPreference
             //保存标签信息
@@ -377,6 +388,15 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             Log.i(TAG,"filename=="+fileName);
             CameraManager.getInst().close();
         }
+    }
+    private void saveQrData(String fileName){
+//        LocalDataUtil.ReadSharePre(AppConstants.SP_File_MyGodCode,)
+//        LocalDataUtil.SaveSharedPre(fileName,"",AppConstants.SP_File_MyGodCode);
+//        SQLiteDatabase db = openOrCreateDatabase(AppConstants.DB_MyGodCode, Context.MODE_PRIVATE, null);
+        DatabaseHelper helper = new DatabaseHelper(this);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        GodeCode godcode = new GodeCode();
+
     }
 
 
