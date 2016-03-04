@@ -25,7 +25,7 @@ public class DBManager {
 
     public DBManager(Context context)
     {
-        Log.d(LOG_TAG, "DBManager --> Constructor");
+        Log.i(LOG_TAG, "DBManager --> Constructor");
         helper = new DatabaseHelper(context);
         // 因为getWritableDatabase内部调用了mContext.openOrCreateDatabase(mName, 0,
         // mFactory);
@@ -40,7 +40,7 @@ public class DBManager {
      */
     public void add(List<GodeCode> listgodcodes)
     {
-        Log.d(LOG_TAG, "DBManager --> add");
+        Log.i(LOG_TAG, "DBManager --> add");
         // 采用事务处理，确保数据完整性
         db.beginTransaction(); // 开始事务
         try
@@ -50,10 +50,38 @@ public class DBManager {
                 db.execSQL("INSERT INTO " + DatabaseHelper.TABLE_NAME
                         + " VALUES(null, ?, ?, ?, ?, ?)", new Object[] { godcode.getFilename(),
                         godcode.getDate(), godcode.getCount(),godcode.getContent(),godcode.getUrl() });
+                //id设置为null，自增
                 // 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
                 // 一个参数的execSQL()方法中，用户输入特殊字符时需要转义
                 // 使用占位符有效区分了这种情况
             }
+            db.setTransactionSuccessful(); // 设置事务成功完成
+        }
+        finally
+        {
+            db.endTransaction(); // 结束事务
+        }
+    }
+
+    /**
+     * 插入一个数据
+     * @param godcode
+     */
+    public void add(GodeCode godcode)
+    {
+        Log.i(LOG_TAG, "DBManager --> add");
+        Log.i(LOG_TAG,"filename=="+godcode.getFilename());
+        // 采用事务处理，确保数据完整性
+        db.beginTransaction(); // 开始事务
+        try
+        {
+
+                db.execSQL("INSERT INTO " + DatabaseHelper.TABLE_NAME
+                        + " VALUES(null, ?, ?, ?, ?, ?)", new Object[] { godcode.getFilename(),
+                        godcode.getDate(), godcode.getCount(),godcode.getContent(),godcode.getUrl() });
+                // 带两个参数的execSQL()方法，采用占位符参数？，把参数值放在后面，顺序对应
+                // 一个参数的execSQL()方法中，用户输入特殊字符时需要转义
+                // 使用占位符有效区分了这种情况
             db.setTransactionSuccessful(); // 设置事务成功完成
         }
         finally
@@ -96,11 +124,12 @@ public class DBManager {
      */
     public List<GodeCode> query()
     {
-        Log.d(LOG_TAG, "DBManager --> query");
+        Log.i(LOG_TAG, "DBManager --> query");
         ArrayList<GodeCode> godcodes = new ArrayList<GodeCode>();
         Cursor c = queryTheCursor();
         while (c.moveToNext())
         {
+            Log.i(LOG_TAG, "DBManager --> moveToNext()");
             GodeCode godcode = new GodeCode();
             godcode.setFilename( c.getString(c.getColumnIndex("filename")));
             godcode.setDate(c.getString(c.getColumnIndex("date")));
@@ -108,6 +137,7 @@ public class DBManager {
             godcode.setContent(c.getString(c.getColumnIndex("content")));
             godcode.setUrl(c.getString(c.getColumnIndex("url")));
 
+            godcodes.add(godcode);
 
         }
         c.close();
@@ -121,7 +151,7 @@ public class DBManager {
      */
     public Cursor queryTheCursor()
     {
-        Log.d(LOG_TAG, "DBManager --> queryTheCursor");
+        Log.i(LOG_TAG, "DBManager --> queryTheCursor");
         Cursor c = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_NAME,
                 null);
         return c;
@@ -132,7 +162,7 @@ public class DBManager {
      */
     public void closeDB()
     {
-        Log.d(LOG_TAG, "DBManager --> closeDB");
+        Log.i(LOG_TAG, "DBManager --> closeDB");
         // 释放数据库资源
         db.close();
     }

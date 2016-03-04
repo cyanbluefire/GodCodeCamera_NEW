@@ -1,10 +1,12 @@
 package com.uboss.godcodecamera.app.ui;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +15,23 @@ import android.widget.TextView;
 
 import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.R;
+import com.uboss.godcodecamera.app.Database.DBManager;
+import com.uboss.godcodecamera.base.GodeCode;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 
 
 public class MyGodCodeActivity extends AppCompatActivity {
 
+    private static final String TAG = "MyGodCodeActivity";
     private RecyclerViewAdapter mAdapter;
-
+    private List<GodeCode> list_godcode;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -45,14 +51,27 @@ public class MyGodCodeActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         setData();
-        mAdapter = new RecyclerViewAdapter(MyGodCodeActivity.this,data);
+//        mAdapter = new RecyclerViewAdapter(MyGodCodeActivity.this,data);
+        mAdapter = new RecyclerViewAdapter(MyGodCodeActivity.this,list_godcode);
         mRecyclerView.setAdapter(mAdapter);
 
     }
 
     private void setData() {
-        JSONObject json = new JSONObject();
-        json.put()
+//        JSONObject json = new JSONObject();
+//        json.put()
+        //查询”我的神码“数据库
+        DBManager manager = new DBManager(this);
+        list_godcode = manager.query();
+//        for(GodeCode item :list_godcode){
+//            StringBuilder sb = new StringBuilder();
+//            sb.append("filename==").append(item.getFilename())
+//                    .append("   date==").append(item.getDate())
+//                    .append("   content==").append(item.getContent()).append("  count==")
+//                    .append(item.getCount()).append("   url==").append(item.getUrl());
+//            Log.i(TAG,"mygodcode::"+sb.toString());
+//
+//        }
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -62,14 +81,14 @@ public class MyGodCodeActivity extends AppCompatActivity {
 
 
         private static final String TAG = "RecyclerViewAdapter";
-        private ArrayList<String> mDataset;
+//        private ArrayList<String> mDataset;
 
         Context mContext;
         JSONArray jsonArray_added_sku;
-        public RecyclerViewAdapter(MyGodCodeActivity context, JSONArray jsonArray_added_sku) {
-            mContext = context;
-            this.jsonArray_added_sku = jsonArray_added_sku;
-        }
+//        public RecyclerViewAdapter(MyGodCodeActivity context, JSONArray jsonArray_added_sku) {
+//            mContext = context;
+//            this.jsonArray_added_sku = jsonArray_added_sku;
+//        }
 
         //ViewHolder 设置循环使用的view
         public  class ViewHolder extends  RecyclerView.ViewHolder{
@@ -79,8 +98,8 @@ public class MyGodCodeActivity extends AppCompatActivity {
                 mView = v;
             }
         }
-        public RecyclerViewAdapter(Context context,ArrayList<String> myDataset) {
-            mDataset = myDataset;
+        public RecyclerViewAdapter(Context context,List<GodeCode> list) {
+            list_godcode = list;
             mContext = context;
         }
 
@@ -98,8 +117,12 @@ public class MyGodCodeActivity extends AppCompatActivity {
             tv_qrcode_count = (TextView)holder.mView.findViewById(R.id.tv_qrcode_count);
 
 
-
-
+            GodeCode godcode = list_godcode.get(position);
+            img_qrcode_photo.setImageBitmap(BitmapFactory.decodeFile(godcode.getFilename()));
+            tv_qrcode_content.setText(godcode.getContent());
+            StringBuffer sb = new StringBuffer();
+            sb.append("共").append(godcode.getCount()).append("张");
+            tv_qrcode_count.setText(sb.toString());
 
 
 
@@ -108,11 +131,7 @@ public class MyGodCodeActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            if(jsonArray_added_sku !=null){
-                return jsonArray_added_sku.length();
-            }else {
-                return mDataset.size();
-            }
+            return list_godcode.size();
         }
 
 

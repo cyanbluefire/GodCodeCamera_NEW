@@ -20,11 +20,12 @@ public class GodeCode {
         this.date = date;
     }
 
-    public GodeCode(String filename, String url, String content, int count) {
+    public GodeCode(String filename, String url, String content, int count,String date) {
         this.content = content;
         this.count = count;
         this.url = url;
         this.filename = filename;
+        this.date = date;
     }
 
     public GodeCode() {

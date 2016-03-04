@@ -32,6 +32,7 @@ import com.customview.MyImageViewDrawableOverlay;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.AppConstants;
+import com.uboss.godcodecamera.app.Database.DBManager;
 import com.uboss.godcodecamera.app.Database.DatabaseHelper;
 import com.uboss.godcodecamera.app.camera.CameraBaseActivity;
 import com.uboss.godcodecamera.app.camera.CameraManager;
@@ -42,6 +43,7 @@ import com.uboss.godcodecamera.app.camera.util.EffectUtil;
 import com.uboss.godcodecamera.app.camera.util.GPUImageFilterTools;
 import com.uboss.godcodecamera.app.model.Addon;
 import com.uboss.godcodecamera.app.model.TagItem;
+import com.uboss.godcodecamera.app.ui.MyGodCodeActivity;
 import com.uboss.godcodecamera.base.GodeCode;
 
 import java.util.ArrayList;
@@ -387,15 +389,32 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 //            EventBus.getDefault().post(feedItem);
             Log.i(TAG,"filename=="+fileName);
             CameraManager.getInst().close();
+
+            startActivity(new Intent(PhotoProcessActivity.this, MyGodCodeActivity.class));
         }
     }
-    private void saveQrData(String fileName){
+    private void saveQrData(String filename){
 //        LocalDataUtil.ReadSharePre(AppConstants.SP_File_MyGodCode,)
 //        LocalDataUtil.SaveSharedPre(fileName,"",AppConstants.SP_File_MyGodCode);
 //        SQLiteDatabase db = openOrCreateDatabase(AppConstants.DB_MyGodCode, Context.MODE_PRIVATE, null);
-        DatabaseHelper helper = new DatabaseHelper(this);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        GodeCode godcode = new GodeCode();
+//        DatabaseHelper helper = new DatabaseHelper(this);
+//        SQLiteDatabase db = helper.getWritableDatabase();
+        Log.i(TAG,"saveQrData()");
+        GodeCode godcode = new GodeCode(filename,"url","content",8,"date");
+        DBManager manager = new DBManager(this);
+        manager.add(godcode);
+
+//        //查询”我的神码“数据库
+//        List<GodeCode>list_godcode = manager.query();
+//        for(GodeCode item :list_godcode){
+//            StringBuilder sb = new StringBuilder();
+//            sb.append("filename==").append(item.getFilename())
+//                    .append("   date==").append(item.getDate())
+//                    .append("   content==").append(item.getContent()).append("  count==")
+//                    .append(item.getCount()).append("   url==").append(item.getUrl());
+//            Log.i(TAG,"mygodcode::"+sb.toString());
+//
+//        }
 
     }
 

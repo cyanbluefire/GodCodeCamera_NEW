@@ -106,4 +106,5 @@
 
     <dimen name="my_godecode_img">100dp</dimen>
     <dimen name="tv_line_space">3dp</dimen>
+    <dimen name="item_space">5dip</dimen>
 </resources>

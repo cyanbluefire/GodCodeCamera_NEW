@@ -25,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 //        String sql = "create table godcode(username varchar(20) not null , password varchar(60) not null );";
         db.execSQL("CREATE TABLE IF NOT EXISTS godcode" +
-                "(filename VARCHAR PRIMARY KEY AUTOINCREMENT, date VARCHAR, count INTEGER, content TEXT, url VARCHAR)");
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, filename VARCHAR, date VARCHAR, count INTEGER, content TEXT, url VARCHAR)");
     }
 
     @Override
