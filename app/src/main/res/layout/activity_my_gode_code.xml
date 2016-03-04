@@ -11,12 +11,20 @@
         layout="@layout/titlebar_main"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"/>
+    <TextView
+        android:id="@+id/tv_create_qrcode"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/titlebar"
+        android:gravity="center"
+        android:text="@string/my_godcode"
+        android:background="@color/light_gray"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_my_godcode"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:layout_below="@id/titlebar"
+        android:layout_below="@id/tv_create_qrcode"
         />
 
 </RelativeLayout>

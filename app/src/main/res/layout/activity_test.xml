@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.uboss.godcodecamera.app.ui.TestActivity">
+    tools:context=".app.ui.GodCodeWebActivity">
     <!--<ImageView-->
         <!--android:id="@+id/img_test"-->
         <!--android:layout_width="wrap_content"-->

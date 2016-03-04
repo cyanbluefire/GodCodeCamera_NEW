@@ -103,7 +103,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".app.ui.ShopLocationActivity" />
-        <activity android:name=".app.ui.TestActivity"></activity>
+        <activity android:name=".app.ui.GodCodeWebActivity"></activity>
         <activity android:name=".app.ui.MyGodCodeActivity"></activity>
     </application>
 

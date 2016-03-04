@@ -19,4 +19,5 @@
     <string name="only_choose_num">最多只能选择9张图片哦</string>
     <string name="current_location">-当前位置-</string>
     <string name="use_model">使用模板</string>
+    <string name="my_godcode">我的神码</string>
 </resources>

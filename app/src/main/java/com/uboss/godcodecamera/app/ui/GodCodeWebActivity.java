@@ -14,7 +14,7 @@ import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class TestActivity extends AppCompatActivity {
+public class GodCodeWebActivity extends AppCompatActivity {
 //    @InjectView(R.id.img_test)
 //    ImageView img_test;
     @InjectView(R.id.web_test)
@@ -26,8 +26,10 @@ public class TestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
         ButterKnife.inject(this);
 
+        String url = getIntent().getStringExtra("url");
+        web_test.loadUrl(url);
         Uri.decode(CameraActivity.Main_Photo_Name);
-        web_test.loadUrl("http://10.17.1.42:8020/camera_html/mood_html/mood.html");
+//        web_test.loadUrl("http://10.17.1.42:8020/camera_html/mood_html/mood.html");
 //        web_test.loadUrl("http://www.taobao.com");
         WebSettings settings = web_test.getSettings();
         settings.setJavaScriptEnabled(true);

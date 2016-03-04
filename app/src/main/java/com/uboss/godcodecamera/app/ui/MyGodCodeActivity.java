@@ -1,6 +1,7 @@
 package com.uboss.godcodecamera.app.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.R;
@@ -31,7 +33,7 @@ public class MyGodCodeActivity extends AppCompatActivity {
 
     private static final String TAG = "MyGodCodeActivity";
     private RecyclerViewAdapter mAdapter;
-    private List<GodeCode> list_godcode;
+    private  static List<GodeCode> list_godcode;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -53,7 +55,27 @@ public class MyGodCodeActivity extends AppCompatActivity {
         setData();
 //        mAdapter = new RecyclerViewAdapter(MyGodCodeActivity.this,data);
         mAdapter = new RecyclerViewAdapter(MyGodCodeActivity.this,list_godcode);
+        mAdapter.setOnItemClickLitener(new RecyclerViewAdapter.OnItemClickLitener()
+        {
+
+            @Override
+            public void onItemClick(View view, int position)
+            {
+                Toast.makeText(MyGodCodeActivity.this,"点击了"+position,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MyGodCodeActivity.this,GodCodeWebActivity.class);
+                intent.putExtra("url","http://www.baidu.com");
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position)
+            {
+
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
+//        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+//        });
 
     }
 
@@ -74,21 +96,28 @@ public class MyGodCodeActivity extends AppCompatActivity {
 //        }
     }
 
-    public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+    public static class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
         ImageView img_qrcode_photo;
         TextView tv_qrcode_content;
         TextView tv_qrcode_count;
 
 
         private static final String TAG = "RecyclerViewAdapter";
-//        private ArrayList<String> mDataset;
+        public interface OnItemClickLitener
+        {
+            void onItemClick(View view, int position);
+            void onItemLongClick(View view , int position);
+        }
+
+        private OnItemClickLitener mOnItemClickLitener;
+
+        public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener)
+        {
+            this.mOnItemClickLitener = mOnItemClickLitener;
+        }
+
 
         Context mContext;
-        JSONArray jsonArray_added_sku;
-//        public RecyclerViewAdapter(MyGodCodeActivity context, JSONArray jsonArray_added_sku) {
-//            mContext = context;
-//            this.jsonArray_added_sku = jsonArray_added_sku;
-//        }
 
         //ViewHolder 设置循环使用的view
         public  class ViewHolder extends  RecyclerView.ViewHolder{
@@ -124,7 +153,30 @@ public class MyGodCodeActivity extends AppCompatActivity {
             sb.append("共").append(godcode.getCount()).append("张");
             tv_qrcode_count.setText(sb.toString());
 
+            // 如果设置了回调，则设置点击事件
+            if (mOnItemClickLitener != null)
+            {
+                holder.itemView.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        int pos = holder.getLayoutPosition();
+                        mOnItemClickLitener.onItemClick(holder.itemView, pos);
+                    }
+                });
 
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener()
+                {
+                    @Override
+                    public boolean onLongClick(View v)
+                    {
+                        int pos = holder.getLayoutPosition();
+                        mOnItemClickLitener.onItemLongClick(holder.itemView, pos);
+                        return false;
+                    }
+                });
+            }
 
         }
 
