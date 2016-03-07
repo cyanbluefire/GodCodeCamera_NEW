@@ -50,7 +50,11 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     ArrayList<String> arr_model_title = new ArrayList<String>();
     static ArrayList<String> arr_model_instruction = new ArrayList<String>();
     static ArrayList<Integer> addonList = new ArrayList<Integer>();
+    static ArrayList<Integer> addonList_focused = new ArrayList<Integer>();
+
+    static ArrayList<Integer> arr_model_preview = new ArrayList<Integer>();
     ArrayList<HashMap<String,Object>> models = new ArrayList<>();
+
     SimpleAdapter model_adapter;
     public static MorePicAdapter adapter;
     private PopupWindow pop = null;
@@ -60,13 +64,18 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private ImageView img_preview;
     public static Bitmap bimap;
     private View parentView;
-    private static boolean hasqrcode = false;
+    private static boolean hasqrcode = true;
     private boolean is_up_edittext = true;
     private String url = "";
+    private int current_model = 0;
+    private int last_model = 3;
+    private int use_model = 7;      //最终传给后台的选中模板顺序
+    private boolean lastisDefaultModel = true;
 
+    //默认和未选中模板图
     static{
         Log.i(TAG,"addonList static");
-        addonList.add(R.mipmap.picture_icon1);
+        addonList.add(R.mipmap.picture_icon1_focused);
         addonList.add(R.mipmap.picture_icon2);
         addonList.add(R.mipmap.circle);
         if(hasqrcode){
@@ -74,11 +83,51 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             addonList.add(R.mipmap.circle);
         }
         addonList.add(R.mipmap.default_model);
-        addonList.add(R.mipmap.sticker1);
-        addonList.add(R.mipmap.sticker1);
-        addonList.add(R.mipmap.sticker1);
-        addonList.add(R.mipmap.sticker1);
-        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.model1_1);
+        addonList.add(R.mipmap.model2_1);
+        addonList.add(R.mipmap.model3_1);
+        addonList.add(R.mipmap.model4_1);
+        addonList.add(R.mipmap.model5_1);
+        addonList.add(R.mipmap.model6_1);
+
+    }
+
+    //选中的模板图
+    static {
+        addonList_focused.add(R.mipmap.picture_icon1_focused);
+        addonList_focused.add(R.mipmap.picture_icon2_focused);
+        addonList_focused.add(R.mipmap.circle);
+        if(hasqrcode){
+            addonList_focused.add(R.mipmap.qrcode);
+            addonList_focused.add(R.mipmap.circle);
+        }
+        addonList_focused.add(R.mipmap.default_model_focused);
+        addonList_focused.add(R.mipmap.model1_1focused);
+        addonList_focused.add(R.mipmap.model2_1focused);
+        addonList_focused.add(R.mipmap.model3_1focused);
+        addonList_focused.add(R.mipmap.model4_1focused);
+        addonList_focused.add(R.mipmap.model5_1focused);
+        addonList_focused.add(R.mipmap.model6_1focused);
+
+
+    }
+    static {
+        arr_model_preview.add(0);
+        arr_model_preview.add(0);
+        arr_model_preview.add(0);
+        arr_model_preview.add(0);
+        if(hasqrcode){
+            arr_model_preview.add(0);
+            arr_model_preview.add(0);
+        }
+
+        arr_model_preview.add(R.mipmap.model1);
+        arr_model_preview.add(R.mipmap.model2);
+        arr_model_preview.add(R.mipmap.model3);
+        arr_model_preview.add(R.mipmap.model4);
+        arr_model_preview.add(R.mipmap.model5);
+        arr_model_preview.add(R.mipmap.model6);
+
 
     }
 
@@ -92,11 +141,13 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             arr_model_instruction.add("");
         }
         arr_model_instruction.add("默认模板");
-        arr_model_instruction.add("1");
-        arr_model_instruction.add("2");
-        arr_model_instruction.add("3");
-        arr_model_instruction.add("4");
-        arr_model_instruction.add("4");
+        arr_model_instruction.add("神码日报");
+        arr_model_instruction.add("时尚杂志");
+        arr_model_instruction.add("热血动漫");
+        arr_model_instruction.add("激怒我了");
+        arr_model_instruction.add("心情格调");
+        arr_model_instruction.add("可爱动物");
+
 
     }
     //工具区
@@ -151,6 +202,13 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                 new int[]{R.id.tv_model_title,R.id.img_model,R.id.tv_model_instruction});
         bottomToolBar.setAdapter(model_adapter);
 
+        //默认是空白模板为选中状态
+        if(hasqrcode)
+            changeModel(5,R.mipmap.default_model_focused);
+        else
+            changeModel(3,R.mipmap.default_model_focused);
+        model_adapter.notifyDataSetChanged();
+
         bottomToolBar.setOnItemClickListener( new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
 
             @Override
@@ -159,13 +217,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                 Toast.makeText(MakeQrcodeActivity.this,position+"",Toast.LENGTH_SHORT).show();
                 switch (position){
                     case 0:
-                        //先文后图
-                        changeModel(0,R.mipmap.picture_icon1_focused);
-                        changeModel(1,addonList.get(1));
-                        et_qrcode_content_down.setVisibility(View.GONE);
-                        et_qrcode_content_up.setVisibility(View.VISIBLE);
-                        is_up_edittext = true;
-                        model_adapter.notifyDataSetChanged();
+                        textBeforePhoto();
                         break;
                     case 1:
                         //先图后文
@@ -175,6 +227,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                         et_qrcode_content_down.setVisibility(View.VISIBLE);
                         is_up_edittext = false;
                         model_adapter.notifyDataSetChanged();
+                        use_model = 8;
                         break;
 //                    case 2:case 3:
 //                        break;
@@ -195,15 +248,41 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                             Toast.makeText(MakeQrcodeActivity.this,"上次内容!",Toast.LENGTH_SHORT).show();
 
                         }
-                        if(position >4){
-                            img_preview.setImageResource(addonList.get(position));
-                            popPreview();
+                        //5是空白模板，6以后都是模板了
+                        if(position == 5){
+                            changeModel(position,R.mipmap.default_model_focused);
+                            current_model = position;
+                            model_adapter.notifyDataSetChanged();
+                            lastisDefaultModel = true;
                         }
+                        if(position >5){
+                            if(lastisDefaultModel){
+                                changeModel(5,R.mipmap.default_model);
+                                lastisDefaultModel = false;
+                            }
+                            img_preview.setImageResource(arr_model_preview.get(position));
+                            popPreview();
+                            current_model = position;
+                        }
+
                     }
                 }else {
-                    if(position >2){
-                        img_preview.setImageResource(addonList.get(position));
+                    //3是空白模板，4以后就是模板
+                    //
+                    if(position == 3){
+                        changeModel(position,R.mipmap.default_model_focused);
+                        model_adapter.notifyDataSetChanged();
+                        current_model = position;
+                        lastisDefaultModel = true;
+                    }
+                    if(position >3){
+                        if(lastisDefaultModel){
+                            changeModel(3,R.mipmap.default_model);
+                            lastisDefaultModel = false;
+                        }
+                        img_preview.setImageResource(arr_model_preview.get(position));
                         popPreview();
+                        current_model = position;
                     }
                 }
 //                labelSelector.hide();       //之前选择的贴纸隐藏
@@ -240,6 +319,16 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         btn_title_right.setOnClickListener(clickListener);
     }
 
+    private void textBeforePhoto(){
+        //先文后图
+        changeModel(0,R.mipmap.picture_icon1_focused);
+        changeModel(1,addonList.get(1));
+        et_qrcode_content_down.setVisibility(View.GONE);
+        et_qrcode_content_up.setVisibility(View.VISIBLE);
+        is_up_edittext = true;
+        model_adapter.notifyDataSetChanged();
+        use_model = 7;
+    }
     private void initPopupPreview() {
         pop_preview_photo = new PopupWindow(MakeQrcodeActivity.this);
         View view = getLayoutInflater().inflate(R.layout.item_popup_preview,null);
@@ -357,7 +446,18 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                     startActivityForResult(intent,SHOP_LOCATION);
                     break;
                 case R.id.btn_use_modle:
-                    Toast.makeText(MakeQrcodeActivity.this,"使用模板",Toast.LENGTH_SHORT).show();
+                    pop_preview_photo.dismiss();
+                    changeModel(last_model,addonList.get(last_model));
+                    changeModel(current_model,addonList_focused.get(current_model));
+                    model_adapter.notifyDataSetChanged();
+                    last_model = current_model;
+                    if(hasqrcode){
+                        use_model = current_model - 5;
+                    }else{
+                        use_model = current_model - 3;
+                    }
+                    Toast.makeText(MakeQrcodeActivity.this,"使用模板"+use_model,Toast.LENGTH_SHORT).show();
+                    isDefaultModel = false;
                     break;
                 case R.id.btn_create_qrcode:
                     Toast.makeText(MakeQrcodeActivity.this,"生成二维码",Toast.LENGTH_SHORT).show();
