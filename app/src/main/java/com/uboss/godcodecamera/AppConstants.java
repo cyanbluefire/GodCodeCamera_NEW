@@ -35,4 +35,13 @@ public class AppConstants {
     public static final String DB_MyGodCode = "my_god_code.db";
     public static int DB_MyGodCode_Version = 1;
 
+    public static final String UPYUN_PATH="http://ssobu-dev.b0.upaiyun.com/";
+    public static final String UPYUN_BUCKET="ssobu-dev";
+    public static final String UPYUN_BUCKET_KEY="vaQU6JGHQC8HamRHEeT9izlhHqE=";
+
+
+//    public static final String UPYUN_PATH="http://ssobu.b0.upaiyun.com";
+//    public static final String UPYUN_BUCKET="ssobu";
+//    public static final String UPYUN_BUCKET_KEY="MU9doPbx0w2qDQdKSk/TW3LKjnw=";
+
 }

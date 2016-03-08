@@ -6,6 +6,9 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -26,6 +29,8 @@ public class App extends Application {
     private DisplayMetrics     displayMetrics = null;
     private static Context mContext;
     private  static String IMEI = "";
+    public static RequestQueue requestQueue;
+
 
     public App(){
         mInstance = this;
@@ -53,7 +58,22 @@ public class App extends Application {
 
         TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         IMEI = tm.getDeviceId().toString();
+
+        requestQueue = Volley.newRequestQueue(mContext);
+
+
     }
+
+    public static void startVolley(Request req) {
+
+        // 设置超时时间
+        // req.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+        // 将请求加入队列
+        requestQueue.add(req);
+        // 开始发起请求
+        requestQueue.start();
+    }
+
     public static String getIMEI(){
         Log.i(TAG,"IMEI=="+IMEI);
         return IMEI;

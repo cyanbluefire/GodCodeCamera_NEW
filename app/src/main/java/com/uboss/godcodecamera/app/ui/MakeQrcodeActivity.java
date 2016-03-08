@@ -1,11 +1,14 @@
 package com.uboss.godcodecamera.app.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,17 +30,28 @@ import android.widget.Toast;
 
 import com.common.util.FileUtils;
 import com.uboss.godcodecamera.App;
+import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.app.MyUtil.Bimp;
 import com.uboss.godcodecamera.app.MyUtil.ImageItem;
+import com.uboss.godcodecamera.app.MyUtil.MyFileUtils;
 import com.uboss.godcodecamera.app.MyUtil.PublicWay;
 import com.uboss.godcodecamera.app.adapter.MorePicAdapter;
 import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
 import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
 import com.uboss.godcodecamera.app.view.MyGridView;
+import com.upyun.block.api.listener.CompleteListener;
+import com.upyun.block.api.listener.ProgressListener;
+import com.upyun.block.api.main.UploaderManager;
+import com.upyun.block.api.utils.UpYunUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -80,6 +94,12 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private String shop_name;
     private String uid;
     private String city;
+
+    //upyun
+    public static ArrayList<String> arr_path =  new ArrayList<String>();//要上传到upyun上得图片路径
+    public int path_count = 0;
+    private ArrayList arr_upyun_path = new ArrayList();
+
 
     //未选中模板图
     static{
@@ -612,6 +632,147 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             }
         }
     };
+
+    /**
+     * upyun上传图片
+     */
+    private void upLoadPicture() {
+        Log.i(TAG,"upLoadMorePic()");
+        if(Bimp.tempSelectBitmap.size() < 1){
+            Log.i(TAG,"arr_path size 0");
+            AlertDialog.Builder builder = new AlertDialog.Builder(MakeQrcodeActivity.this);
+            builder.setTitle("未添加图片").setIcon(android.R.drawable.ic_dialog_info)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+            builder.show();
+            return;
+        }
+        for(int i=0;i<Bimp.tempSelectBitmap.size();i++){
+            Log.i(TAG,"photo size=="+Bimp.tempSelectBitmap.size());
+            arr_path.add(i, MyFileUtils.saveTempBitmap(Bimp.tempSelectBitmap.get(i).getBitmap(), "morePic" + (i)));
+        }
+
+
+        if(path_count <arr_path.size())
+            new UpyunUpload().execute(arr_path.get(path_count));
+
+        for(String s:arr_path){
+            Log.i(TAG,"path::"+s);
+        }
+    }
+    public class UpyunUpload extends AsyncTask<String, Void, String> {
+        // 空间名
+//        String bucket = "ssobu-dev";
+        // 表单密钥
+//        String bucket_key = "vaQU6JGHQC8HamRHEeT9izlhHqE=";
+
+        String savePath = "/asset_img/avatar/{filemd5}{.suffix}.jpeg";
+
+        public UpyunUpload(){
+//            http://ssobu-dev.b0.upaiyun.com/asset_img/avatar/70ccd7325b5f8c9e2484e041b9c21ddd.jpeg
+        }
+
+        @Override
+        protected String doInBackground(String...localpath) {
+            File localFile = new File(localpath[0]);
+            try {
+				/*
+				 * 设置进度条回掉函数
+				 *
+				 * 注意：由于在计算发送的字节数中包含了图片以外的其他信息，最终上传的大小总是大于图片实际大小，
+				 * 为了解决这个问题，代码会判断如果实际传送的大小大于图片
+				 * ，就将实际传送的大小设置成'fileSize-1000'（最小为0）
+				 */
+                ProgressListener progressListener = new ProgressListener() {
+                    @Override
+                    public void transferred(long transferedBytes, long totalBytes) {
+                        // do something...
+                        System.out.println("trans:" + transferedBytes + "; total:" + totalBytes);
+                    }
+                };
+
+                CompleteListener completeListener = new CompleteListener() {
+                    @Override
+                    public void result(boolean isComplete, String result, String error) {
+                        // do something...
+
+                        if (isComplete) {
+//                Toast.makeText(MyApplication.getContext(), "第"+(path_count+1)+"张上传成功", Toast.LENGTH_LONG).show();
+                            Log.i(TAG,"第"+(path_count+1)+"张上传成功");
+
+                            try {
+                                JSONObject json_result = new JSONObject(result);
+                                JSONObject json_args = (JSONObject)json_result.get("args");
+                                String path = json_args.get("path").toString();
+                                Log.i(TAG,"path=="+path);
+                                    //附图路径
+                                    path= AppConstants.UPYUN_PATH+path;
+                                    Log.i(TAG,"path=="+path);
+
+                                    arr_upyun_path.add(path);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            path_count++;
+                            if(path_count < arr_path.size()){
+                                new UpyunUpload().execute(arr_path.get(path_count));
+                            }else{
+                                Toast.makeText(App.getContext(), "所有图片上传完成", Toast.LENGTH_LONG).show();
+                                Log.i(TAG,"所有图片上传完成");
+
+                                //
+                                preview();
+                            }
+
+
+                        } else {
+                            Toast.makeText(App.getContext(), "网络问题，上传失败，点击重新上传!", Toast.LENGTH_LONG).show();
+                            Log.i(TAG,"第"+(path_count+1)+"张上传失败");
+
+                        }
+
+
+                        System.out.println("isComplete:"+isComplete+";result:"+result+";error:"+error);
+
+
+                    }
+                };
+
+                UploaderManager uploaderManager = UploaderManager.getInstance(AppConstants.UPYUN_BUCKET);
+                uploaderManager.setConnectTimeout(60);
+                uploaderManager.setResponseTimeout(60);
+                Map<String, Object> paramsMap = uploaderManager.fetchFileInfoDictionaryWith(localFile, savePath);
+                //还可以加上其他的额外处理参数...
+                paramsMap.put("return_url", "http://httpbin.org/get");
+                // signature & policy 建议从服务端获取
+                String policyForInitial = UpYunUtils.getPolicy(paramsMap);
+                String signatureForInitial = UpYunUtils.getSignature(paramsMap, AppConstants.UPYUN_BUCKET_KEY);
+                uploaderManager.upload(policyForInitial, signatureForInitial, localFile, progressListener, completeListener);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "result";
+        }
+
+        private void preview() {
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.i(TAG, "getResult()");
+
+        }
+    }
+
     /**
      * 预览
      */
@@ -619,6 +780,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         Log.i(TAG,"previewModel()");
         Toast.makeText(MakeQrcodeActivity.this,"预览模板 "+use_model,Toast.LENGTH_SHORT).show();
         App.getIMEI();
+        upLoadPicture();
     }
 
     /**
