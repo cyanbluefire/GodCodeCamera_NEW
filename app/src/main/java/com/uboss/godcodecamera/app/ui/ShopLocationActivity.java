@@ -331,6 +331,7 @@ public class ShopLocationActivity extends AppCompatActivity{
             Intent intent = new Intent();
             intent.putExtra("shop_name", location);
             intent.putExtra("uid",uid);
+            intent.putExtra("city",city);
             setResult(RESULT_OK,intent);
             finish();
         }

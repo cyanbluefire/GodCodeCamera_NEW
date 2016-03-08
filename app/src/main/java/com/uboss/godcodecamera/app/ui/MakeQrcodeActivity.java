@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.common.util.FileUtils;
+import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.app.MyUtil.Bimp;
 import com.uboss.godcodecamera.app.MyUtil.ImageItem;
@@ -76,6 +77,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private int max_num = 1;        //每个模板最多可选的照片数
 //    private boolean lastisDefaultModel = true;
 
+    private String shop_name;
+    private String uid;
+    private String city;
 
     //未选中模板图
     static{
@@ -614,6 +618,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private void previewModel() {
         Log.i(TAG,"previewModel()");
         Toast.makeText(MakeQrcodeActivity.this,"预览模板 "+use_model,Toast.LENGTH_SHORT).show();
+        App.getIMEI();
     }
 
     /**
@@ -622,6 +627,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private void photo() {
         startActivityForResult(new Intent(MakeQrcodeActivity.this, CameraActivity.class),ADD_MORE_PIC);
     }
+
     /**
      * 切换模板信息
      * @param position
@@ -634,6 +640,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         hashMap.put("instruction",arr_model_instruction.get(position));
         models.set(position,hashMap);
     }
+
     private void changeModel(int position,int img_id,int max_num){
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("title",arr_model_title.get(position));
@@ -699,9 +706,11 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             }
             case SHOP_LOCATION:
                 Log.e(TAG,"SHOP_LOCATION");
-                String shop_name = data.getStringExtra("shop_name");
-                String uid = data.getStringExtra("uid");
-                Log.i(TAG,"shop_name=="+shop_name+" uid=="+uid);
+                shop_name = data.getStringExtra("shop_name");
+                uid = data.getStringExtra("uid");
+                city = data.getStringExtra("city");
+
+                Log.i(TAG,"shop_name=="+shop_name+" uid=="+uid+" city=="+city);
                 tv_location.setText(shop_name);
                 break;
             default:

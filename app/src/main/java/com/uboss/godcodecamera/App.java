@@ -2,7 +2,9 @@ package com.uboss.godcodecamera;
 
 import android.app.Application;
 import android.content.Context;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -19,9 +21,11 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
  */
 public class App extends Application {
 
+    private static final String TAG = "App";
     protected static App       mInstance;
     private DisplayMetrics     displayMetrics = null;
     private static Context mContext;
+    private  static String IMEI = "";
 
     public App(){
         mInstance = this;
@@ -46,6 +50,13 @@ public class App extends Application {
         initImageLoader();
         mInstance = this;
         mContext = this.getApplicationContext();
+
+        TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        IMEI = tm.getDeviceId().toString();
+    }
+    public static String getIMEI(){
+        Log.i(TAG,"IMEI=="+IMEI);
+        return IMEI;
     }
 
 
