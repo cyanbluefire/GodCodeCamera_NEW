@@ -44,4 +44,7 @@ public class AppConstants {
 //    public static final String UPYUN_BUCKET="ssobu";
 //    public static final String UPYUN_BUCKET_KEY="MU9doPbx0w2qDQdKSk/TW3LKjnw=";
 
+    public static final String SALT_OF_DEVICE_CODE = "godcode";
+    public static final String HOME_URL = "http://stage.godcode.ulaiber.com/";
+
 }

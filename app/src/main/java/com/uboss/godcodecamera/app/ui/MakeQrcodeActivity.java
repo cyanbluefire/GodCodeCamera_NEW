@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.common.util.FileUtils;
+import com.common.util.MD5Util;
 import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.R;
@@ -40,6 +41,7 @@ import com.uboss.godcodecamera.app.adapter.MorePicAdapter;
 import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
 import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
 import com.uboss.godcodecamera.app.view.MyGridView;
+import com.uboss.godcodecamera.base.GodeCode;
 import com.upyun.block.api.listener.CompleteListener;
 import com.upyun.block.api.listener.ProgressListener;
 import com.upyun.block.api.main.UploaderManager;
@@ -49,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,9 +94,12 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private int max_num = 1;        //每个模板最多可选的照片数
 //    private boolean lastisDefaultModel = true;
 
+    //preview
     private String shop_name;
     private String uid;
     private String city;
+    private String code;    //识别设备IMEI
+    private String platform = "android";
 
     //upyun
     public static ArrayList<String> arr_path =  new ArrayList<String>();//要上传到upyun上得图片路径
@@ -590,7 +596,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 
                 }
                 case R.id.img_title_right:
-                    previewModel();
+                    upYunPhoto();
                     break;
                 case R.id.btn_cancle_preview:
                     pop_preview_photo.dismiss();
@@ -762,9 +768,6 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             return "result";
         }
 
-        private void preview() {
-        }
-
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
@@ -772,14 +775,43 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 
         }
     }
+    private void preview() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(code).append(platform).append(AppConstants.SALT_OF_DEVICE_CODE);
+        String black_code = MD5Util.getMD5(sb.toString());
+        Log.e(TAG,"path::"+arr_upyun_path.toString());
+        JSONObject json = new JSONObject();
+        JSONObject json_article_content = new JSONObject();
+
+        try {
+            json_article_content.put("images",arr_upyun_path.toString());
+            json_article_content.put("text","文字内容");
+            json.put("code",code);
+            json.put("platform",platform);
+            json.put("black_code",black_code);
+            json.put("article_content",json_article_content);
+            json.put("poi_uid",uid);
+            json.put("poi_city",city);
+            json.put("poi_name",shop_name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//            String[] paths = new String[50];
+//            for(String s:arr_path){
+//
+//            }
+        Intent intent = new Intent(MakeQrcodeActivity.this,GodCodeWebActivity.class);
+        intent.putExtra("preview",json.toString());
+        startActivity(intent);
+    }
 
     /**
      * 预览
      */
-    private void previewModel() {
+    private void upYunPhoto() {
         Log.i(TAG,"previewModel()");
         Toast.makeText(MakeQrcodeActivity.this,"预览模板 "+use_model,Toast.LENGTH_SHORT).show();
-        App.getIMEI();
+        code = App.getIMEI();
         upLoadPicture();
     }
 
