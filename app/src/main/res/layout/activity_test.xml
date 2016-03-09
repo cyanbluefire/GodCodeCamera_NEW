@@ -17,5 +17,15 @@
         android:id="@+id/web_test"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></WebView>
+    <Button
+        android:id="@+id/btn_create_qrcode"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_bottom"
+        android:layout_alignParentBottom="true"
+        android:text="@string/create_qrcode"
+        android:background="@color/yellow"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

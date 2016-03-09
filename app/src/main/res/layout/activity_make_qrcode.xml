@@ -95,7 +95,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/btn_bottom"
         android:layout_alignParentBottom="true"
-        android:text="@string/create_qrcode"
+        android:text="@string/preview"
         android:background="@color/yellow"
         android:textColor="@color/white"
         android:textSize="18sp"

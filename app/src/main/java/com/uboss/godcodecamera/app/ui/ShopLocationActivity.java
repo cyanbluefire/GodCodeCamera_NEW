@@ -327,7 +327,7 @@ public class ShopLocationActivity extends AppCompatActivity{
             hideInputMethod(arg1);
             location = list_aoutoCom.get(position).get("prompt").toString();
             uid = poiInfo.get(position).get("id").toString();
-            Log.e(TAG,"location=="+location+" uid=="+uid);
+            Log.e(TAG,"location=="+location+" uid=="+uid+" city=="+city);
             Intent intent = new Intent();
             intent.putExtra("shop_name", location);
             intent.putExtra("uid",uid);

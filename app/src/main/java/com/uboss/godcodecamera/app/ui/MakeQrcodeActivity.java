@@ -47,12 +47,14 @@ import com.upyun.block.api.listener.ProgressListener;
 import com.upyun.block.api.main.UploaderManager;
 import com.upyun.block.api.utils.UpYunUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,9 +97,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 //    private boolean lastisDefaultModel = true;
 
     //preview
-    private String shop_name;
+    private String shop_name = "肯德基";
     private String uid;
-    private String city;
+    private String city = "深圳";
     private String code;    //识别设备IMEI
     private String platform = "android";
 
@@ -463,7 +465,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             }
         });
         //预览
-        btn_title_right.setOnClickListener(clickListener);
+//        btn_title_right.setOnClickListener(clickListener);
+        btn_title_right.setVisibility(View.GONE);
     }
 
     private void clickDefaultModel(){
@@ -595,9 +598,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                     break;
 
                 }
-                case R.id.img_title_right:
-                    upYunPhoto();
-                    break;
+//                case R.id.img_title_right:
+//                    upYunPhoto();
+//                    break;
                 case R.id.btn_cancle_preview:
                     pop_preview_photo.dismiss();
                     break;
@@ -620,18 +623,21 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 //                    lastisDefaultModel = false;
                     break;
                 case R.id.btn_create_qrcode:
-                    Toast.makeText(MakeQrcodeActivity.this,"生成二维码 "+use_model,Toast.LENGTH_SHORT).show();
-                    Intent intent_process =  new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class);
-                    //文字描述
-                    if (is_up_edittext)
-                        intent_process.putExtra("content",et_qrcode_content_up.getText().toString());
-                    else
-                        intent_process.putExtra("content",et_qrcode_content_down.getText().toString());
-                    //包含图片张数
-                    intent_process.putExtra("count",Bimp.tempSelectBitmap.size());
-                    //二维码内容地址
-                    intent_process.putExtra("url",url);
-                    startActivity(intent_process);
+                    Toast.makeText(MakeQrcodeActivity.this,"预览 "+use_model,Toast.LENGTH_SHORT).show();
+                    upYunPhoto();
+
+
+//                    Intent intent_process =  new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class);
+//                    //文字描述
+//                    if (is_up_edittext)
+//                        intent_process.putExtra("content",et_qrcode_content_up.getText().toString());
+//                    else
+//                        intent_process.putExtra("content",et_qrcode_content_down.getText().toString());
+//                    //包含图片张数
+//                    intent_process.putExtra("count",Bimp.tempSelectBitmap.size());
+//                    //二维码内容地址
+//                    intent_process.putExtra("url",url);
+//                    startActivity(intent_process);
                     break;
                 default:
                     break;
@@ -667,7 +673,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             new UpyunUpload().execute(arr_path.get(path_count));
 
         for(String s:arr_path){
-            Log.i(TAG,"path::"+s);
+            Log.i(TAG,"arr_path::"+s);
         }
     }
     public class UpyunUpload extends AsyncTask<String, Void, String> {
@@ -779,29 +785,46 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         StringBuilder sb = new StringBuilder();
         sb.append(code).append(platform).append(AppConstants.SALT_OF_DEVICE_CODE);
         String black_code = MD5Util.getMD5(sb.toString());
-        Log.e(TAG,"path::"+arr_upyun_path.toString());
+        Log.i(TAG,"path::"+arr_upyun_path.toString());
         JSONObject json = new JSONObject();
         JSONObject json_article_content = new JSONObject();
-
         try {
-            json_article_content.put("images",arr_upyun_path.toString());
-            json_article_content.put("text","文字内容");
-            json.put("code",code);
-            json.put("platform",platform);
-            json.put("black_code",black_code);
-            json.put("article_content",json_article_content);
-            json.put("poi_uid",uid);
-            json.put("poi_city",city);
-            json.put("poi_name",shop_name);
+            json_article_content.put("text",MyFileUtils.gbEncoding("文本"));
+            json_article_content.put("images",new JSONArray(arr_upyun_path));
+            Log.i(TAG,"MyFileUtils.string2Unicode()=="+MyFileUtils.gbEncoding("文本"));
+            Log.i(TAG,"json_article_content222::"+json_article_content);
+//            json_article_content.put("images",arr_upyun_path.toArray());
+//            Arrays.toString(arr_upyun_path.toArray());
+
+
+
+//            HashMap<String,Object> map = new HashMap<String,Object>();
+//            map.put("images",arr_upyun_path);
+//            map.put("text","文字内容");
+
+//            json.put("code",code);
+//            json.put("platform",platform);
+//            json.put("black_code",black_code);
+//            json.put("article_content",json_article_content);
+//            json.put("poi_uid",uid);
+//            json.put("poi_city","city");
+//            json.put("poi_name","shop_name");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//            String[] paths = new String[50];
-//            for(String s:arr_path){
-//
-//            }
+
+
+
+
         Intent intent = new Intent(MakeQrcodeActivity.this,GodCodeWebActivity.class);
-        intent.putExtra("preview",json.toString());
+        intent.putExtra("code",code);
+        intent.putExtra("platform",platform);
+        intent.putExtra("black_code",black_code);
+        intent.putExtra("article_content",json_article_content.toString());
+        intent.putExtra("poi_uid",uid);
+        intent.putExtra("poi_city",MyFileUtils.string2Unicode(city));
+        intent.putExtra("poi_name",MyFileUtils.string2Unicode(shop_name));
+
         startActivity(intent);
     }
 
