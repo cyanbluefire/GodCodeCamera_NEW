@@ -37,15 +37,16 @@ public class EffectUtil {
 
     //添加默认贴纸 --cyan*
     static {
-        addonList.add(new Addon(R.drawable.sticker1));
-        addonList.add(new Addon(R.drawable.sticker2));
-        addonList.add(new Addon(R.drawable.sticker3));
-        addonList.add(new Addon(R.drawable.sticker4));
-        addonList.add(new Addon(R.drawable.sticker5));
-        addonList.add(new Addon(R.drawable.sticker6));
-        addonList.add(new Addon(R.drawable.sticker7));
-        addonList.add(new Addon(R.drawable.sticker8));
-        addonList.add(new Addon(R.drawable.sticker8));
+        addonList.add(new Addon(R.mipmap.qrcode));
+        addonList.add(new Addon(R.mipmap.sticker1));
+        addonList.add(new Addon(R.mipmap.sticker2));
+        addonList.add(new Addon(R.mipmap.sticker3));
+        addonList.add(new Addon(R.mipmap.sticker4));
+        addonList.add(new Addon(R.mipmap.sticker5));
+        addonList.add(new Addon(R.mipmap.sticker6));
+        addonList.add(new Addon(R.mipmap.sticker7));
+        addonList.add(new Addon(R.mipmap.sticker8));
+        addonList.add(new Addon(R.mipmap.sticker9));
 
     }
 

@@ -123,30 +123,28 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     static{
         Log.i(TAG,"addonList static");
-        addonList.add(R.mipmap.picture_icon1);
-        addonList.add(R.mipmap.picture_icon2);
-        addonList.add(R.mipmap.circle);
-
-        addonList.add(R.mipmap.default_model);
         addonList.add(R.mipmap.sticker1);
-        addonList.add(R.mipmap.sticker1);
-        addonList.add(R.mipmap.sticker1);
-        addonList.add(R.mipmap.sticker1);
-        addonList.add(R.mipmap.sticker1);
+        addonList.add(R.mipmap.sticker2);
+        addonList.add(R.mipmap.sticker3);
+        addonList.add(R.mipmap.sticker4);
+        addonList.add(R.mipmap.sticker5);
+        addonList.add(R.mipmap.sticker6);
+        addonList.add(R.mipmap.sticker7);
+        addonList.add(R.mipmap.sticker8);
+        addonList.add(R.mipmap.sticker9);
 
     }
     static {
         Log.i(TAG,"arr_model_instruction static");
-        arr_model_instruction.add("先文后图");
-        arr_model_instruction.add("先图后文");
-        arr_model_instruction.add("");
-
-        arr_model_instruction.add("默认模板");
-        arr_model_instruction.add("1");
-        arr_model_instruction.add("2");
-        arr_model_instruction.add("3");
-        arr_model_instruction.add("4");
-        arr_model_instruction.add("5");
+        arr_model_instruction.add("美好一天");
+        arr_model_instruction.add("美味情缘");
+        arr_model_instruction.add("让你微笑");
+        arr_model_instruction.add("这是神码");
+        arr_model_instruction.add("单身无罪");
+        arr_model_instruction.add("狂欢认证");
+        arr_model_instruction.add("性感红唇");
+        arr_model_instruction.add("夜露死苦");
+        arr_model_instruction.add("最难将息");
 
 
     }
@@ -515,6 +513,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 new String[]{"title","img","instruction"},
                 new int[]{R.id.tv_model_title,R.id.img_model,R.id.tv_model_instruction});
         bottomToolBar.setAdapter(model_adapter);
+        View bottom_view = LayoutInflater.from(PhotoProcessActivity.this).inflate(R.layout.item_bottom_toolbar,null);
+        bottom_view.findViewById(R.id.rl_bottom_toolbar).setBackgroundColor(getResources().getColor(R.color.black));
 
         bottomToolBar.setOnItemClickListener( new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
 
@@ -523,7 +523,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                                     View arg1, int position, long arg3) {
                 Toast.makeText(PhotoProcessActivity.this,position+"",Toast.LENGTH_SHORT).show();
                 labelSelector.hide();       //之前选择的贴纸隐藏
-                Addon sticker = EffectUtil.addonList.get(position);//添加贴纸200*200 --cyan***
+                Addon sticker = EffectUtil.addonList.get(position+1);//添加贴纸200*200 --cyan*** 0是二维码
 
                 EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
                         new EffectUtil.StickerCallback() {
@@ -570,7 +570,6 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     private void setModelData(){
         //标题
-        arr_model_title.add("图文顺序");
         while (arr_model_title.size()<addonList.size()){
             arr_model_title.add("");
         }
