@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class MyFileUtils {
 
@@ -128,8 +129,9 @@ public class MyFileUtils {
 			// 取出每一个字符
 			char c = string.charAt(i);
 
+			String fullHexString = "000" + Integer.toHexString(c);
 			// 转换为unicode
-			unicode.append("\\u" + Integer.toHexString(c));
+			unicode.append("\\u" + fullHexString.substring(fullHexString.length()-4));
 		}
 
 		return unicode.toString();
@@ -167,5 +169,29 @@ public class MyFileUtils {
 		}
 		System.out.println("unicodeBytes is: " + unicodeBytes);
 		return unicodeBytes;
+	}
+	public static String string2Unicode2(String s) {
+		Log.i(TAG,"string2Unicode2");
+		try {
+			StringBuffer out = new StringBuffer("");
+			byte[] bytes = s.getBytes("unicode");
+			for (int i = 2; i < bytes.length - 1; i += 2) {
+				out.append("u");
+				String str = Integer.toHexString(bytes[i + 1] & 0xff);
+				for (int j = str.length(); j < 2; j++) {
+					out.append("0");
+				}
+				String str1 = Integer.toHexString(bytes[i] & 0xff);
+
+				out.append(str);
+				out.append(str1);
+				out.append(" ");
+			}
+			return out.toString().toUpperCase();
+		}
+		catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

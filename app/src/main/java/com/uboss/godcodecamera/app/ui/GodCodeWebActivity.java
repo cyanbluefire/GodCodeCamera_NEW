@@ -3,13 +3,17 @@ package com.uboss.godcodecamera.app.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -47,6 +51,7 @@ public class GodCodeWebActivity extends AppCompatActivity {
     Button btn_create_qrcode;
     private JSONObject json = new JSONObject();
     private String code,platform,black_code,article_content,poi_uid,poi_city,poi_name;
+    private int use_model;
 
 
     @Override
@@ -62,7 +67,7 @@ public class GodCodeWebActivity extends AppCompatActivity {
         poi_uid = intent.getStringExtra("poi_uid");
         poi_city = intent.getStringExtra("poi_city");
         poi_name = intent.getStringExtra("poi_name");
-
+        use_model = intent.getIntExtra("use_model",1);
 
 //        previewVolleyRequest();
         btn_create_qrcode.setOnClickListener(new View.OnClickListener() {
@@ -82,18 +87,55 @@ public class GodCodeWebActivity extends AppCompatActivity {
 //                    startActivity(intent_process);
             }
         });
+        StringBuilder url = new StringBuilder(AppConstants.HOME_URL);
+        url.append("templates/").append(use_model).append("/preview");
+        Log.i(TAG,"url=="+url.toString());
 
-        String url = getIntent().getStringExtra("url");
-        web_test.loadUrl(url,getHeader());
-        Uri.decode(CameraActivity.Main_Photo_Name);
-//        web_test.loadUrl("http://10.17.1.42:8020/camera_html/mood_html/mood.html");
-//        web_test.loadUrl("http://www.taobao.com");
         WebSettings settings = web_test.getSettings();
         settings.setJavaScriptEnabled(true);
+        settings.setUseWideViewPort(true);//设定支持viewport
+
+//        String url = AppConstants.HOME_URL+"templates/"+use_model+"/preview";
+        web_test.loadUrl(url.toString(),getHeader());
+//        Uri.decode(CameraActivity.Main_Photo_Name);
+//        web_test.loadUrl("http://10.17.1.42:8020/camera_html/mood_html/mood.html");
+//        web_test.loadUrl("http://www.taobao.com");
+
 //        settings.setUserAgentString("ubossman");
 //        Log.i("cyan","agent::"+settings.getUserAgentString());
 //        settings.getUserAgentString();
 
+        // webview设置
+//        web_test.setWebViewClient(new WebViewClient(){
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                // TODO Auto-generated method stub
+//                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+//                view.loadUrl(url);
+//                Log.i(TAG,"shouldOverrideUrlLoading url=="+url);
+//
+//                return true;
+//            }
+//
+//            @Override
+//            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+//                super.onPageStarted(view, url, favicon);
+//                Log.i(TAG,"onPageStarted url=="+url);
+//            }
+//        });
+        web_test.setWebChromeClient(new WebChromeClient()
+        {
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message,
+                                     JsResult result)
+            {
+
+                // TODO Auto-generated method stub
+                return super.onJsAlert(view, url, message, result);
+            }
+
+        });
     }
 
 //    private void previewVolleyRequest() {

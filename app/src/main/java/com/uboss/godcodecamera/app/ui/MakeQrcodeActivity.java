@@ -784,15 +784,21 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private void preview() {
         StringBuilder sb = new StringBuilder();
         sb.append(code).append(platform).append(AppConstants.SALT_OF_DEVICE_CODE);
-        String black_code = MD5Util.getMD5(sb.toString());
+        String black_code = MD5Util.MD5(sb.toString());
         Log.i(TAG,"path::"+arr_upyun_path.toString());
         JSONObject json = new JSONObject();
         JSONObject json_article_content = new JSONObject();
+//        String article_content="";
         try {
-            json_article_content.put("text",MyFileUtils.gbEncoding("文本"));
+            String content = MyFileUtils.string2Unicode("文本");
+
+            json_article_content.put("text",content);
             json_article_content.put("images",new JSONArray(arr_upyun_path));
-            Log.i(TAG,"MyFileUtils.string2Unicode()=="+MyFileUtils.gbEncoding("文本"));
-            Log.i(TAG,"json_article_content222::"+json_article_content);
+            Log.i(TAG,"MyFileUtils.string2Unicode()=="+MyFileUtils.string2Unicode("文本"));
+//            article_content = MyFileUtils.string2Unicode(json_article_content.toString());
+
+//            article_content.replace("\\\\","\\");
+//            Log.i(TAG,"json_article_content222::"+MyFileUtils.string2Unicode(article_content));
 //            json_article_content.put("images",arr_upyun_path.toArray());
 //            Arrays.toString(arr_upyun_path.toArray());
 
@@ -813,17 +819,20 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
-
+        String article_content = json_article_content.toString();
+        Log.i(TAG,"before::"+article_content);
+        article_content = article_content.replace("\\\\","\\");
+        Log.i(TAG,"after::"+article_content);
+        Log.i(TAG,"use_model=="+use_model);
         Intent intent = new Intent(MakeQrcodeActivity.this,GodCodeWebActivity.class);
         intent.putExtra("code",code);
         intent.putExtra("platform",platform);
         intent.putExtra("black_code",black_code);
-        intent.putExtra("article_content",json_article_content.toString());
+        intent.putExtra("article_content",article_content);
         intent.putExtra("poi_uid",uid);
         intent.putExtra("poi_city",MyFileUtils.string2Unicode(city));
         intent.putExtra("poi_name",MyFileUtils.string2Unicode(shop_name));
+        intent.putExtra("use_model",use_model);
 
         startActivity(intent);
     }
