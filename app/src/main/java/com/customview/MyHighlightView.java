@@ -1,6 +1,8 @@
 package com.customview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 
 import com.customview.drawable.EditableDrawable;
 import com.customview.drawable.FeatherDrawable;
+import com.customview.drawable.StickerDrawable;
 import com.uboss.godcodecamera.R;
 import com.imagezoom.ImageViewTouch;
 import com.uboss.godcodecamera.App;
@@ -113,6 +116,15 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
         } else {
             mAnchorDelete = null;
         }
+    }
+
+    public void updateContent(Context context) {
+        Bitmap bitmap = BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.ic_launcher);
+        StickerDrawable drawable = new StickerDrawable(context.getResources(), bitmap);
+        drawable.setAntiAlias(true);
+        drawable.setMinSize(30, 30);
+
+        mContent = drawable;
     }
 
     public MyHighlightView(ImageView context, int styleId, FeatherDrawable content) {

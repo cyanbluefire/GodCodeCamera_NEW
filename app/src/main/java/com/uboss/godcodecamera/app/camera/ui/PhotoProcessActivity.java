@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -89,7 +90,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     Button img_title_right;
     @InjectView(R.id.img_title_left)
     ImageView img_title_left;
-
+//    @InjectView(R.id.rl_bottom_toolbar)
+//    RelativeLayout rl_bottom_toolbar;
 
 
     private MyImageViewDrawableOverlay mImageView;
@@ -316,6 +318,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         img_title_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EffectUtil.hightlistViews.get(0).updateContent(PhotoProcessActivity.this);
+
                 savePicture();
             }
         });
@@ -511,6 +515,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 new String[]{"title","img","instruction"},
                 new int[]{R.id.tv_model_title,R.id.img_model,R.id.tv_model_instruction});
         bottomToolBar.setAdapter(model_adapter);
+
         bottomToolBar.setOnItemClickListener( new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
 
             @Override
@@ -518,7 +523,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                                     View arg1, int position, long arg3) {
                 Toast.makeText(PhotoProcessActivity.this,position+"",Toast.LENGTH_SHORT).show();
                 labelSelector.hide();       //之前选择的贴纸隐藏
-                Addon sticker = EffectUtil.addonList.get(position);//贴纸200*200
+                Addon sticker = EffectUtil.addonList.get(position);//添加贴纸200*200 --cyan***
+
                 EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
                         new EffectUtil.StickerCallback() {
                             @Override

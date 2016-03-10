@@ -97,9 +97,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 //    private boolean lastisDefaultModel = true;
 
     //preview
-    private String shop_name = "肯德基";
+    private String shop_name = "";
     private String uid;
-    private String city = "深圳";
+    private String city = "";
     private String code;    //识别设备IMEI
     private String platform = "android";
 
@@ -467,6 +467,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         //预览
 //        btn_title_right.setOnClickListener(clickListener);
         btn_title_right.setVisibility(View.GONE);
+        img_title_left.setOnClickListener(clickListener);
     }
 
     private void clickDefaultModel(){
@@ -598,9 +599,10 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                     break;
 
                 }
-//                case R.id.img_title_right:
-//                    upYunPhoto();
-//                    break;
+                case R.id.img_title_left:
+                    startActivity(new Intent(MakeQrcodeActivity.this, CameraActivity.class));
+                    finish();
+                    break;
                 case R.id.btn_cancle_preview:
                     pop_preview_photo.dismiss();
                     break;
@@ -623,8 +625,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 //                    lastisDefaultModel = false;
                     break;
                 case R.id.btn_create_qrcode:
-                    Toast.makeText(MakeQrcodeActivity.this,"预览 "+use_model,Toast.LENGTH_SHORT).show();
-                    upYunPhoto();
+//                    upYunPhoto();
+                    startActivity(new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class));
 
 
 //                    Intent intent_process =  new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class);
@@ -639,6 +641,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 //                    intent_process.putExtra("url",url);
 //                    startActivity(intent_process);
                     break;
+
                 default:
                     break;
             }
@@ -784,46 +787,28 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private void preview() {
         StringBuilder sb = new StringBuilder();
         sb.append(code).append(platform).append(AppConstants.SALT_OF_DEVICE_CODE);
-        String black_code = MD5Util.MD5(sb.toString());
+        String black_code = MD5Util.MyMD5(sb.toString());
         Log.i(TAG,"path::"+arr_upyun_path.toString());
         JSONObject json = new JSONObject();
         JSONObject json_article_content = new JSONObject();
 //        String article_content="";
         try {
-            String content = MyFileUtils.string2Unicode("文本");
+            if(et_qrcode_content_up.getVisibility() == View.VISIBLE){
+                json_article_content.put("text",MyFileUtils.string2Unicode(et_qrcode_content_up.getText().toString()));
 
-            json_article_content.put("text",content);
+            }else{
+                json_article_content.put("text",MyFileUtils.string2Unicode(et_qrcode_content_down.getText().toString()));
+            }
             json_article_content.put("images",new JSONArray(arr_upyun_path));
-            Log.i(TAG,"MyFileUtils.string2Unicode()=="+MyFileUtils.string2Unicode("文本"));
-//            article_content = MyFileUtils.string2Unicode(json_article_content.toString());
-
-//            article_content.replace("\\\\","\\");
-//            Log.i(TAG,"json_article_content222::"+MyFileUtils.string2Unicode(article_content));
-//            json_article_content.put("images",arr_upyun_path.toArray());
-//            Arrays.toString(arr_upyun_path.toArray());
-
-
-
-//            HashMap<String,Object> map = new HashMap<String,Object>();
-//            map.put("images",arr_upyun_path);
-//            map.put("text","文字内容");
-
-//            json.put("code",code);
-//            json.put("platform",platform);
-//            json.put("black_code",black_code);
-//            json.put("article_content",json_article_content);
-//            json.put("poi_uid",uid);
-//            json.put("poi_city","city");
-//            json.put("poi_name","shop_name");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         String article_content = json_article_content.toString();
-        Log.i(TAG,"before::"+article_content);
+//        Log.i(TAG,"before::"+article_content);
         article_content = article_content.replace("\\\\","\\");
-        Log.i(TAG,"after::"+article_content);
-        Log.i(TAG,"use_model=="+use_model);
+//        Log.i(TAG,"after::"+article_content);
+//        Log.i(TAG,"use_model=="+use_model);
         Intent intent = new Intent(MakeQrcodeActivity.this,GodCodeWebActivity.class);
         intent.putExtra("code",code);
         intent.putExtra("platform",platform);
@@ -844,6 +829,10 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         Log.i(TAG,"previewModel()");
         Toast.makeText(MakeQrcodeActivity.this,"预览模板 "+use_model,Toast.LENGTH_SHORT).show();
         code = App.getIMEI();
+        if(tv_location.getText().toString().equals("当前地点")){
+            Toast.makeText(MakeQrcodeActivity.this,"请先选择当前位置",Toast.LENGTH_SHORT).show();
+            return;
+        }
         upLoadPicture();
     }
 

@@ -32,7 +32,8 @@ public class EffectUtil {
 
     public static List<Addon> addonList                 = new ArrayList<Addon>();
     //--cyan所有后续添加的view都放到这个list
-    private static List<MyHighlightView> hightlistViews = new CopyOnWriteArrayList<MyHighlightView>();
+    public static List<MyHighlightView> hightlistViews = new CopyOnWriteArrayList<MyHighlightView>();
+
 
     //添加默认贴纸 --cyan*
     static {
@@ -57,7 +58,7 @@ public class EffectUtil {
         public void onRemoveSticker(Addon sticker);
     }
 
-    //添加贴纸 --cyan*
+    //添加贴纸 --cyan****
 
     /**
      *

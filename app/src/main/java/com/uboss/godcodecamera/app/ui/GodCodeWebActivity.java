@@ -95,7 +95,6 @@ public class GodCodeWebActivity extends AppCompatActivity {
         settings.setJavaScriptEnabled(true);
         settings.setUseWideViewPort(true);//设定支持viewport
 
-//        String url = AppConstants.HOME_URL+"templates/"+use_model+"/preview";
         web_test.loadUrl(url.toString(),getHeader());
 //        Uri.decode(CameraActivity.Main_Photo_Name);
 //        web_test.loadUrl("http://10.17.1.42:8020/camera_html/mood_html/mood.html");

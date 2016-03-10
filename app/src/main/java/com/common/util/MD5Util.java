@@ -26,8 +26,12 @@ public class MD5Util {
 
     }
 
-
-        public static String MD5(String sourceStr) {
+    /**
+     * --cyan
+     * @param sourceStr
+     * @return
+     */
+    public static String MyMD5(String sourceStr) {
             String result = "";
             try {
                 MessageDigest md = MessageDigest.getInstance("MD5");
@@ -44,8 +48,8 @@ public class MD5Util {
                     buf.append(Integer.toHexString(i));
                 }
                 result = buf.toString();
-                System.out.println("MD5(" + sourceStr + ",32) = " + result);
-                System.out.println("MD5(" + sourceStr + ",16) = " + buf.toString().substring(8, 24));
+//                System.out.println("MD5(" + sourceStr + ",32) = " + result);
+//                System.out.println("MD5(" + sourceStr + ",16) = " + buf.toString().substring(8, 24));
             } catch (NoSuchAlgorithmException e) {
                 System.out.println(e);
             }
