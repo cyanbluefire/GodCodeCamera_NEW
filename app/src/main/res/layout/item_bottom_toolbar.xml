@@ -25,7 +25,8 @@
         android:layout_marginBottom="@dimen/model_margin"
         android:layout_marginTop="@dimen/model_margin"
         android:layout_below="@id/tv_model_title"
-        android:src="@mipmap/qrcode"/>
+        android:src="@mipmap/qrcode"
+        android:scaleType="center"/>
     <TextView
         android:id="@+id/tv_model_instruction"
         android:layout_width="wrap_content"

@@ -153,7 +153,6 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     }
     static {
-        Log.i(TAG,"arr_model_instruction static");
         arr_model_instruction.add("美好一天");
         arr_model_instruction.add("美味情缘");
         arr_model_instruction.add("让你微笑");
@@ -600,38 +599,57 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             @Override
             public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
                                     View arg1, int position, long arg3) {
-                Toast.makeText(PhotoProcessActivity.this,position+"",Toast.LENGTH_SHORT).show();
-                labelSelector.hide();       //之前选择的贴纸隐藏
-                Addon sticker = EffectUtil.addonList.get(position+1);//添加贴纸200*200 --cyan*** 0是二维码
+                addSticker(position+1);
 
-                EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
-                        new EffectUtil.StickerCallback() {
-                            @Override
-                            public void onRemoveSticker(Addon sticker) {
-                                labelSelector.hide();
-                            }
-                        });
-                switch (position){
-                    case 0:
-
-                        model_adapter.notifyDataSetChanged();
-                        break;
-                    case 1:
-
-                        model_adapter.notifyDataSetChanged();
-                        break;
-
-                    default:
-
-                        break;
-
-                }
+//                Toast.makeText(PhotoProcessActivity.this,position+"",Toast.LENGTH_SHORT).show();
+//                labelSelector.hide();       //之前选择的贴纸隐藏
+//                Addon sticker = EffectUtil.addonList.get(position+1);//添加贴纸200*200 --cyan*** 0是二维码
+//
+//                EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
+//                        new EffectUtil.StickerCallback() {
+//                            @Override
+//                            public void onRemoveSticker(Addon sticker) {
+//                                labelSelector.hide();
+//                            }
+//                        });
+//                switch (position){
+//                    case 0:
+//
+//                        model_adapter.notifyDataSetChanged();
+//                        break;
+//                    case 1:
+//
+//                        model_adapter.notifyDataSetChanged();
+//                        break;
+//
+//                    default:
+//
+//                        break;
+//
+//                }
 
 
             }
         });
 
         //--cyan end
+    }
+
+    /**
+     * 添加贴纸在图片上
+     * @param position
+     */
+    private void addSticker(int position){
+        labelSelector.hide();       //之前选择的贴纸隐藏
+        Addon sticker = EffectUtil.addonList.get(position);//添加贴纸200*200 --cyan*** 0是二维码
+
+        EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
+                new EffectUtil.StickerCallback() {
+                    @Override
+                    public void onRemoveSticker(Addon sticker) {
+                        labelSelector.hide();
+                    }
+                });
     }
 
     private ArrayList<HashMap<String, Object>> getToolList() {
