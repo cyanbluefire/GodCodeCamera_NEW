@@ -625,8 +625,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
 //                    lastisDefaultModel = false;
                     break;
                 case R.id.btn_create_qrcode:
-//                    upYunPhoto();
-                    startActivity(new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class));
+                    upYunPhoto();
+//                    startActivity(new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class));
 
 
 //                    Intent intent_process =  new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class);

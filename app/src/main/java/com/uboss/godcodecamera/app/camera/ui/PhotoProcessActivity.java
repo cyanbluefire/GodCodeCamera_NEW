@@ -1,5 +1,6 @@
 package com.uboss.godcodecamera.app.camera.ui;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +22,11 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.common.util.FileUtils;
 import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
@@ -44,12 +50,17 @@ import com.uboss.godcodecamera.app.camera.util.GPUImageFilterTools;
 import com.uboss.godcodecamera.app.model.Addon;
 import com.uboss.godcodecamera.app.model.TagItem;
 import com.uboss.godcodecamera.app.ui.MyGodCodeActivity;
+import com.uboss.godcodecamera.app.volley.VolleyErrorUtil;
 import com.uboss.godcodecamera.base.GodeCode;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.Inflater;
 
 import butterknife.ButterKnife;
@@ -119,7 +130,11 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     ArrayList<HashMap<String,Object>> models = new ArrayList<>();
     private String content = ""; //二维码内容文字
     private int count = 0;  //二维码内容图片数量
-    private String url = "";    //二维码内容地址
+    private String article_url = "";    //二维码内容地址
+    //生成图文post 参数
+    private String code,platform,black_code,article_content,poi_uid,poi_city,poi_name;
+    private int template_id;
+
 
     static{
         Log.i(TAG,"addonList static");
@@ -162,7 +177,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         initStickerToolBar();
 
         //获取二维码内容
-        getQrCode();
+        getQrCodeContent();
         //显示之前选中的图片 --cyan
         //getData()为uri格式
 //        String imagePath = LocalDataUtil.ReadSharePre("main_pictures","mainPic");
@@ -199,11 +214,16 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     }
 
-    private void getQrCode() {
+    private void getQrCodeContent() {
         Intent intent = getIntent();
-        content = intent.getStringExtra("content");
-        count = intent.getIntExtra("count",0);
-        url = intent.getStringExtra("url");
+        code = intent.getStringExtra("code");
+        platform = intent.getStringExtra("platform");
+        black_code = intent.getStringExtra("black_code");
+        article_content = intent.getStringExtra("article_content");
+        poi_uid = intent.getStringExtra("poi_uid");
+        poi_city = intent.getStringExtra("poi_city");
+        poi_name = intent.getStringExtra("poi_name");
+        template_id = intent.getIntExtra("use_model",1);
     }
 
     private void initView() {
@@ -316,11 +336,52 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         img_title_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EffectUtil.hightlistViews.get(0).updateContent(PhotoProcessActivity.this);
+                CreateNewArticle();
+//                EffectUtil.hightlistViews.get(0).updateContent(PhotoProcessActivity.this);
 
-                savePicture();
+//                savePicture();
+
             }
         });
+    }
+
+    private void CreateNewArticle() {
+        String url = AppConstants.HOME_URL+"articles/new";
+        JSONObject params = new JSONObject();
+        try {
+            params.put("code",code);
+            params.put("platform",platform);
+            params.put("black_code",black_code);
+            params.put("article_content",article_content);
+            params.put("template_id",template_id);
+            params.put("poi_uid",poi_uid);
+            params.put("poi_city",poi_city);
+            params.put("poi_name",poi_name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        JsonObjectRequest request_new_article = new JsonObjectRequest(Request.Method.POST, url,params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.i(TAG,"new article Success!");
+                try {
+                    article_url = jsonObject.getString("url");
+                    //格式如下 article_url==/articles/97
+                    Log.e(TAG,"article_url=="+article_url);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyErrorUtil.onErrorResponse(volleyError);
+
+            }
+        });
+        App.startVolley(request_new_article);
     }
 
     //保存图片

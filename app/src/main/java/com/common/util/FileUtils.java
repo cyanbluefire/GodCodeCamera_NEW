@@ -41,7 +41,7 @@ public class FileUtils {
     }
 
     /**
-     * 生成的二维码的地址
+     * 生成的二维码保存的地址
      * @return
      */
     public static String getQrcodePath(){

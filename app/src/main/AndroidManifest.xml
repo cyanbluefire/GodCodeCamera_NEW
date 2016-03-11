@@ -59,7 +59,11 @@
             android:name=".app.camera.ui.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".app.camera.ui.CropPhotoActivity"
@@ -72,7 +76,9 @@
         <activity
             android:name=".app.camera.ui.PhotoProcessActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
+
+        </activity>
         <activity
             android:name=".app.ui.EditTextActivity"
             android:screenOrientation="portrait"
@@ -104,11 +110,7 @@
         <activity android:name=".app.ui.GodCodeWebActivity" />
         <activity android:name=".app.ui.MyGodCodeActivity" />
         <activity android:name=".app.ui.ShareActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

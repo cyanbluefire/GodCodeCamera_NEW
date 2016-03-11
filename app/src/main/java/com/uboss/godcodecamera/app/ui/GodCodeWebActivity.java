@@ -1,6 +1,7 @@
 package com.uboss.godcodecamera.app.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,13 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.R;
+import com.uboss.godcodecamera.app.MyUtil.MyFileUtils;
+import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
 
 import org.json.JSONObject;
 
@@ -54,6 +58,17 @@ public class GodCodeWebActivity extends AppCompatActivity {
         btn_create_qrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(GodCodeWebActivity.this,PhotoProcessActivity.class);
+                intent.putExtra("code",code);
+                intent.putExtra("platform",platform);
+                intent.putExtra("black_code",black_code);
+                intent.putExtra("article_content",article_content);
+                intent.putExtra("poi_uid",poi_uid);
+                intent.putExtra("poi_city", MyFileUtils.string2Unicode(poi_city));
+                intent.putExtra("poi_name",MyFileUtils.string2Unicode(poi_name));
+                intent.putExtra("use_model",use_model);
+                startActivity(intent);
+                finish();
 
 //                    Intent intent_process =  new Intent(GodCodeWebActivity.this, PhotoProcessActivity.class);
 //                    //文字描述
@@ -86,23 +101,24 @@ public class GodCodeWebActivity extends AppCompatActivity {
 //        settings.getUserAgentString();
 
         // webview设置
-//        web_test.setWebViewClient(new WebViewClient(){
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                // TODO Auto-generated method stub
-//                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
-//                view.loadUrl(url);
-//                Log.i(TAG,"shouldOverrideUrlLoading url=="+url);
-//
-//                return true;
-//            }
-//
-//            @Override
-//            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-//                super.onPageStarted(view, url, favicon);
-//                Log.i(TAG,"onPageStarted url=="+url);
-//            }
-//        });
+        web_test.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // TODO Auto-generated method stub
+                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                view.loadUrl(url);
+                Log.i(TAG,"shouldOverrideUrlLoading url=="+url);
+
+                return true;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                Log.i(TAG,"onPageStarted url=="+url);
+            }
+        });
+        //chrome alert
         web_test.setWebChromeClient(new WebChromeClient()
         {
 
