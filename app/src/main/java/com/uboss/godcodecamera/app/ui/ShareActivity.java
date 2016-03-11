@@ -25,13 +25,7 @@ public class ShareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
         ButterKnife.inject(this);
-        String file_path=FileUtils.getQrcodePath();
-        Log.i("cyan","qrcode file_path"+file_path);
-        if(QRCodeUtil.createQRImage("hello",200,200,null, file_path)){
-            Log.i("cyan","create qrcode success");
-        }else {
-            Log.e("cyan","create qrcode failed");
-        }
-        img_test.setImageBitmap(BitmapFactory.decodeFile(file_path));
+
+//        img_test.setImageBitmap(BitmapFactory.decodeFile(file_path));
     }
 }

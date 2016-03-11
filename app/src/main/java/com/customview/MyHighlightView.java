@@ -118,8 +118,8 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
         }
     }
 
-    public void updateContent(Context context) {
-        Bitmap bitmap = BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.ic_launcher);
+    public void updateContent(Context context,Bitmap bitmap) {
+//        Bitmap bitmap = BitmapFactory.decodeResource(App.getContext().getResources(), R.drawable.ic_launcher);
         StickerDrawable drawable = new StickerDrawable(context.getResources(), bitmap);
         drawable.setAntiAlias(true);
         drawable.setMinSize(30, 30);

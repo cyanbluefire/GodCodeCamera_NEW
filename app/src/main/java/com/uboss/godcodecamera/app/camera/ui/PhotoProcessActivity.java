@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -40,6 +41,8 @@ import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.app.Database.DBManager;
 import com.uboss.godcodecamera.app.Database.DatabaseHelper;
+import com.uboss.godcodecamera.app.MyUtil.Bimp;
+import com.uboss.godcodecamera.app.MyUtil.QRCodeUtil;
 import com.uboss.godcodecamera.app.camera.CameraBaseActivity;
 import com.uboss.godcodecamera.app.camera.CameraManager;
 import com.uboss.godcodecamera.app.camera.EffectService;
@@ -337,8 +340,15 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             @Override
             public void onClick(View v) {
                 CreateNewArticle();
-//                EffectUtil.hightlistViews.get(0).updateContent(PhotoProcessActivity.this);
-
+                String file_path = FileUtils.getQrcodePath();
+                String qrcode_url = AppConstants.HOME_URL+article_url;
+                Log.i(TAG,"qrcode_url"+qrcode_url);
+                if(QRCodeUtil.createQRImage(qrcode_url,200,200,null, file_path)){
+                    Log.i(TAG,"create qrcode success");
+                    EffectUtil.hightlistViews.get(0).updateContent(PhotoProcessActivity.this, BitmapFactory.decodeFile(file_path));
+                }else {
+                    Log.e(TAG,"create qrcode failed");
+                }
 //                savePicture();
 
             }
@@ -463,7 +473,15 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 //        DatabaseHelper helper = new DatabaseHelper(this);
 //        SQLiteDatabase db = helper.getWritableDatabase();
         Log.i(TAG,"saveQrData()");
-        GodeCode godcode = new GodeCode(filename,"url","content",8,"date");
+        String text = "";
+        try {
+            JSONObject json = new JSONObject(article_content);
+            text = json.getString("text");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        GodeCode godcode = new GodeCode(filename,article_url,text, Bimp.tempSelectBitmap.size(),filename);
         DBManager manager = new DBManager(this);
         manager.add(godcode);
 
