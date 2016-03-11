@@ -79,6 +79,7 @@ public class QRCodeUtil {
         return false;
     }
 
+
     /**
      * 在二维码中间添加Logo图案
      */

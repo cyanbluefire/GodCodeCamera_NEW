@@ -1,10 +1,6 @@
 package com.uboss.godcodecamera.app.ui;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,28 +9,13 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ImageView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.R;
-import com.uboss.godcodecamera.app.MyUtil.Bimp;
-import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
-import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
-import com.uboss.godcodecamera.app.volley.VolleyErrorUtil;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,7 +38,7 @@ public class GodCodeWebActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_godcodeweb);
         ButterKnife.inject(this);
         Intent intent = getIntent();
         code = intent.getStringExtra("code");
