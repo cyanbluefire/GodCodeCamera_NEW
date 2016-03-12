@@ -196,6 +196,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             public void callback(Bitmap result) {
                 currentBitmap = result;
                 mGPUImageView.setImage(currentBitmap);
+                addSticker(0);
             }
         });
 //        ImageUtils.asyncLoadImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {
@@ -339,15 +340,15 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             @Override
             public void onClick(View v) {
                 CreateNewArticle();
-                String file_path = FileUtils.getQrcodePath();
-                String qrcode_url = AppConstants.HOME_URL+article_url;
-                Log.i(TAG,"qrcode_url"+qrcode_url);
-                if(QRCodeUtil.createQRImage(qrcode_url,200,200,null, file_path)){
-                    Log.i(TAG,"create qrcode success");
-                    EffectUtil.hightlistViews.get(0).updateContent(PhotoProcessActivity.this, BitmapFactory.decodeFile(file_path));
-                }else {
-                    Log.e(TAG,"create qrcode failed");
-                }
+//                String file_path = FileUtils.getQrcodePath();
+//                String qrcode_url = AppConstants.HOME_URL+article_url;
+//                Log.i(TAG,"qrcode_url"+qrcode_url);
+//                if(QRCodeUtil.createQRImage(qrcode_url,200,200,null, file_path)){
+//                    Log.i(TAG,"create qrcode success");
+//                    EffectUtil.hightlistViews.get(0).updateContent(PhotoProcessActivity.this, BitmapFactory.decodeFile(file_path));
+//                }else {
+//                    Log.e(TAG,"create qrcode failed");
+//                }
 //                savePicture();
 
             }
@@ -379,6 +380,18 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                     article_url = jsonObject.getString("url");
                     //格式如下 article_url==/articles/97
                     Log.e(TAG,"article_url=="+article_url);
+
+                    String file_path = FileUtils.getQrcodePath();
+                    String qrcode_url = AppConstants.HOME_URL+article_url;
+                    Log.i(TAG,"qrcode_url"+qrcode_url);
+                    if(QRCodeUtil.createQRImage(qrcode_url,200,200,null, file_path)){
+                        Log.i(TAG,"create qrcode success");
+                        EffectUtil.hightlistViews.get(0).updateContent(PhotoProcessActivity.this, BitmapFactory.decodeFile(file_path));
+                        savePicture();
+
+                    }else {
+                        Log.e(TAG,"create qrcode failed");
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

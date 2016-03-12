@@ -14,7 +14,7 @@ public class MyFileUtils {
 
 	private static final String TAG = "MyFileUtils";
 	public static String SDPATH = Environment.getExternalStorageDirectory()
-			+ "/Uboss/";
+			+ "/GodCodeTemp/";
 //	public static String SDPATH_TEMP = Environment.getExternalStorageDirectory()
 //			+ "/Uboss/";
 	public static void saveBitmap(Bitmap bm, String picName) {

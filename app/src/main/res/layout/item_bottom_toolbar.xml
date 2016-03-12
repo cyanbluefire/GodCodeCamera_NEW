@@ -20,8 +20,8 @@
         />
     <ImageView
         android:id="@+id/img_model"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="@dimen/model_margin"
         android:layout_marginTop="@dimen/model_margin"
         android:layout_below="@id/tv_model_title"
