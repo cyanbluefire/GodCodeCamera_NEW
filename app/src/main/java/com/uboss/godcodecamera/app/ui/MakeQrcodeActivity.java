@@ -92,7 +92,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private String url = "";
     private int current_model = 0;
     private int last_model ;
-    private int use_model =7;      //最终传给后台的选中模板顺序
+    private int use_model =1;      //最终传给后台的选中模板顺序
     private int max_num = 1;        //每个模板最多可选的照片数
 //    private boolean lastisDefaultModel = true;
 
@@ -144,8 +144,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         addonList_focused.add(R.mipmap.model2_1focused);
         addonList_focused.add(R.mipmap.model3_1focused);
         addonList_focused.add(R.mipmap.model4_1focused);
-        addonList_focused.add(R.mipmap.model5_1focused);
         addonList_focused.add(R.mipmap.model6_1focused);
+        addonList_focused.add(R.mipmap.model5_1focused);
 
 
     }
@@ -163,8 +163,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         arr_model_preview.add(R.mipmap.model2);
         arr_model_preview.add(R.mipmap.model3);
         arr_model_preview.add(R.mipmap.model4);
-        arr_model_preview.add(R.mipmap.model5);
         arr_model_preview.add(R.mipmap.model6);
+        arr_model_preview.add(R.mipmap.model5);
 
 
     }
@@ -183,8 +183,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         arr_model_instruction.add("时尚杂志");
         arr_model_instruction.add("热血动漫");
         arr_model_instruction.add("激怒我了");
-        arr_model_instruction.add("心情格调");
         arr_model_instruction.add("可爱动物");
+        arr_model_instruction.add("心情格调");
 
 
     }
@@ -292,7 +292,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                             et_qrcode_content_down.setVisibility(View.VISIBLE);
                             is_up_edittext = false;
                             model_adapter.notifyDataSetChanged();
-                            use_model = 8;
+                            use_model = 2;
                             break;
                         case 2:
                             break;
@@ -359,7 +359,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                             et_qrcode_content_down.setVisibility(View.VISIBLE);
                             is_up_edittext = false;
                             model_adapter.notifyDataSetChanged();
-                            use_model = 8;
+                            use_model = 2;
                             break;
                         case 2:
                             break;
@@ -509,7 +509,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         et_qrcode_content_up.setVisibility(View.VISIBLE);
         is_up_edittext = true;
         model_adapter.notifyDataSetChanged();
-        use_model = 7;
+        use_model = 1;
     }
     private void initPopupPreview() {
         pop_preview_photo = new PopupWindow(MakeQrcodeActivity.this);
@@ -645,6 +645,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                     }else{
                         use_model = current_model - 3;
                     }
+                    use_model = use_model +2 ;          //默认的两个模板放到了1，2
                     Toast.makeText(MakeQrcodeActivity.this,"使用模板"+use_model,Toast.LENGTH_SHORT).show();
 //                    lastisDefaultModel = false;
                     break;
