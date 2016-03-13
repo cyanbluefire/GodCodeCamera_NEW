@@ -339,6 +339,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         img_title_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgressDialog("正在保存图片");
                 CreateNewArticle();
 //                String file_path = FileUtils.getQrcodePath();
 //                String qrcode_url = AppConstants.HOME_URL+article_url;
@@ -356,7 +357,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     }
 
     private void CreateNewArticle() {
-        String url = AppConstants.HOME_URL+"articles/new";
+        String url = AppConstants.HOME_URL+"/articles/new";
         JSONObject params = new JSONObject();
         try {
             params.put("code",code);
@@ -473,6 +474,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 //            FeedItem feedItem = new FeedItem(tagInfoList,fileName);
 //            EventBus.getDefault().post(feedItem);
             Log.i(TAG,"filename=="+fileName);
+            dismissProgressDialog();
             CameraManager.getInst().close();
 
             startActivity(new Intent(PhotoProcessActivity.this, MyGodCodeActivity.class));

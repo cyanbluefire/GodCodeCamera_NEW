@@ -96,7 +96,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private int max_num = 1;        //每个模板最多可选的照片数
 //    private boolean lastisDefaultModel = true;
 
+    //暂存数据
     private static String content_text;
+    private static boolean istextBeforePhoto = true;
     //preview
     private static String shop_name ;
     private static String uid;
@@ -231,8 +233,17 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(content_text != null){
-            setText(content_text);
+        Log.i(TAG,"istextBeforePhoto=="+istextBeforePhoto);
+        if(istextBeforePhoto){
+            et_qrcode_content_down.setVisibility(View.GONE);
+            et_qrcode_content_up.setVisibility(View.VISIBLE);
+            if(content_text != null)
+                et_qrcode_content_up.setText(content_text);
+        }else {
+            et_qrcode_content_up.setVisibility(View.GONE);
+            et_qrcode_content_down.setVisibility(View.VISIBLE);
+            if(content_text != null)
+                et_qrcode_content_down.setText(content_text);
         }
         if(shop_name != null){
             tv_location.setText(shop_name);
@@ -293,6 +304,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                             is_up_edittext = false;
                             model_adapter.notifyDataSetChanged();
                             use_model = 2;
+
+                            istextBeforePhoto = false;
+                            Log.e(TAG,"istextBeforePhoto=="+istextBeforePhoto);
                             break;
                         case 2:
                             break;
@@ -360,6 +374,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                             is_up_edittext = false;
                             model_adapter.notifyDataSetChanged();
                             use_model = 2;
+
+                            istextBeforePhoto = false;
+                            Log.e(TAG,"istextBeforePhoto=="+istextBeforePhoto);
                             break;
                         case 2:
                             break;
@@ -510,6 +527,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         is_up_edittext = true;
         model_adapter.notifyDataSetChanged();
         use_model = 1;
+        istextBeforePhoto = true;
     }
     private void initPopupPreview() {
         pop_preview_photo = new PopupWindow(MakeQrcodeActivity.this);
@@ -864,13 +882,18 @@ public class MakeQrcodeActivity extends AppCompatActivity {
      * 设置文本
      * @param text
      */
-    private void setText(String text){
-        if(et_qrcode_content_up.getVisibility() == View.VISIBLE){
-            et_qrcode_content_up.setText(text);
-        }else{
-            et_qrcode_content_down.setText(text);
-        }
-    }
+//    private void setText(String text){
+//        if(istextBeforePhoto){
+//            et_qrcode_content_up.setVisibility(View.VISIBLE);
+//            et_qrcode_content_down.setVisibility(View.GONE);
+//            et_qrcode_content_up.setText(text);
+//        }else {
+//            et_qrcode_content_down.setVisibility(View.VISIBLE);
+//            et_qrcode_content_up.setVisibility(View.GONE);
+//            et_qrcode_content_down.setText(text);
+//        }
+//
+//    }
     /**
      * 预览
      */

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uboss.godcodecamera.App;
+import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.app.Database.DBManager;
 import com.uboss.godcodecamera.base.GodeCode;
@@ -63,7 +64,11 @@ public class MyGodCodeActivity extends AppCompatActivity {
             {
                 Toast.makeText(MyGodCodeActivity.this,"点击了"+position,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MyGodCodeActivity.this,GodCodeWebActivity.class);
-                intent.putExtra("url","http://www.baidu.com");
+                GodeCode godcode = list_godcode.get(position);
+                String url = AppConstants.HOME_URL+godcode.getUrl();
+                Log.i(TAG,"url=="+url);
+                intent.putExtra("article_url",url);
+                intent.putExtra("isPreview",false);
                 startActivity(intent);
             }
 

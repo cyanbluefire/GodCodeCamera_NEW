@@ -37,7 +37,7 @@ public class GodCodeWebActivity extends AppCompatActivity {
     private JSONObject json = new JSONObject();
     private String code,platform,black_code,article_content,poi_uid,poi_city,poi_name;
     private int use_model;
-
+    private StringBuilder url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +45,26 @@ public class GodCodeWebActivity extends AppCompatActivity {
         setContentView(R.layout.activity_godcodeweb);
         ButterKnife.inject(this);
         Intent intent = getIntent();
-        code = intent.getStringExtra("code");
-        platform = intent.getStringExtra("platform");
-        black_code = intent.getStringExtra("black_code");
-        article_content = intent.getStringExtra("article_content");
-        poi_uid = intent.getStringExtra("poi_uid");
-        poi_city = intent.getStringExtra("poi_city");
-        poi_name = intent.getStringExtra("poi_name");
-        use_model = intent.getIntExtra("use_model",1);
+        boolean isPreview = intent.getBooleanExtra("isPreview",true);
+        Log.i(TAG,"article_url=="+intent.getStringExtra("article_url"));
+
+        if(!isPreview){ //从”我的神码“跳转
+            btn_create_qrcode.setVisibility(View.GONE);
+            url = new StringBuilder(intent.getStringExtra("article_url"));
+        }else{  //预览
+            code = intent.getStringExtra("code");
+            platform = intent.getStringExtra("platform");
+            black_code = intent.getStringExtra("black_code");
+            article_content = intent.getStringExtra("article_content");
+            poi_uid = intent.getStringExtra("poi_uid");
+            poi_city = intent.getStringExtra("poi_city");
+            poi_name = intent.getStringExtra("poi_name");
+            use_model = intent.getIntExtra("use_model",1);
+
+            url = new StringBuilder(AppConstants.HOME_URL);
+            url.append("/templates/").append(use_model).append("/preview");
+        }
+        Log.i(TAG,"url=="+url.toString());
 
 //        previewVolleyRequest();
         btn_create_qrcode.setOnClickListener(new View.OnClickListener() {
@@ -83,9 +95,7 @@ public class GodCodeWebActivity extends AppCompatActivity {
 //                    startActivity(intent_process);
             }
         });
-        StringBuilder url = new StringBuilder(AppConstants.HOME_URL);
-        url.append("templates/").append(use_model).append("/preview");
-        Log.i(TAG,"url=="+url.toString());
+
 
         WebSettings settings = web_test.getSettings();
         settings.setJavaScriptEnabled(true);
