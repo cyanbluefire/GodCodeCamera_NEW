@@ -96,10 +96,11 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private int max_num = 1;        //每个模板最多可选的照片数
 //    private boolean lastisDefaultModel = true;
 
+    private static String content_text;
     //preview
-    private String shop_name = "";
-    private String uid;
-    private String city = "";
+    private static String shop_name ;
+    private static String uid;
+    private static String city ;
     private String code;    //识别设备IMEI
     private String platform = "android";
 
@@ -225,6 +226,23 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         init();
         Log.e(TAG,"CameraActivity.Main_Photo_Name::"+CameraActivity.Main_Photo_Name);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(content_text != null){
+            setText(content_text);
+        }
+        if(shop_name != null){
+            tv_location.setText(shop_name);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this,CameraActivity.class));
     }
 
     private void init() {
@@ -576,6 +594,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                 {
                     pop.dismiss();
                     ll_popup.clearAnimation();
+                    content_text = getText();           //已输入文字暂存
+
                     photo();
                     break;
 
@@ -584,6 +604,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                 {
                     pop.dismiss();
                     ll_popup.clearAnimation();
+                    content_text = getText();           //已输入文字暂存
+
                     Intent intent = new Intent(MakeQrcodeActivity.this,
                             MyAlbumActivity.class);
                     intent.putExtra("isMainPic", false);//false表示选多张图
@@ -607,6 +629,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                     pop_preview_photo.dismiss();
                     break;
                 case R.id.rl_location:
+                    content_text = getText();           //已输入文字暂存
+
                     Intent intent = new Intent(MakeQrcodeActivity.this, ShopLocationActivity.class);
                     startActivityForResult(intent,SHOP_LOCATION);
                     break;
@@ -793,12 +817,13 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         JSONObject json_article_content = new JSONObject();
 //        String article_content="";
         try {
-            if(et_qrcode_content_up.getVisibility() == View.VISIBLE){
-                json_article_content.put("text",MyFileUtils.string2Unicode(et_qrcode_content_up.getText().toString()));
-
-            }else{
-                json_article_content.put("text",MyFileUtils.string2Unicode(et_qrcode_content_down.getText().toString()));
-            }
+//            if(et_qrcode_content_up.getVisibility() == View.VISIBLE){
+//                json_article_content.put("text",MyFileUtils.string2Unicode(et_qrcode_content_up.getText().toString()));
+//
+//            }else{
+//                json_article_content.put("text",MyFileUtils.string2Unicode(et_qrcode_content_down.getText().toString()));
+//            }
+            json_article_content.put("text",MyFileUtils.string2Unicode(getText()));
             json_article_content.put("images",new JSONArray(arr_upyun_path));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -822,6 +847,29 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * 获得文本
+     */
+    private String getText(){
+        if(et_qrcode_content_up.getVisibility() == View.VISIBLE){
+
+            return et_qrcode_content_up.getText().toString();
+        }else{
+            return et_qrcode_content_down.getText().toString();
+        }
+    }
+
+    /**
+     * 设置文本
+     * @param text
+     */
+    private void setText(String text){
+        if(et_qrcode_content_up.getVisibility() == View.VISIBLE){
+            et_qrcode_content_up.setText(text);
+        }else{
+            et_qrcode_content_down.setText(text);
+        }
+    }
     /**
      * 预览
      */
@@ -931,5 +979,11 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

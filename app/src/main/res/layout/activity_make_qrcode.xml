@@ -49,10 +49,11 @@
                 android:scrollbars="none"
                 android:verticalSpacing="5dp">
             </com.uboss.godcodecamera.app.view.MyGridView>
+
             <EditText
                 android:id="@+id/et_qrcode_content_down"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="145dp"
                 android:hint="@string/input_hint"
                 android:gravity="start"
                 android:scrollbars="vertical"
