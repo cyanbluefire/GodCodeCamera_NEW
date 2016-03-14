@@ -7,7 +7,7 @@
     android:layout_marginLeft="@dimen/model_margin"
     android:layout_marginTop="@dimen/model_margin_top"
     android:layout_marginBottom="@dimen/model_margin_top"
-    android:background="@color/deep_gray"
+    android:background="@color/black"
     android:gravity="center_vertical"
     android:id="@+id/rl_bottom_toolbar">
     <TextView

@@ -128,8 +128,8 @@ public class MakeQrcodeActivity extends BaseActivity {
         addonList.add(R.mipmap.model2_1);
         addonList.add(R.mipmap.model3_1);
         addonList.add(R.mipmap.model4_1);
-        addonList.add(R.mipmap.model5_1);
         addonList.add(R.mipmap.model6_1);
+        addonList.add(R.mipmap.model5_1);
 
     }
 

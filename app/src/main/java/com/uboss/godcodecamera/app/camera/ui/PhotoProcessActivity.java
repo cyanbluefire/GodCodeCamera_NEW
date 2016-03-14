@@ -603,7 +603,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
 
         //--cyan start
-        model_adapter= new SimpleAdapter(PhotoProcessActivity.this,getToolList(),R.layout.item_bottom_toolbar,
+        model_adapter= new SimpleAdapter(PhotoProcessActivity.this,getToolList(),R.layout.item_sticker,
                 new String[]{"title","img","instruction"},
                 new int[]{R.id.tv_model_title,R.id.img_model,R.id.tv_model_instruction});
         bottomToolBar.setAdapter(model_adapter);

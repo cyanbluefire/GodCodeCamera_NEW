@@ -37,7 +37,7 @@
             android:id="@+id/list_tools"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:background="@color/deep_gray"
+            android:background="@color/black"
             android:gravity="center_vertical"
             android:overScrollMode="always"
             app:hlv_dividerWidth="@dimen/margin_15px"/>
