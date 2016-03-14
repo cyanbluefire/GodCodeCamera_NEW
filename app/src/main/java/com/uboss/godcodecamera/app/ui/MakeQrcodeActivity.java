@@ -854,7 +854,7 @@ public class MakeQrcodeActivity extends BaseActivity {
 
         String article_content = json_article_content.toString();
 //        Log.i(TAG,"before::"+article_content);
-        article_content = article_content.replace("\\\\","\\");
+//        article_content = article_content.replace("\\\\","\\");
 //        Log.i(TAG,"after::"+article_content);
 //        Log.i(TAG,"use_model=="+use_model);
         Intent intent = new Intent(MakeQrcodeActivity.this,GodCodeWebActivity.class);
@@ -866,7 +866,7 @@ public class MakeQrcodeActivity extends BaseActivity {
 //        intent.putExtra("poi_city",MyFileUtils.string2Unicode(city));
 //        intent.putExtra("poi_name",MyFileUtils.string2Unicode(shop_name));
         intent.putExtra("poi_city",city);
-        intent.putExtra("poi_name",MyFileUtils.string2Unicode(shop_name));
+        intent.putExtra("poi_name",shop_name);
         intent.putExtra("use_model",use_model);
 
         dismissProgressDialog();

@@ -78,8 +78,10 @@ public class GodCodeWebActivity extends AppCompatActivity {
                 intent.putExtra("black_code",black_code);
                 intent.putExtra("article_content",article_content);
                 intent.putExtra("poi_uid",poi_uid);
-                intent.putExtra("poi_city", MyFileUtils.string2Unicode(poi_city));
-                intent.putExtra("poi_name",MyFileUtils.string2Unicode(poi_name));
+//                intent.putExtra("poi_city", MyFileUtils.string2Unicode(poi_city));
+//                intent.putExtra("poi_name",MyFileUtils.string2Unicode(poi_name));
+                intent.putExtra("poi_city", poi_city);
+                intent.putExtra("poi_name",poi_name);
                 intent.putExtra("use_model",use_model);
                 startActivity(intent);
                 finish();
