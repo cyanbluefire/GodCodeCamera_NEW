@@ -16,12 +16,13 @@
         android:singleLine="false"
         android:textSize="12sp"
         android:lineSpacingExtra="@dimen/tv_line_space"
+        android:layout_margin="@dimen/text_img_margin"
         android:layout_toRightOf="@id/img_qrcode_photo"
         />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher"
+        android:src="@mipmap/triangle"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"/>
     <TextView

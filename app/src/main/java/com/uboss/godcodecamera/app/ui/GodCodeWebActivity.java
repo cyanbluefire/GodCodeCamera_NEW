@@ -59,6 +59,8 @@ public class GodCodeWebActivity extends AppCompatActivity {
             poi_uid = intent.getStringExtra("poi_uid");
             poi_city = intent.getStringExtra("poi_city");
             poi_name = intent.getStringExtra("poi_name");
+//            poi_city = MakeQrcodeActivity.city;
+//            poi_name = MakeQrcodeActivity.shop_name;
             use_model = intent.getIntExtra("use_model",1);
 
             url = new StringBuilder(AppConstants.HOME_URL);
@@ -178,7 +180,7 @@ public class GodCodeWebActivity extends AppCompatActivity {
         params.put("poi_uid",poi_uid);
         params.put("poi_city",poi_city);
         params.put("poi_name",poi_name);
-        Log.e(TAG,"params::"+params);
+        Log.e(TAG,"header params::"+params);
 //        params.put("agent","ubossman");
         return params;
     }

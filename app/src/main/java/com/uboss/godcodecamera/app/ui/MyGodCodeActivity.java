@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,16 +29,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class MyGodCodeActivity extends AppCompatActivity {
 
     private static final String TAG = "MyGodCodeActivity";
     private RecyclerViewAdapter mAdapter;
-    private  static List<GodeCode> list_godcode;
+    private  static List<GodeCode> list_godcode = new ArrayList<GodeCode>() {
+    };
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    @InjectView(R.id.img_title_right)
+    Button img_title_right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,8 @@ public class MyGodCodeActivity extends AppCompatActivity {
     }
 
     private void init() {
+        img_title_right.setVisibility(View.GONE);
+
         mRecyclerView = (RecyclerView)findViewById(R.id.rv_my_godcode);
         mLayoutManager = new GridLayoutManager(App.getContext(),1);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -89,7 +97,12 @@ public class MyGodCodeActivity extends AppCompatActivity {
 //        json.put()
         //查询”我的神码“数据库
         DBManager manager = new DBManager(this);
-        list_godcode = manager.query();
+        List<GodeCode> temp = manager.query();
+        //从后往前，确保最新的在前面
+        for(int i=temp.size()-1;i>=0;i--){
+            list_godcode.add(temp.get(i));
+        }
+
 //        for(GodeCode item :list_godcode){
 //            StringBuilder sb = new StringBuilder();
 //            sb.append("filename==").append(item.getFilename())

@@ -368,6 +368,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             params.put("poi_uid",poi_uid);
             params.put("poi_city",poi_city);
             params.put("poi_name",poi_name);
+            Log.e(TAG,"CreateNewArticle params::"+params.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

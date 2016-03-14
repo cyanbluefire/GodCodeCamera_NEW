@@ -41,6 +41,7 @@ import com.uboss.godcodecamera.app.adapter.MorePicAdapter;
 import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
 import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
 import com.uboss.godcodecamera.app.view.MyGridView;
+import com.uboss.godcodecamera.base.BaseActivity;
 import com.uboss.godcodecamera.base.GodeCode;
 import com.upyun.block.api.listener.CompleteListener;
 import com.upyun.block.api.listener.ProgressListener;
@@ -65,7 +66,7 @@ import it.sephiroth.android.library.widget.HListView;
 /**
  * 本页需要重构，增加model类--cyan*
  */
-public class MakeQrcodeActivity extends AppCompatActivity {
+public class MakeQrcodeActivity extends BaseActivity {
     private static final String TAG = "MakeQrcodeActivity";
     private static final int ADD_MORE_PIC = 0x000001;//添加图片弹框时区分是主图还是配图
     private static final int SHOP_LOCATION = 0x000002;//百度地图定位周边商家
@@ -100,9 +101,9 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     private static String content_text;
     private static boolean istextBeforePhoto = true;
     //preview
-    private static String shop_name ;
+    public static String shop_name ;
     private static String uid;
-    private static String city ;
+    public static String city ;
     private String code;    //识别设备IMEI
     private String platform = "android";
 
@@ -289,7 +290,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
                                     View arg1, int position, long arg3) {
-                Toast.makeText(MakeQrcodeActivity.this,position+"",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MakeQrcodeActivity.this,position+"",Toast.LENGTH_SHORT).show();
                 if(hasqrcode){
                     switch (position){
                         case 0:
@@ -311,7 +312,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                         case 2:
                             break;
                         case 3:
-                            Toast.makeText(MakeQrcodeActivity.this,"上次内容!",Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(MakeQrcodeActivity.this,"上次内容!",Toast.LENGTH_SHORT).show();
 
                             break;
                         case 4:
@@ -515,7 +516,8 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         }else{
             use_model = current_model - 3;
         }
-        Toast.makeText(MakeQrcodeActivity.this,"使用默认模板",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MakeQrcodeActivity.this,"使用默认模板",Toast.LENGTH_SHORT).show();
+        Log.i(TAG,"使用默认模板");
         textBeforePhoto();
     }
     private void textBeforePhoto(){
@@ -664,11 +666,11 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                         use_model = current_model - 3;
                     }
                     use_model = use_model +2 ;          //默认的两个模板放到了1，2
-                    Toast.makeText(MakeQrcodeActivity.this,"使用模板"+use_model,Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MakeQrcodeActivity.this,"使用模板"+use_model,Toast.LENGTH_SHORT).show();
 //                    lastisDefaultModel = false;
                     break;
                 case R.id.btn_create_qrcode:
-                    upYunPhoto();
+                    onClickPreview();
 //                    startActivity(new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class));
 
 
@@ -782,7 +784,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
                             if(path_count < arr_path.size()){
                                 new UpyunUpload().execute(arr_path.get(path_count));
                             }else{
-                                Toast.makeText(App.getContext(), "所有图片上传完成", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(App.getContext(), "所有图片上传完成", Toast.LENGTH_LONG).show();
                                 Log.i(TAG,"所有图片上传完成");
 
                                 //
@@ -863,6 +865,7 @@ public class MakeQrcodeActivity extends AppCompatActivity {
         intent.putExtra("poi_name",MyFileUtils.string2Unicode(shop_name));
         intent.putExtra("use_model",use_model);
 
+        dismissProgressDialog();
         startActivity(intent);
     }
 
@@ -897,14 +900,16 @@ public class MakeQrcodeActivity extends AppCompatActivity {
     /**
      * 预览
      */
-    private void upYunPhoto() {
+    private void onClickPreview() {
         Log.i(TAG,"previewModel()");
-        Toast.makeText(MakeQrcodeActivity.this,"预览模板 "+use_model,Toast.LENGTH_SHORT).show();
+
+//        Toast.makeText(MakeQrcodeActivity.this,"预览模板 "+use_model,Toast.LENGTH_SHORT).show();
         code = App.getIMEI();
         if(tv_location.getText().toString().equals("当前地点")){
             Toast.makeText(MakeQrcodeActivity.this,"请先选择当前位置",Toast.LENGTH_SHORT).show();
             return;
         }
+        showProgressDialog("正在生成预览...");
         upLoadPicture();
     }
 
