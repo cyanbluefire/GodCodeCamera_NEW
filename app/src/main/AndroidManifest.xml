@@ -86,7 +86,6 @@
         <activity
             android:name=".app.ui.MakeQrcodeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             >
 
         </activity>

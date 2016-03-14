@@ -141,15 +141,15 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     static{
         Log.i(TAG,"addonList static");
-        addonList.add(R.mipmap.sticker1);
-        addonList.add(R.mipmap.sticker2);
-        addonList.add(R.mipmap.sticker3);
-        addonList.add(R.mipmap.sticker4);
-        addonList.add(R.mipmap.sticker5);
-        addonList.add(R.mipmap.sticker6);
-        addonList.add(R.mipmap.sticker7);
-        addonList.add(R.mipmap.sticker8);
-        addonList.add(R.mipmap.sticker9);
+        addonList.add(R.mipmap.sticker1_1);
+        addonList.add(R.mipmap.sticker2_1);
+        addonList.add(R.mipmap.sticker3_1);
+        addonList.add(R.mipmap.sticker4_1);
+        addonList.add(R.mipmap.sticker5_1);
+        addonList.add(R.mipmap.sticker6_1);
+        addonList.add(R.mipmap.sticker7_1);
+        addonList.add(R.mipmap.sticker8_1);
+        addonList.add(R.mipmap.sticker9_1);
 
     }
     static {

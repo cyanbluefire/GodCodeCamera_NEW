@@ -844,7 +844,9 @@ public class MakeQrcodeActivity extends BaseActivity {
 //            }else{
 //                json_article_content.put("text",MyFileUtils.string2Unicode(et_qrcode_content_down.getText().toString()));
 //            }
-            json_article_content.put("text",MyFileUtils.string2Unicode(getText()));
+//            json_article_content.put("text",MyFileUtils.string2Unicode(getText()));
+            json_article_content.put("text",getText());
+
             json_article_content.put("images",new JSONArray(arr_upyun_path));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -861,7 +863,9 @@ public class MakeQrcodeActivity extends BaseActivity {
         intent.putExtra("black_code",black_code);
         intent.putExtra("article_content",article_content);
         intent.putExtra("poi_uid",uid);
-        intent.putExtra("poi_city",MyFileUtils.string2Unicode(city));
+//        intent.putExtra("poi_city",MyFileUtils.string2Unicode(city));
+//        intent.putExtra("poi_name",MyFileUtils.string2Unicode(shop_name));
+        intent.putExtra("poi_city",city);
         intent.putExtra("poi_name",MyFileUtils.string2Unicode(shop_name));
         intent.putExtra("use_model",use_model);
 
