@@ -414,8 +414,12 @@ public class CameraActivity extends CameraBaseActivity {
                 @Override
                 public void onClick(View v) {
                     if(is_select_more_photos){
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(data,0,data.length);
+                        Matrix matrix = new Matrix();
+                        matrix.setRotate(90);
+                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
-                        String path = FileUtils.saveBitmapGetPath(BitmapFactory.decodeByteArray(data,0,data.length),getTimePhotoName());
+                        String path = FileUtils.saveBitmapGetPath(bitmap,getTimePhotoName());
                             Log.i(TAG,"is_select_more_photos");
                             setResult(RESULT_OK,new Intent().putExtra("data",path));
                             finish();

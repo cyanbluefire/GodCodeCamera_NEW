@@ -101,9 +101,9 @@ public class MakeQrcodeActivity extends BaseActivity {
     private static String content_text;
     private static boolean istextBeforePhoto = true;
     //preview
-    public static String shop_name ;
-    private static String uid;
-    public static String city ;
+    public static String shop_name = "" ;
+    private static String uid = "";
+    public static String city = "";
     private String code;    //识别设备IMEI
     private String platform = "android";
 
@@ -246,9 +246,9 @@ public class MakeQrcodeActivity extends BaseActivity {
             if(content_text != null)
                 et_qrcode_content_down.setText(content_text);
         }
-        if(shop_name != null){
-            tv_location.setText(shop_name);
-        }
+
+        //
+        tv_location.setText(shop_name);
     }
 
     @Override
@@ -909,10 +909,10 @@ public class MakeQrcodeActivity extends BaseActivity {
 
 //        Toast.makeText(MakeQrcodeActivity.this,"预览模板 "+use_model,Toast.LENGTH_SHORT).show();
         code = App.getIMEI();
-        if(tv_location.getText().toString().equals("当前地点")){
-            Toast.makeText(MakeQrcodeActivity.this,"请先选择当前位置",Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if(tv_location.getText().toString().equals("当前地点")){
+//            Toast.makeText(MakeQrcodeActivity.this,"请先选择当前位置",Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         showProgressDialog("正在生成预览...");
         upLoadPicture();
     }

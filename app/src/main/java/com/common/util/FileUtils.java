@@ -92,7 +92,7 @@ public class FileUtils {
                 f.delete();
             }
             FileOutputStream out = new FileOutputStream(f);
-            bm.compress(Bitmap.CompressFormat.JPEG, 50, out);
+            bm.compress(Bitmap.CompressFormat.JPEG, 30, out);
             out.flush();
             out.close();
             return f.getAbsolutePath();
