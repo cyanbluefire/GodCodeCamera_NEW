@@ -921,7 +921,9 @@ public class MakeQrcodeActivity extends BaseActivity {
      * 拍照
      */
     private void photo() {
-        startActivityForResult(new Intent(MakeQrcodeActivity.this, CameraActivity.class),ADD_MORE_PIC);
+        Intent intent = new Intent(MakeQrcodeActivity.this, CameraActivity.class);
+        intent.putExtra("ADD_MORE_PIC",true);
+        startActivityForResult(intent,ADD_MORE_PIC);
     }
 
     /**
@@ -988,15 +990,18 @@ public class MakeQrcodeActivity extends BaseActivity {
                     Log.i(TAG,"Image is null");
                     return;
                 }
+//                Log.e(TAG,"test=="+data.getIntExtra("data",0));
                 if (Bimp.tempSelectBitmap.size() < 9 && resultCode == RESULT_OK) {
-
-                    String fileName = String.valueOf(System.currentTimeMillis());
-                    Bitmap bm = (Bitmap) data.getExtras().get("data");
-                    FileUtils.saveBitmap(bm, fileName);
-                    Log.i(TAG,"img filename"+fileName);
+                    Bitmap bm = BitmapFactory.decodeFile(data.getStringExtra("data"));
+                    Log.e(TAG,"test=="+data.getStringExtra("data"));
+//                    String fileName = String.valueOf(System.currentTimeMillis());
+//                    Bitmap bm = (Bitmap) data.getExtras().get("data");
+//                    FileUtils.saveBitmap(bm, fileName);
+//                    Log.i(TAG,"img filename"+fileName);
                     ImageItem takePhoto = new ImageItem();
                     takePhoto.setBitmap(bm);
                     Bimp.tempSelectBitmap.add(takePhoto);
+                    adapter.update();
                 }
                 break;
             }

@@ -36,6 +36,7 @@ import com.common.util.IOUtil;
 import com.common.util.ImageLoaderUtils;
 import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
+import com.common.util.SystemUtils;
 import com.customview.CameraGrid;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.App;
@@ -50,9 +51,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -115,6 +118,7 @@ public class CameraActivity extends CameraBaseActivity {
     public static String Main_Photo_Name = "";
     public static boolean Main_Photo_from_album = false;
 
+    private boolean is_select_more_photos;  //标识是从生成二维码跳转来
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,6 +204,8 @@ public class CameraActivity extends CameraBaseActivity {
     }
 
     private void initEvent() {
+        //若是从生成二维码跳转来
+        is_select_more_photos = getIntent().getBooleanExtra("ADD_MORE_PIC",false);
         //拍照
         takePicture.setOnClickListener(v -> {
             try {
@@ -407,10 +413,19 @@ public class CameraActivity extends CameraBaseActivity {
             btn_sure_to_use.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    bundle = new Bundle();
-                    bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换--cyan
-                    new SavePicTask(data).execute();
-                    camera.startPreview(); // 拍完照后，重新开始预览
+                    if(is_select_more_photos){
+
+                        String path = FileUtils.saveBitmapGetPath(BitmapFactory.decodeByteArray(data,0,data.length),getTimePhotoName());
+                            Log.i(TAG,"is_select_more_photos");
+                            setResult(RESULT_OK,new Intent().putExtra("data",path));
+                            finish();
+                    }else {
+                        bundle = new Bundle();
+                        bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换--cyan
+                        new SavePicTask(data).execute();
+                        camera.startPreview(); // 拍完照后，重新开始预览
+                    }
+
                 }
             });
 
@@ -423,7 +438,11 @@ public class CameraActivity extends CameraBaseActivity {
         }
     }
 
-
+    private String getTimePhotoName(){
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss"); // 格式化时间
+        return format.format(date);
+    }
     public class SavePicTask extends AsyncTask<Void, Void, String> {
         private byte[] data;
         private Context context;
@@ -460,10 +479,12 @@ public class CameraActivity extends CameraBaseActivity {
                 Log.i(TAG,"保存好图片 路径:"+result);
                 //拍照保存完成 result是路径   --cyan
                 dismissProgressDialog();
-                Main_Photo_Name = result;
+                    Main_Photo_Name = result;
                     CameraManager.getInst().processPhotoItem(CameraActivity.this,
                             new PhotoItem(result, System.currentTimeMillis()));
 //                finish();
+
+
             } else {
                 toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
             }

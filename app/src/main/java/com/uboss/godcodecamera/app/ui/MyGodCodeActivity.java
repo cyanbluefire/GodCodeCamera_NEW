@@ -70,7 +70,7 @@ public class MyGodCodeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position)
             {
-                Toast.makeText(MyGodCodeActivity.this,"点击了"+position,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MyGodCodeActivity.this,"点击了"+position,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MyGodCodeActivity.this,GodCodeWebActivity.class);
                 GodeCode godcode = list_godcode.get(position);
                 String url = AppConstants.HOME_URL+godcode.getUrl();

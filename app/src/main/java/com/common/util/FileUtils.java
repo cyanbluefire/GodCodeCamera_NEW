@@ -81,6 +81,28 @@ public class FileUtils {
         }
     }
 
+    public static String saveBitmapGetPath(Bitmap bm, String picName) {
+        try {
+            if (!isFileExist("")) {
+                File tempf = createSDDir("");
+            }
+            File f = new File(SDPATH, picName + ".JPEG");
+//			Log.i(TAG,"filePath::"+f.getAbsolutePath());
+            if (f.exists()) {
+                f.delete();
+            }
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.JPEG, 50, out);
+            out.flush();
+            out.close();
+            return f.getAbsolutePath();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public static boolean isFileExist(String fileName) {
         File file = new File(SDPATH + fileName);
         file.isFile();
