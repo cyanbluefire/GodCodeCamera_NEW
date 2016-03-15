@@ -20,6 +20,7 @@ import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.app.Database.DBManager;
+import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
 import com.uboss.godcodecamera.base.GodeCode;
 
 import org.json.JSONArray;
@@ -44,6 +45,8 @@ public class MyGodCodeActivity extends AppCompatActivity {
 
     @InjectView(R.id.img_title_right)
     Button img_title_right;
+    @InjectView((R.id.img_title_left))
+    ImageView img_title_left;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,13 @@ public class MyGodCodeActivity extends AppCompatActivity {
 
     private void init() {
         img_title_right.setVisibility(View.GONE);
-
+        img_title_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MyGodCodeActivity.this, CameraActivity.class));
+                finish();
+            }
+        });
         mRecyclerView = (RecyclerView)findViewById(R.id.rv_my_godcode);
         mLayoutManager = new GridLayoutManager(App.getContext(),1);
         mRecyclerView.setLayoutManager(mLayoutManager);

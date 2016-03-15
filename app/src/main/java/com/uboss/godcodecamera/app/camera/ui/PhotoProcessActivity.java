@@ -52,6 +52,7 @@ import com.uboss.godcodecamera.app.camera.util.EffectUtil;
 import com.uboss.godcodecamera.app.camera.util.GPUImageFilterTools;
 import com.uboss.godcodecamera.app.model.Addon;
 import com.uboss.godcodecamera.app.model.TagItem;
+import com.uboss.godcodecamera.app.ui.MakeQrcodeActivity;
 import com.uboss.godcodecamera.app.ui.MyGodCodeActivity;
 import com.uboss.godcodecamera.app.volley.VolleyErrorUtil;
 import com.uboss.godcodecamera.base.GodeCode;
@@ -479,6 +480,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             CameraManager.getInst().close();
 
             startActivity(new Intent(PhotoProcessActivity.this, MyGodCodeActivity.class));
+            finish();
         }
     }
     private void saveQrData(String filename){
@@ -751,5 +753,13 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 addLabel(tagItem);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Bimp.tempSelectBitmap = null;
+        MakeQrcodeActivity.city = null;
+        MakeQrcodeActivity.shop_name = null;
     }
 }
