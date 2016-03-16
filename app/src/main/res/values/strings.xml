@@ -16,7 +16,8 @@
     <string name="finish">完成</string>
     <string name="photo">照片</string>
     <string name="unfinished">未完成</string>
-    <string name="only_choose_num">最多只能选择9张图片哦</string>
+    <string name="only_choose_9">最多只能选择9张图片哦</string>
+    <string name="only_choose_1">最多只能选择1张图片哦</string>
     <string name="current_location">-当前位置-</string>
     <string name="use_model">使用模板</string>
     <string name="my_godcode">我的神码</string>

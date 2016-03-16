@@ -160,7 +160,10 @@ public class MyAlbumActivity extends Activity {
 	private class CancelListener implements OnClickListener {
 		public void onClick(View v) {
 			Bimp.tempSelectBitmap.clear();
-			intent.setClass(mContext, MakeQrcodeActivity.class);
+			if(isMainPic)
+				intent.setClass(mContext, CameraActivity.class);
+			else
+				intent.setClass(mContext, MakeQrcodeActivity.class);
 			startActivity(intent);
 		}
 	}
@@ -216,8 +219,12 @@ public class MyAlbumActivity extends Activity {
 							toggleButton.setChecked(false);
 							chooseBt.setVisibility(View.GONE);
 							if (!removeOneData(dataList.get(position))) {
-								Toast.makeText(MyAlbumActivity.this, Res.getString("only_choose_num"),
+								if(isMainPic)
+								Toast.makeText(MyAlbumActivity.this, Res.getString("only_choose_1"),
 										Toast.LENGTH_LONG).show();
+								else
+									Toast.makeText(MyAlbumActivity.this, Res.getString("only_choose_9"),
+											Toast.LENGTH_LONG).show();
 							}
 							return;
 						}
