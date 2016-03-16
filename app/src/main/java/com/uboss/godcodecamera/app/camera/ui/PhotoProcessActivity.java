@@ -12,6 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +58,11 @@ import com.uboss.godcodecamera.app.ui.MakeQrcodeActivity;
 import com.uboss.godcodecamera.app.ui.MyGodCodeActivity;
 import com.uboss.godcodecamera.app.volley.VolleyErrorUtil;
 import com.uboss.godcodecamera.base.GodeCode;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -139,6 +146,18 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     private String code,platform,black_code,article_content,poi_uid,poi_city,poi_name;
     private int template_id;
 
+    //Share分享
+    private boolean isSaveOnly = false;
+    private Handler handler ;
+    public static final int MSG_SHARE = 0;
+
+    final SHARE_MEDIA[] displaylist = new SHARE_MEDIA[]
+    {
+            SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.SINA,
+            SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+    };
+
+
 
     static{
         Log.i(TAG,"addonList static");
@@ -178,6 +197,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         initView();
         initEvent();
         initStickerToolBar();
+        initHandler();
 
         //获取二维码内容
         getQrCodeContent();
@@ -216,6 +236,28 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             }
         });
 
+    }
+
+    /**
+     * 主线程处理UI
+     */
+    private void initHandler() {
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                Log.i(TAG,"handleMessage()");
+                switch (msg.what){
+                    case MSG_SHARE:
+                        String filename = msg.getData().getString("filename");
+                        share(filename);
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
     }
 
     private void getQrCodeContent() {
@@ -479,8 +521,18 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             dismissProgressDialog();
             CameraManager.getInst().close();
 
-            startActivity(new Intent(PhotoProcessActivity.this, MyGodCodeActivity.class));
-            finish();
+            if(isSaveOnly){
+                startActivity(new Intent(PhotoProcessActivity.this, MyGodCodeActivity.class));
+                finish();
+            }else{
+                Message msg = new Message();
+                msg.what = MSG_SHARE;
+                Bundle bundle = new Bundle();
+                bundle.putString("filename",fileName);
+                msg.setData(bundle);
+                handler.sendMessage(msg);
+            }
+
         }
     }
     private void saveQrData(String filename){
@@ -735,24 +787,86 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         }
     }
 
+    /**
+     * 分享
+     *
+     */
+    private void share(String filename){
+        Log.e(TAG,"sharePicture() start222");
+        Log.i(TAG,"filename=="+filename);
+
+        UMImage image = new UMImage(PhotoProcessActivity.this, BitmapFactory.decodeFile(filename));
+
+
+//        new ShareAction(this).setDisplayList( displaylist )
+//                .setShareboardclickCallback(shareBoardlistener)
+//                .open()
+//        ;
+
+
+
+        new ShareAction(PhotoProcessActivity.this).setDisplayList( displaylist )
+                .withMedia(image)
+                .setCallback(umShareListener)
+                .open();
+
+    }
+
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Log.i("UMShareListener","onResult()");
+            Toast.makeText(PhotoProcessActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Log.i("UMShareListener","onError()");
+            Toast.makeText(PhotoProcessActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Log.i("UMShareListener","onCancel()");
+            Toast.makeText(PhotoProcessActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG,"onActivityResult");
-        labelSelector.hide();
+//        labelSelector.hide();
         super.onActivityResult(requestCode, resultCode, data);
-        if (AppConstants.ACTION_EDIT_LABEL== requestCode && data != null) {
-            String text = data.getStringExtra(AppConstants.PARAM_EDIT_TEXT);
-            if(StringUtils.isNotEmpty(text)){
-                TagItem tagItem = new TagItem(AppConstants.POST_TYPE_TAG,text);
-                addLabel(tagItem);
-            }
-        }else if(AppConstants.ACTION_EDIT_LABEL_POI== requestCode && data != null){
-            String text = data.getStringExtra(AppConstants.PARAM_EDIT_TEXT);
-            if(StringUtils.isNotEmpty(text)){
-                TagItem tagItem = new TagItem(AppConstants.POST_TYPE_POI,text);
-                addLabel(tagItem);
-            }
-        }
+
+        //Umeng分享
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
+        //添加文字回调
+//        if (AppConstants.ACTION_EDIT_LABEL== requestCode && data != null) {
+//            String text = data.getStringExtra(AppConstants.PARAM_EDIT_TEXT);
+//            if(StringUtils.isNotEmpty(text)){
+//                TagItem tagItem = new TagItem(AppConstants.POST_TYPE_TAG,text);
+//                addLabel(tagItem);
+//            }
+//        }else if(AppConstants.ACTION_EDIT_LABEL_POI== requestCode && data != null){
+//            String text = data.getStringExtra(AppConstants.PARAM_EDIT_TEXT);
+//            if(StringUtils.isNotEmpty(text)){
+//                TagItem tagItem = new TagItem(AppConstants.POST_TYPE_POI,text);
+//                addLabel(tagItem);
+//            }
+//        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        Log.e(TAG,"onPause()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        Log.e(TAG,"onStop()");
     }
 
     @Override

@@ -11,6 +11,8 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -69,4 +71,5 @@ dependencies {
     compile files('libs/SocialSDK_WeiXin_1.jar')
     compile files('libs/json-20140107.jar')
     compile files('libs/zixing-core-3.2.0.jar')
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

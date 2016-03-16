@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.umeng.socialize.PlatformConfig;
 
 /**
  * Created by sky on 2015/7/6.
@@ -60,8 +61,14 @@ public class App extends Application {
         IMEI = tm.getDeviceId().toString();
 
         requestQueue = Volley.newRequestQueue(mContext);
+        intiUmeng();
 
-
+    }
+    private void intiUmeng() {
+        Log.i("MyApplication","initUmeng()");
+        PlatformConfig.setQQZone("1105253294", "1I7iT0SZ6h3K1E4g");
+        PlatformConfig.setSinaWeibo("985762084","f3f6287d9a00bda69106eb6ce81d4ca1");
+        PlatformConfig.setWeixin("wxb146b2c2b49df354", "bf9c2f73c62230e2baea9a5d571b736f");
     }
 
     public static void startVolley(Request req) {
