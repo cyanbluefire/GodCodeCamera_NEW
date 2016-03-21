@@ -115,6 +115,12 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 //    @InjectView(R.id.rl_bottom_toolbar)
 //    RelativeLayout rl_bottom_toolbar;
 
+    @InjectView(R.id.btn_save_only)
+    Button btn_save_only;
+    @InjectView(R.id.btn_share)
+    Button btn_share;
+    @InjectView(R.id.rl_photo_progress)
+    RelativeLayout rl_photo_progress;
 
     private MyImageViewDrawableOverlay mImageView;
     private LabelSelector labelSelector;    //贴纸 --cyan
@@ -150,6 +156,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     private boolean isSaveOnly = false;
     private Handler handler ;
     public static final int MSG_SHARE = 0;
+    private String photo_path;
 
     final SHARE_MEDIA[] displaylist = new SHARE_MEDIA[]
     {
@@ -170,6 +177,12 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         addonList.add(R.mipmap.sticker7_1);
         addonList.add(R.mipmap.sticker8_1);
         addonList.add(R.mipmap.sticker9_1);
+        addonList.add(R.mipmap.sticker10_1);
+        addonList.add(R.mipmap.sticker11_1);
+        addonList.add(R.mipmap.sticker12_1);
+        addonList.add(R.mipmap.sticker13_1);
+        addonList.add(R.mipmap.sticker14_1);
+        addonList.add(R.mipmap.sticker15_1);
 
     }
     static {
@@ -182,6 +195,15 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         arr_model_instruction.add("性感红唇");
         arr_model_instruction.add("夜露死苦");
         arr_model_instruction.add("最难将息");
+        arr_model_instruction.add("爱情罐头");
+        arr_model_instruction.add("保护动物");
+        arr_model_instruction.add("算你厉害");
+        arr_model_instruction.add("太阳了狗");
+        arr_model_instruction.add("有没有搞错");
+        arr_model_instruction.add("雨天想你");
+
+
+
 
 
     }
@@ -249,8 +271,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 Log.i(TAG,"handleMessage()");
                 switch (msg.what){
                     case MSG_SHARE:
-                        String filename = msg.getData().getString("filename");
-                        share(filename);
+                        Log.i(TAG,"MSG_SHARE");
+                        rl_photo_progress.setVisibility(View.VISIBLE);
 
                         break;
                     default:
@@ -284,6 +306,24 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         drawArea.addView(overlay);
 
 
+        btn_save_only.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CameraManager.getInst().close();            //这个是关闭此activity的！！！
+
+                startActivity(new Intent(PhotoProcessActivity.this,MyGodCodeActivity.class));
+                finish();
+
+            }
+        });
+        btn_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                share(photo_path);
+//                CameraManager.getInst().close();            //这个是关闭此activity的！！！
+
+            }
+        });
         //添加标签选择器 --cyan 标签就是 "心情，地点"
         RelativeLayout.LayoutParams rparams = new RelativeLayout.LayoutParams(App.getApp().getScreenWidth(), App.getApp().getScreenWidth());
         labelSelector = new LabelSelector(this);
@@ -384,6 +424,9 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             public void onClick(View v) {
                 showProgressDialog("正在保存图片");
                 CreateNewArticle();
+
+//                share("/storage/emulated/0/Godcode/GodCode/20160316174647.jpg");
+
 //                String file_path = FileUtils.getQrcodePath();
 //                String qrcode_url = AppConstants.HOME_URL+article_url;
 //                Log.i(TAG,"qrcode_url"+qrcode_url);
@@ -518,20 +561,27 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 //            FeedItem feedItem = new FeedItem(tagInfoList,fileName);
 //            EventBus.getDefault().post(feedItem);
             Log.i(TAG,"filename=="+fileName);
-            dismissProgressDialog();
-            CameraManager.getInst().close();
+            photo_path = fileName;
+//            CameraManager.getInst().close();            //这个是关闭此activity的！！！
 
-            if(isSaveOnly){
-                startActivity(new Intent(PhotoProcessActivity.this, MyGodCodeActivity.class));
-                finish();
-            }else{
-                Message msg = new Message();
-                msg.what = MSG_SHARE;
-                Bundle bundle = new Bundle();
-                bundle.putString("filename",fileName);
-                msg.setData(bundle);
-                handler.sendMessage(msg);
-            }
+            Message msg = new Message();
+            msg.what = MSG_SHARE;
+            Bundle bundle = new Bundle();
+            bundle.putString("filename",fileName);
+            msg.setData(bundle);
+            handler.sendMessage(msg);
+
+//            if(isSaveOnly){
+//                startActivity(new Intent(PhotoProcessActivity.this, MyGodCodeActivity.class));
+//                finish();
+//            }else{
+//                Message msg = new Message();
+//                msg.what = MSG_SHARE;
+//                Bundle bundle = new Bundle();
+//                bundle.putString("filename",fileName);
+//                msg.setData(bundle);
+//                handler.sendMessage(msg);
+//            }
 
         }
     }
@@ -875,5 +925,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         Bimp.tempSelectBitmap = null;
         MakeQrcodeActivity.city = null;
         MakeQrcodeActivity.shop_name = null;
+        CameraManager.getInst().close();            //这个是关闭此activity的！！！
+
     }
 }

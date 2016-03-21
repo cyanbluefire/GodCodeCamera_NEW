@@ -47,6 +47,13 @@ public class EffectUtil {
         addonList.add(new Addon(R.mipmap.sticker7));
         addonList.add(new Addon(R.mipmap.sticker8));
         addonList.add(new Addon(R.mipmap.sticker9));
+        addonList.add(new Addon(R.mipmap.sticker10));
+        addonList.add(new Addon(R.mipmap.sticker11));
+        addonList.add(new Addon(R.mipmap.sticker12));
+        addonList.add(new Addon(R.mipmap.sticker13));
+        addonList.add(new Addon(R.mipmap.sticker14));
+        addonList.add(new Addon(R.mipmap.sticker15));
+
 
     }
 

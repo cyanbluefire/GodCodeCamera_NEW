@@ -26,6 +26,8 @@
     <string name="generic_server_down">连接服务器失败~！</string>
     <string name="generic_error">网络异常,请稍后再试~！</string>
     <string name="no_internet">无网络连接~！</string>
+    <string name="save_only">仅保存</string>
+    <string name="share">分享</string>
     <!--volley相关-->
 
 </resources>

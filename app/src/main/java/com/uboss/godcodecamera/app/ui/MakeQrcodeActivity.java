@@ -101,7 +101,7 @@ public class MakeQrcodeActivity extends BaseActivity {
     private static String content_text;
     private static boolean istextBeforePhoto = true;
     //preview
-    public static String shop_name = "" ;
+    public static String shop_name = "当前位置" ;
     private static String uid = "";
     public static String city = "";
     private String code;    //识别设备IMEI
@@ -699,17 +699,19 @@ public class MakeQrcodeActivity extends BaseActivity {
     private void upLoadPicture() {
         Log.i(TAG,"upLoadMorePic()");
         if(Bimp.tempSelectBitmap.size() < 1){
-            Log.i(TAG,"arr_path size 0");
-            AlertDialog.Builder builder = new AlertDialog.Builder(MakeQrcodeActivity.this);
-            builder.setTitle("未添加图片").setIcon(android.R.drawable.ic_dialog_info)
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+            Log.i(TAG,"未添加图片");
+//            AlertDialog.Builder builder = new AlertDialog.Builder(MakeQrcodeActivity.this);
+//            builder.setTitle("未添加图片").setIcon(android.R.drawable.ic_dialog_info)
+//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//
+//                        }
+//                    });
+//            builder.show();
 
-                        }
-                    });
-            builder.show();
-            return;
+            preview();
+
         }
         for(int i=0;i<Bimp.tempSelectBitmap.size();i++){
             Log.i(TAG,"photo size=="+Bimp.tempSelectBitmap.size());
