@@ -82,7 +82,7 @@
             android:excludeFromRecents="true"
             android:theme="@style/Theme.UMDefault" />
 
-        <!-- QQ -->
+        <!-- QQ  tencent1105253294 这个需要修改为此应用的appid-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"

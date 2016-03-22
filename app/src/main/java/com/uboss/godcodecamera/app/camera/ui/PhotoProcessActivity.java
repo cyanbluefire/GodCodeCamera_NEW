@@ -58,11 +58,15 @@ import com.uboss.godcodecamera.app.ui.MakeQrcodeActivity;
 import com.uboss.godcodecamera.app.ui.MyGodCodeActivity;
 import com.uboss.godcodecamera.app.volley.VolleyErrorUtil;
 import com.uboss.godcodecamera.base.GodeCode;
+import com.umeng.socialize.Config;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.ShareContent;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,8 +165,9 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     final SHARE_MEDIA[] displaylist = new SHARE_MEDIA[]
     {
             SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.SINA,
-            SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+            SHARE_MEDIA.QQ
     };
+    UMImage image;
 
 
 
@@ -845,8 +850,10 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         Log.e(TAG,"sharePicture() start222");
         Log.i(TAG,"filename=="+filename);
 
-        UMImage image = new UMImage(PhotoProcessActivity.this, BitmapFactory.decodeFile(filename));
+        image = new UMImage(PhotoProcessActivity.this, BitmapFactory.decodeFile(filename));
 
+
+//        UMImage image = new UMImage(PhotoProcessActivity.this, BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
 
 //        new ShareAction(this).setDisplayList( displaylist )
 //                .setShareboardclickCallback(shareBoardlistener)
@@ -854,12 +861,46 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 //        ;
 
 
-
         new ShareAction(PhotoProcessActivity.this).setDisplayList( displaylist )
+//                .setContentList( )
+//                .withText("这是神码，扫一扫吧！")           //新浪withText()不能少
                 .withMedia(image)
                 .setCallback(umShareListener)
+                .setShareboardclickCallback(shareBoardlistener)
                 .open();
 
+    }
+
+    private ShareBoardlistener shareBoardlistener = new ShareBoardlistener() {
+
+        @Override
+        public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+
+            //微博,必须要有text
+            if(share_media.equals(SHARE_MEDIA.SINA)){
+                Log.e(TAG,"SINA share");
+                new ShareAction(PhotoProcessActivity.this)
+                        .setPlatform(SHARE_MEDIA.SINA)
+                        .withText("这是神码，扫一扫吧！")           //新浪withText()不能少
+                        .withMedia(image)
+                        .setCallback(umShareListener)
+                        .share();
+            }else{
+                Log.e(TAG,"other platforms share");
+                //其他平台
+                shareOnlyPicture(share_media);
+            }
+
+
+        }
+
+    };
+    void shareOnlyPicture(SHARE_MEDIA share_media){
+        new ShareAction(PhotoProcessActivity.this)
+                .setPlatform(share_media)
+                .withMedia(image)
+                .setCallback(umShareListener)
+                .share();
     }
 
 
