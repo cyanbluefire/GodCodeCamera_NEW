@@ -847,8 +847,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
      *
      */
     private void share(String filename){
-        Log.e(TAG,"sharePicture() start222");
-        Log.i(TAG,"filename=="+filename);
+        Log.e(TAG,"sharePicture()");
 
         image = new UMImage(PhotoProcessActivity.this, BitmapFactory.decodeFile(filename));
 
@@ -878,7 +877,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
             //微博,必须要有text
             if(share_media.equals(SHARE_MEDIA.SINA)){
-                Log.e(TAG,"SINA share");
+                Log.i(TAG,"SINA share");
                 new ShareAction(PhotoProcessActivity.this)
                         .setPlatform(SHARE_MEDIA.SINA)
                         .withText("这是神码，扫一扫吧！")           //新浪withText()不能少
@@ -886,7 +885,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                         .setCallback(umShareListener)
                         .share();
             }else{
-                Log.e(TAG,"other platforms share");
+                Log.i(TAG,"other platforms share");
                 //其他平台
                 shareOnlyPicture(share_media);
             }
