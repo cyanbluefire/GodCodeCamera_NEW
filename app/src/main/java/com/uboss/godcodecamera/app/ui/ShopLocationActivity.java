@@ -77,6 +77,7 @@ public class ShopLocationActivity extends AppCompatActivity{
     public double location_longitude;
 //    private ArrayList<String> poilist = new ArrayList<String>();
     private ArrayList<HashMap<String,Object>> poiInfo = new ArrayList<HashMap<String,Object>>();
+    private ImageView img_title_left;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

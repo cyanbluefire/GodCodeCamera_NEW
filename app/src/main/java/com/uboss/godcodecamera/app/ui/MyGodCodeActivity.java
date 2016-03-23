@@ -216,5 +216,10 @@ public class MyGodCodeActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(MyGodCodeActivity.this,CameraActivity.class));
+        finish();
+    }
 }

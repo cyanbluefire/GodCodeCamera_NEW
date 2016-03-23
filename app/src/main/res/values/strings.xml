@@ -28,6 +28,8 @@
     <string name="no_internet">无网络连接~！</string>
     <string name="save_only">仅保存</string>
     <string name="share">分享</string>
+    <string name="save">保存</string>
+    <string name="stickers_hint">可以移动或放大二维码以及趣味贴纸组成画面</string>
     <!--volley相关-->
 
 </resources>

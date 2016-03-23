@@ -46,6 +46,7 @@ import com.uboss.godcodecamera.app.camera.CameraManager;
 import com.uboss.godcodecamera.app.camera.util.CameraHelper;
 import com.uboss.godcodecamera.app.model.PhotoItem;
 import com.uboss.godcodecamera.app.ui.MyAlbumActivity;
+import com.uboss.godcodecamera.app.ui.MyGodCodeActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -96,8 +97,8 @@ public class CameraActivity extends CameraBaseActivity {
     ImageView flashBtn;             //闪光灯
     @InjectView(R.id.change)
     ImageView changeBtn;            //切换前置后置镜头
-    @InjectView(R.id.back)
-    ImageView backBtn;
+    @InjectView(R.id.home)
+    ImageView homeBtn;
     @InjectView(R.id.next)
     ImageView galleryBtn;
     @InjectView(R.id.focus_index)
@@ -147,6 +148,14 @@ public class CameraActivity extends CameraBaseActivity {
     }
 
     private void initView() {
+        /**--cyan start**/
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CameraActivity.this, MyGodCodeActivity.class));
+            }
+        });
+        /**--cyan end**/
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         surfaceHolder.setKeepScreenOn(true);
@@ -242,7 +251,7 @@ public class CameraActivity extends CameraBaseActivity {
         galleryBtn.setOnClickListener(v -> startActivity(intent));
 
         //返回按钮
-        backBtn.setOnClickListener(v -> finish());
+//        backBtn.setOnClickListener(v -> finish());
         surfaceView.setOnTouchListener((v, event) -> {
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 // 主点按下

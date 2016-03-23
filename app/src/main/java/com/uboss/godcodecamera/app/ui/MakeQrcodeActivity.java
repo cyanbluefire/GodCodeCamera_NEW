@@ -632,7 +632,7 @@ public class MakeQrcodeActivity extends BaseActivity {
      */
     private void upLoadPicture() {
         Log.i(TAG,"upLoadMorePic()");
-        if(Bimp.tempSelectBitmap.size() < 1){
+        if(Bimp.tempSelectBitmap != null && Bimp.tempSelectBitmap.size() < 1){
             Log.i(TAG,"未添加图片");
 //            AlertDialog.Builder builder = new AlertDialog.Builder(MakeQrcodeActivity.this);
 //            builder.setTitle("未添加图片").setIcon(android.R.drawable.ic_dialog_info)

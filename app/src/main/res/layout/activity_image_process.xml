@@ -26,6 +26,7 @@
             android:layout_gravity="center" />
     </RelativeLayout>
 
+
     <LinearLayout
         android:id="@+id/toolbar_area"
         android:layout_width="fill_parent"
@@ -44,38 +45,46 @@
             app:hlv_dividerWidth="@dimen/margin_15px"
             />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl_photo_progress"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/black"
-            android:visibility="gone">
+            android:background="@color/black">
 
             <Button
                 android:id="@+id/btn_save_only"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/button"
-                android:text="@string/save_only"
+                android:background="@drawable/btn_black_bg"
+                android:text="@string/save"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:layout_margin="@dimen/ui_10_dip"/>
+                android:layout_weight="1"/>
             <Button
                 android:id="@+id/btn_share"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/button"
+                android:background="@drawable/btn_black_bg"
                 android:text="@string/share"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:layout_margin="@dimen/ui_10_dip"/>
-        </RelativeLayout>
+                android:layout_weight="1"/>
+        </LinearLayout>
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/stickers_hint"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:layout_above="@id/toolbar_area"
+        android:gravity="center_horizontal"
+        android:layout_margin="15dp"/>
 
     <!--<LinearLayout-->
         <!--android:id="@+id/main_area"-->
