@@ -291,98 +291,79 @@ public class MakeQrcodeActivity extends BaseActivity {
             public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
                                     View arg1, int position, long arg3) {
 //                Toast.makeText(MakeQrcodeActivity.this,position+"",Toast.LENGTH_SHORT).show();
-                if(hasqrcode){
-                    switch (position){
-                        case 0:
-                            current_model = position;
-                            max_num = 2;
-                            isDefaultModle = true;
+                switch (position) {
+                    case 0:
+                        current_model = position;
+                        max_num = 2;
+                        isDefaultModle = true;
 
-                            textBeforePhoto();
-                            break;
-                        case 1:
-                            //先图后文
-                            current_model = position;
-                            max_num = 2;
-                            isDefaultModle = true;
+                        textBeforePhoto();
+                        break;
+                    case 1:
+                        //先图后文
+                        current_model = position;
+                        max_num = 2;
+                        isDefaultModle = true;
 
-                            changeModel(last_model,addonList.get(last_model));
-                            changeModel(1,R.mipmap.picture_icon2_focused);
-                            model_adapter.notifyDataSetChanged();
-                            last_model = current_model;
+                        changeModel(last_model, addonList.get(last_model));
+                        changeModel(1, R.mipmap.picture_icon2_focused);
+                        model_adapter.notifyDataSetChanged();
+                        last_model = current_model;
 
 //                            changeModel(1,R.mipmap.picture_icon2_focused);
 //                            changeModel(0,addonList.get(0));
-                            et_qrcode_content_up.setVisibility(View.GONE);
-                            et_qrcode_content_down.setVisibility(View.VISIBLE);
-                            is_up_edittext = false;
-                            model_adapter.notifyDataSetChanged();
-                            use_model = 2;
+                        et_qrcode_content_up.setVisibility(View.GONE);
+                        et_qrcode_content_down.setVisibility(View.VISIBLE);
+                        is_up_edittext = false;
+                        model_adapter.notifyDataSetChanged();
+                        use_model = 2;
 
-                            istextBeforePhoto = false;
-                            break;
-                        case 2:
-                            break;
-                        case 3:
+                        istextBeforePhoto = false;
+                        break;
+                    case 2:
+                        break;
+                    default:
+                    {
+                        if(hasqrcode){
+                            switch (position){
+
+                                case 3:
 //                            Toast.makeText(MakeQrcodeActivity.this,"上次内容!",Toast.LENGTH_SHORT).show();
-                            break;
-                        case 4:
-                            break;
-                        default:
+                                    break;
+                                case 4:
+                                    break;
+                                default:
 //                            current_model = position;
 //                            clickDefaultModel();
-                            isDefaultModle = false;
-                            img_preview.setImageResource(arr_model_preview.get(position));
-                            popPreview();
-                            current_model = position;
-                            max_num = 2;
-                            break;
+                                    isDefaultModle = false;
+                                    img_preview.setImageResource(arr_model_preview.get(position));
+                                    popPreview();
+                                    current_model = position;
+                                    max_num = 2;
+                                    break;
 
-                    }
-                }else{
-                    switch (position){
-                        case 0:
-                            current_model = position;
-                            max_num = 2;
-                            isDefaultModle = true;
-                            textBeforePhoto();
-                            break;
-                        case 1:
-                            //先图后文
-                            current_model = position;
-                            max_num = 2;
-                            isDefaultModle = true;
+                            }
+                        }else{
+                            switch (position){
 
-                            changeModel(last_model,addonList.get(last_model));
-                            changeModel(1,R.mipmap.picture_icon2_focused);
-                            model_adapter.notifyDataSetChanged();
-                            last_model = current_model;
-
-//                            changeModel(1,R.mipmap.picture_icon2_focused);
-//                            changeModel(0,addonList.get(0));
-                            et_qrcode_content_up.setVisibility(View.GONE);
-                            et_qrcode_content_down.setVisibility(View.VISIBLE);
-                            is_up_edittext = false;
-                            model_adapter.notifyDataSetChanged();
-                            use_model = 2;
-
-                            istextBeforePhoto = false;
-                            break;
-                        case 2:
-                            break;
-                        default:
+                                default:
 //                            current_model = position;
 //                            clickDefaultModel();
 
-                            isDefaultModle = false;
-                            img_preview.setImageResource(arr_model_preview.get(position));
-                            popPreview();
-                            current_model = position;
-                            max_num = 2;
-                            break;
+                                    isDefaultModle = false;
+                                    img_preview.setImageResource(arr_model_preview.get(position));
+                                    popPreview();
+                                    current_model = position;
+                                    max_num = 2;
+                                    break;
 
+                            }
+                        }
                     }
+
+                        break;
                 }
+
 
             }
         });
@@ -588,6 +569,18 @@ public class MakeQrcodeActivity extends BaseActivity {
 //                    lastisDefaultModel = false;
                     break;
                 case R.id.btn_create_qrcode:
+                    if(isContentEmpty()){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MakeQrcodeActivity.this);
+                        builder.setTitle("请添加文字或图片").setIcon(android.R.drawable.ic_dialog_info)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                });
+                        builder.show();
+                        return;
+                    }
                     onClickPreview();
 //                    startActivity(new Intent(MakeQrcodeActivity.this, PhotoProcessActivity.class));
 
@@ -610,6 +603,29 @@ public class MakeQrcodeActivity extends BaseActivity {
             }
         }
     };
+
+    private boolean isContentEmpty() {
+        if(current_model == 0 || current_model == 1){
+            if(Bimp.tempSelectBitmap.size() < 1){
+                if(is_up_edittext){
+                    if("".equals(et_qrcode_content_up.getText().toString()))
+                        return true;
+                    else
+                        return false;
+                }else {
+                    if("".equals(et_qrcode_content_down.getText().toString()))
+                        return true;
+                    else
+                        return false;
+                }
+
+            }else {
+                return false;
+            }
+        }else {
+            return false;
+        }
+    }
 
     /**
      * upyun上传图片
