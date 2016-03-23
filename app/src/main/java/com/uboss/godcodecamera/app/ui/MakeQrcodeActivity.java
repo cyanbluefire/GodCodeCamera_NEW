@@ -220,7 +220,7 @@ public class MakeQrcodeActivity extends BaseActivity {
         bimap = BitmapFactory.decodeResource(
                 getResources(),
                 R.mipmap.plus_icon);
-        PublicWay.activityList.add(this);
+        PublicWay.addActivity(this);
         parentView = getLayoutInflater().inflate(R.layout.activity_make_qrcode, null);
         setContentView(R.layout.activity_make_qrcode);
         ButterKnife.inject(this);
@@ -955,9 +955,10 @@ public class MakeQrcodeActivity extends BaseActivity {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        PublicWay.removeActivity(this);
     }
 }

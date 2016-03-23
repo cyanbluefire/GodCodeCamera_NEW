@@ -41,6 +41,7 @@ import com.customview.CameraGrid;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.AppConstants;
+import com.uboss.godcodecamera.app.MyUtil.PublicWay;
 import com.uboss.godcodecamera.app.camera.CameraBaseActivity;
 import com.uboss.godcodecamera.app.camera.CameraManager;
 import com.uboss.godcodecamera.app.camera.util.CameraHelper;
@@ -127,6 +128,9 @@ public class CameraActivity extends CameraBaseActivity {
         setContentView(R.layout.activity_camera);
         mCameraHelper = new CameraHelper(this);
         ButterKnife.inject(this);
+        PublicWay.addActivity(this);
+
+
         initView();
         initEvent();
     }
@@ -961,5 +965,11 @@ public class CameraActivity extends CameraBaseActivity {
             e.printStackTrace();
         }
         return c;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PublicWay.removeActivity(this);
     }
 }

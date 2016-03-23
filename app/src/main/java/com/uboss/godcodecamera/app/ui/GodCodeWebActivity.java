@@ -16,6 +16,7 @@ import android.widget.Button;
 import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.app.MyUtil.MyFileUtils;
+import com.uboss.godcodecamera.app.MyUtil.PublicWay;
 import com.uboss.godcodecamera.app.camera.ui.PhotoProcessActivity;
 
 import org.json.JSONObject;
@@ -44,6 +45,8 @@ public class GodCodeWebActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_godcodeweb);
         ButterKnife.inject(this);
+        PublicWay.addActivity(this);
+
         Intent intent = getIntent();
         boolean isPreview = intent.getBooleanExtra("isPreview",true);
         Log.i(TAG,"article_url=="+intent.getStringExtra("article_url"));
@@ -187,4 +190,10 @@ public class GodCodeWebActivity extends AppCompatActivity {
         return params;
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PublicWay.removeActivity(this);
+    }
 }

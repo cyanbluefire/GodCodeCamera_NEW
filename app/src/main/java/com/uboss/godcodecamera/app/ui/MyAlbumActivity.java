@@ -75,7 +75,7 @@ public class MyAlbumActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		Res.init(this);
 		setContentView(Res.getLayoutID("plugin_camera_album"));
-		PublicWay.activityList.add(this);
+		PublicWay.addActivity(this);
 		mContext = this;
 		Intent mIntent = getIntent();
 		isMainPic = mIntent.getBooleanExtra("isMainPic",false);
@@ -288,4 +288,10 @@ protected void onRestart() {
 	isShowOkBt();
 	super.onRestart();
 }
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		PublicWay.removeActivity(this);
+	}
 }

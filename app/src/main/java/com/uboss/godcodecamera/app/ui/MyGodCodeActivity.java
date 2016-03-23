@@ -20,6 +20,7 @@ import com.uboss.godcodecamera.App;
 import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.R;
 import com.uboss.godcodecamera.app.Database.DBManager;
+import com.uboss.godcodecamera.app.MyUtil.PublicWay;
 import com.uboss.godcodecamera.app.camera.ui.CameraActivity;
 import com.uboss.godcodecamera.base.GodeCode;
 
@@ -53,6 +54,7 @@ public class MyGodCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_gode_code);
         ButterKnife.inject(this);
+        PublicWay.addActivity(this);
 
         init();
     }
@@ -221,5 +223,12 @@ public class MyGodCodeActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(MyGodCodeActivity.this,CameraActivity.class));
         finish();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PublicWay.removeActivity(this);
     }
 }

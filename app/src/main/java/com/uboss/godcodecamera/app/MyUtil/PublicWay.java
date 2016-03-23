@@ -31,8 +31,22 @@ public class PublicWay {
 //	http://ssobu-dev.b0.upaiyun.com/
 //	 asset_img/avatar/70ccd7325b5f8c9e2484e041b9c21ddd.jpeg
 
+	public static void removeAllActivities(){
+		for(Activity activity:activityList){
+			try {
+				activity.finish();
+			} catch (Exception e) {
 
+			}
+		}
+	}
 
+	public static void removeActivity(Activity act) {
+		activityList.remove(act);
+	}
 
+	public static void addActivity(Activity act) {
+		activityList.add(act);
+	}
 
 }

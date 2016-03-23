@@ -44,6 +44,7 @@ import com.uboss.godcodecamera.AppConstants;
 import com.uboss.godcodecamera.app.Database.DBManager;
 import com.uboss.godcodecamera.app.Database.DatabaseHelper;
 import com.uboss.godcodecamera.app.MyUtil.Bimp;
+import com.uboss.godcodecamera.app.MyUtil.PublicWay;
 import com.uboss.godcodecamera.app.MyUtil.QRCodeUtil;
 import com.uboss.godcodecamera.app.camera.CameraBaseActivity;
 import com.uboss.godcodecamera.app.camera.CameraManager;
@@ -219,6 +220,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         setContentView(R.layout.activity_image_process);
         ButterKnife.inject(this);
         EffectUtil.clear();
+        PublicWay.addActivity(this);
+
         setModelData();
         initView();
         initEvent();
@@ -973,6 +976,6 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         MakeQrcodeActivity.city = null;
         MakeQrcodeActivity.shop_name = null;
 //        CameraManager.getInst().close();            //这个是关闭此activity的！！！
-
+        PublicWay.removeActivity(this);
     }
 }
